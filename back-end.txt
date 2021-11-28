@@ -1,0 +1,7 @@
+- java 17
+- pas de keycloak
+- lombok
+- record
+- pattern matching
+- switch expression
+- text blocks """ text """  bit.ly/textblocks-guide
