@@ -11,6 +11,7 @@
     </span>
   </div>
 </template>
+
 <script>
 export default {
   name: "NavBar",
@@ -21,7 +22,7 @@ export default {
   },
   methods: {
     async logout() {
-      await this.$store.dispatch("LogOut");
+      await this.$store.dispatch("logoutAction");
       this.$router.push("/login");
     },
   },

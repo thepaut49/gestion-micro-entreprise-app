@@ -1,89 +1,59 @@
 package com.thepolo49.backend.model.user;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+@Document(collection = "users")
+@Data
+@NoArgsConstructor
+public class User implements UserDetails, Serializable {
 
-@Entity
-@Table(	name = "users", 
-		uniqueConstraints = { 
-			@UniqueConstraint(columnNames = "username"),
-			@UniqueConstraint(columnNames = "email") 
-		})
-public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private ObjectId id;
 
-	@NotBlank
-	@Size(max = 20)
+	@CreatedDate
+	private LocalDateTime createdAt;
+	@LastModifiedDate
+	private LocalDateTime modifiedAt;
+
+	private boolean enabled = true;
+
+	@Indexed(unique=true)
 	private String username;
-
-	@NotBlank
-	@Size(max = 50)
-	@Email
-	private String email;
-
-	@NotBlank
-	@Size(max = 120)
 	private String password;
+	private Set<Role> authorities = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(	name = "user_roles", 
-				joinColumns = @JoinColumn(name = "user_id"), 
-				inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
-
-	public User() {
-	}
-
-	public User(String username, String email, String password) {
+	public User(String username, String password) {
 		this.username = username;
-		this.email = email;
 		this.password = password;
+		this.enabled = true;
 	}
 
-	public Long getId() {
-		return id;
+	@Override
+	public boolean isAccountNonExpired() {
+		return enabled;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public boolean isAccountNonLocked() {
+		return enabled;
 	}
 
-	public String getUsername() {
-		return username;
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return enabled;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 }

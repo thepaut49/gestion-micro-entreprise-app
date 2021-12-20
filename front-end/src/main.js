@@ -4,8 +4,8 @@ import router from "./router";
 import store from "./store";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8080/";
+//axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:9090/";
 
 axios.interceptors.response.use(undefined, function (error) {
   if (error) {

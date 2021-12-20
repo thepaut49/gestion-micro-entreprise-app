@@ -7,8 +7,8 @@
           <input type="text" name="username" v-model="form.username" />
         </div>
         <div>
-          <label for="full_name">Full Name:</label>
-          <input type="text" name="full_name" v-model="form.full_name" />
+          <label for="email">Email:</label>
+          <input type="text" name="email" v-model="form.email" />
         </div>
         <div>
           <label for="password">Password:</label>
@@ -31,7 +31,7 @@ export default {
     return {
       form: {
         username: "",
-        full_name: "",
+        email: "",
         password: "",
       },
       showError: false,
