@@ -3,7 +3,6 @@ import { API } from "../../shared/config";
 import { parseItem, parseList } from "../../shared/data.service";
 
 const state = {
-  company: null,
   companies: [],
 };
 
@@ -22,14 +21,11 @@ const mutations = {
   deleteCompany(state, companyId) {
     state.companies = [...state.companies.filter((p) => p.id !== companyId)];
   },
-  getCompany(state, company) {
-    state.company = company;
-  },
 };
 
 const getters = {
-  stateCompany: (state) => state.company,
-  stateCompanies: (state) => state.companies,
+  // parameterized getters are not cached. so this is just a convenience to get the state.
+  getCompanyById: (state) => (id) => state.companies.find((h) => h.id === id),
 };
 
 const actions = {

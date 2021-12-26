@@ -11,6 +11,9 @@ public class ObjectIdMapper {
     }
 
     public ObjectId stringToObjectId(String string) {
+        if (string == null) {
+            return null;
+        }
         return new ObjectId(string);
     }
 

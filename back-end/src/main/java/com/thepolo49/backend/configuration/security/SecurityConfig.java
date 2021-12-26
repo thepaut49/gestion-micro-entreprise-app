@@ -104,10 +104,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(format("%s/**", swaggerPath)).permitAll()
                 // Our public endpoints
                 .antMatchers("/api/public/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/author/**").permitAll()
+                /*.antMatchers(HttpMethod.GET, "/api/managers/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/author/search").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/book/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/book/search").permitAll()*/
                 // Our private endpoints
                 /*.antMatchers("/api/admin/user/**").hasRole(ERole.USER_ADMIN.name())
                 .antMatchers("/api/author/**").hasRole(ERole.USER_ADMIN.name())

@@ -35,7 +35,7 @@ public class AuthApi {
     private final UserViewMapper userViewMapper;
     private final UserService userService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<UserView> login(@RequestBody @Valid AuthRequest request) {
         try {
             Authentication authenticate = authenticationManager
@@ -51,7 +51,7 @@ public class AuthApi {
         }
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public UserView register(@RequestBody @Valid CreateUserRequest request) {
         return userService.create(request);
     }
