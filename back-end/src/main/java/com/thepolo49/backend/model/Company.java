@@ -42,8 +42,9 @@ public class Company implements Serializable {
 	@DBRef
 	private Manager manager;
 
-	@DBRef
-	private ContactInfo contactInfo;
+	private String email;
+
+	private String phone;
 
 	@DBRef
 	private Address address;

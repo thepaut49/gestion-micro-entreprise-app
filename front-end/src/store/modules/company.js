@@ -8,10 +8,10 @@ const state = {
 
 const mutations = {
   addCompany(state, company) {
-    state.companyes.unshift(company); // mutable addition
+    state.companies.unshift(company); // mutable addition
   },
   updateCompany(state, company) {
-    const index = state.companyes.findIndex((h) => h.id === company.id);
+    const index = state.companies.findIndex((h) => h.id === company.id);
     state.companies.splice(index, 1, company);
     state.companies = [...state.companies];
   },
@@ -32,7 +32,12 @@ const actions = {
   // actions let us get to ({ state, getters, commit, dispatch }) {
   async addCompanyAction({ commit }, company) {
     try {
-      const response = await axios.post(`${API}/companies`, company);
+      const headers = {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const response = await axios.post(`${API}/companies`, company, headers);
       const addedCompany = parseItem(response, 201);
       commit("addCompany", addedCompany);
     } catch (error) {
@@ -41,7 +46,15 @@ const actions = {
   },
   async deleteCompanyAction({ commit }, company) {
     try {
-      const response = await axios.delete(`${API}/companies/${company.id}`);
+      const headers = {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const response = await axios.delete(
+        `${API}/companies/${company.id}`,
+        headers
+      );
       parseItem(response, 200);
       commit("deleteCompany", company.id);
     } catch (error) {
@@ -50,8 +63,13 @@ const actions = {
   },
   async getCompaniesAction({ commit }) {
     try {
-      const response = await axios.get(`${API}/companies`);
-      const companies = parseList(response);
+      const headers = {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const response = await axios.get(`${API}/companies`, headers);
+      const companies = parseList(response).items;
       commit("getCompanies", companies);
     } catch (error) {
       console.error(error);
@@ -59,9 +77,15 @@ const actions = {
   },
   async updateCompanyAction({ commit }, company) {
     try {
+      const headers = {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
       const response = await axios.put(
         `${API}/companies/${company.id}`,
-        company
+        company,
+        headers
       );
       const updatedCompany = parseItem(response, 200);
       commit("updateCompany", updatedCompany);
@@ -71,7 +95,12 @@ const actions = {
   },
   async getCompanyAction({ commit }, id) {
     try {
-      const response = await axios.get(`${API}/companies/${id}`);
+      const headers = {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      const response = await axios.get(`${API}/companies/${id}`, headers);
       const company = parseItem(response, 200);
       commit("getCompany", company);
     } catch (error) {

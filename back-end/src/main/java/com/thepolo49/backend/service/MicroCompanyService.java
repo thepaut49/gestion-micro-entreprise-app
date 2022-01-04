@@ -1,11 +1,13 @@
 package com.thepolo49.backend.service;
 
-import com.googlecode.jmapper.JMapper;
-import com.thepolo49.backend.dto.microcompany.MicroCompanyDto;
+import com.thepolo49.backend.dto.MicroCompanyDto;
 import com.thepolo49.backend.exception.NotFoundException;
 import com.thepolo49.backend.mapper.MicroCompanyMapper;
+import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.model.MicroCompany;
+import com.thepolo49.backend.model.user.User;
 import com.thepolo49.backend.repository.MicroCompanyRepository;
+import com.thepolo49.backend.repository.user.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,13 @@ public class MicroCompanyService {
 
     private final MicroCompanyRepository microCompanyRepository;
     private final MicroCompanyMapper microCompanyMapper;
+    private final UserRepo userRepo;
 
     @Transactional
-    public MicroCompanyDto create(MicroCompanyDto microCompanyDto) {
+    public MicroCompanyDto create(MicroCompanyDto microCompanyDto, String username) {
         MicroCompany microCompany = microCompanyMapper.convert(microCompanyDto);
+        Optional<User> user = userRepo.findByUsername(username);
+        microCompany.setUser(user.get());
         microCompany = microCompanyRepository.insert(microCompany);
         return microCompanyMapper.convert(microCompany);
     }
@@ -67,5 +72,12 @@ public class MicroCompanyService {
         return microCompanys;
     }
 
+    public List<MicroCompanyDto> getAllMicroForAdmin() {
+        List<MicroCompanyDto> microCompanys = microCompanyRepository.findByAccessibleByAdminTrue()
+                .stream()
+                .map(microCompany -> microCompanyMapper.convert(microCompany))
+                .collect(Collectors.toList());
+        return microCompanys;
+    }
 
 }

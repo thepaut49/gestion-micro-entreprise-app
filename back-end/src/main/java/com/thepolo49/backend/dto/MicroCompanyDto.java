@@ -1,9 +1,6 @@
-package com.thepolo49.backend.dto.microcompany;
+package com.thepolo49.backend.dto;
 
-import com.googlecode.jmapper.annotations.JMap;
 import com.thepolo49.backend.dto.commons.AddressDto;
-import com.thepolo49.backend.dto.commons.ContactInfoDto;
-import com.thepolo49.backend.dto.manager.ManagerDto;
 
 
 import java.time.LocalDateTime;
@@ -18,7 +15,11 @@ public record MicroCompanyDto (
         String siret,
         ManagerDto manager,
         AddressDto address,
-        ContactInfoDto contactInfo
+        String email,
+        String phone,
+        UserDto user,
+        UserDto accountant,
+        boolean accessibleByAdmin
 ) {
 
 }

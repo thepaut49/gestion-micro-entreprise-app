@@ -1,13 +1,9 @@
 package com.thepolo49.backend.service;
 
-import com.googlecode.jmapper.JMapper;
-import com.thepolo49.backend.dto.company.CompanyDto;
-import com.thepolo49.backend.dto.company.CompanyDto;
+import com.thepolo49.backend.dto.CompanyDto;
 import com.thepolo49.backend.exception.NotFoundException;
 import com.thepolo49.backend.mapper.CompanyMapper;
 import com.thepolo49.backend.model.Company;
-import com.thepolo49.backend.model.Company;
-import com.thepolo49.backend.repository.CompanyRepository;
 import com.thepolo49.backend.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;

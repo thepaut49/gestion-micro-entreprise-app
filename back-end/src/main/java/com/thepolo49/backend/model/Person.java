@@ -24,15 +24,16 @@ public class Person {
 
     private String firstName;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
+    private String email;
+
+    private String phone;
 
     @DBRef
     private Address address;
 
-    @DBRef
-    private ContactInfo contactInfo;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime modifiedAt;
 
 }

@@ -1,15 +1,10 @@
-package com.thepolo49.backend.dto.company;
+package com.thepolo49.backend.dto;
 
 
-import com.googlecode.jmapper.annotations.JGlobalMap;
 import com.thepolo49.backend.dto.commons.AddressDto;
-import com.thepolo49.backend.dto.commons.ContactInfoDto;
-import com.thepolo49.backend.dto.manager.ManagerDto;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
-@JGlobalMap
 public record CompanyDto(
         String id,
         LocalDateTime createdAt,
@@ -19,7 +14,8 @@ public record CompanyDto(
         String siret,
         ManagerDto manager,
         AddressDto address,
-        ContactInfoDto contactInfo
+        String email,
+        String phone
 ) {
 
 }

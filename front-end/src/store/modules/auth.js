@@ -12,12 +12,16 @@ const getters = {
 
 const actions = {
   async loginAction({ commit }, user) {
-    const userLog = await axios.post(`${API}/public/login`, user);
-    await commit("setUser", userLog);
+    const response = await axios.post(`${API}/public/login`, user);
+    const token = response.headers["authorization"];
+    const userData = response.data;
+    await commit("setUser", userData);
+    localStorage.setItem("token", token);
   },
 
   async logoutAction({ commit }) {
     commit("logout");
+    localStorage.removeItem("token");
   },
 };
 

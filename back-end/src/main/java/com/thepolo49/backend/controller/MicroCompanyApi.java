@@ -2,15 +2,16 @@ package com.thepolo49.backend.controller;
 
 import com.thepolo49.backend.dto.*;
 
-import com.thepolo49.backend.dto.microcompany.MicroCompanyDto;
-import com.thepolo49.backend.mapper.MicroCompanyMapper;
-import com.thepolo49.backend.mapper.UserViewMapper;
+import com.thepolo49.backend.dto.MicroCompanyDto;
 import com.thepolo49.backend.service.MicroCompanyService;
+import com.thepolo49.backend.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -24,10 +25,14 @@ import javax.validation.Valid;
 public class MicroCompanyApi {
 
     private final MicroCompanyService microCompanyService;
+    private final UserService userService;
 
     @PostMapping
     public MicroCompanyDto create(@RequestBody @Valid MicroCompanyDto microCompanyDto) {
-        return microCompanyService.create(microCompanyDto);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        String username = userDetails.getUsername();
+        return microCompanyService.create(microCompanyDto, username);
     }
 
     @PutMapping("{id}")

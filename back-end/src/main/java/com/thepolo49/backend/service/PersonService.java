@@ -1,6 +1,6 @@
 package com.thepolo49.backend.service;
 
-import com.thepolo49.backend.dto.person.PersonDto;
+import com.thepolo49.backend.dto.PersonDto;
 import com.thepolo49.backend.exception.NotFoundException;
 import com.thepolo49.backend.mapper.PersonMapper;
 import com.thepolo49.backend.model.Person;

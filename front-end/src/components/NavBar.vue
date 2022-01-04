@@ -1,15 +1,11 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/posts">Posts</router-link> |
-    <span v-if="isLoggedIn">
-      <a @click="logout">Logout</a>
+  <nav v-if="isLoggedIn">
+    <span class="menuButtons">
+      <router-link to="/" class="navMargin">Accueil</router-link>
+      <router-link to="/companies" class="navMargin">Entreprise</router-link>
     </span>
-    <span v-else>
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/login">Login</router-link>
-    </span>
-  </div>
+    <button @click="logout" class="navMargin">Logout</button>
+  </nav>
 </template>
 
 <script>
@@ -30,11 +26,25 @@ export default {
 </script>
 
 <style>
-#nav {
-  padding: 30px;
+nav {
+  background: #42b983;
+  height: 100%;
+  padding: 0.5em;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
-#nav a {
+.menuButtons {
+  align-items: center;
+  display: flex;
+}
+
+.navMargin {
+  padding: 0 10px;
+}
+
+nav a {
   font-weight: bold;
   color: #2c3e50;
 }
@@ -43,7 +53,7 @@ a:hover {
   cursor: pointer;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+nav a.router-link-exact-active {
+  color: white;
 }
 </style>

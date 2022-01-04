@@ -3,6 +3,7 @@ import store from "../store";
 import Home from "../views/Home.vue";
 import Register from "../views/Register";
 import Login from "../views/Login";
+import Companies from "../views/companies";
 
 const routes = [
   {
@@ -16,6 +17,20 @@ const routes = [
     name: "Register",
     component: Register,
     meta: { guest: true },
+  },
+  {
+    path: "/companies",
+    name: "companies",
+    component: Companies,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/companies/:id",
+    name: "company-detail",
+    // props: true,
+    props: parseProps,
+    component: () => import("../views/company-detail.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/login",
@@ -54,7 +69,7 @@ router.beforeEach((to, from, next) => {
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.guest)) {
     if (store.getters.isAuthenticated) {
-      next("/posts");
+      next("/");
       return;
     }
     next();
@@ -62,5 +77,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+const parseProps = (r) => ({ id: parseInt(r.params.id) });
 
 export default router;

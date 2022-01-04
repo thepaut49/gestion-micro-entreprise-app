@@ -2,6 +2,7 @@ package com.thepolo49.backend.service.user;
 
 import com.thepolo49.backend.dto.*;
 import com.thepolo49.backend.mapper.UserEditMapper;
+import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.mapper.UserViewMapper;
 import com.thepolo49.backend.model.user.User;
 import com.thepolo49.backend.repository.user.UserRepo;
@@ -28,6 +29,7 @@ public class UserService implements UserDetailsService {
     private final UserRepo userRepo;
     private final UserEditMapper userEditMapper;
     private final UserViewMapper userViewMapper;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -89,6 +91,14 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(
                         () -> new UsernameNotFoundException(format("User with username - %s, not found", username))
                 );
+    }
+
+    public UserDto findByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepo.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException(format("User with username - %s, not found", username));
+        }
+        return userMapper.convert(user.get());
     }
 
     public boolean usernameExists(String username) {

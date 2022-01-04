@@ -1,7 +1,7 @@
 package com.thepolo49.backend.controller;
 
 import com.thepolo49.backend.dto.ListResponse;
-import com.thepolo49.backend.dto.manager.ManagerDto;
+import com.thepolo49.backend.dto.ManagerDto;
 import com.thepolo49.backend.service.ManagerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

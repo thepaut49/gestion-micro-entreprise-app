@@ -1,6 +1,6 @@
 package com.thepolo49.backend.service;
 
-import com.thepolo49.backend.dto.manager.ManagerDto;
+import com.thepolo49.backend.dto.ManagerDto;
 import com.thepolo49.backend.exception.NotFoundException;
 import com.thepolo49.backend.mapper.ManagerMapper;
 import com.thepolo49.backend.model.Manager;

@@ -1,6 +1,7 @@
 package com.thepolo49.backend.model;
 
 import com.thepolo49.backend.model.user.Role;
+import com.thepolo49.backend.model.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -42,9 +43,14 @@ public class MicroCompany implements Serializable {
 	private Manager manager;
 
 	@DBRef
-	private ContactInfo contactInfo;
+	private Address address;
 
 	@DBRef
-	private Address address;
+	private User user;
+
+	@DBRef
+	private User accountant;
+
+	private boolean accessibleByAdmin;
 
 }

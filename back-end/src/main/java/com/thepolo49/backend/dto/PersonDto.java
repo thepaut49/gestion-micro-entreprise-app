@@ -1,14 +1,10 @@
-package com.thepolo49.backend.dto.person;
+package com.thepolo49.backend.dto;
 
-import com.googlecode.jmapper.annotations.JGlobalMap;
 import com.thepolo49.backend.dto.commons.AddressDto;
-import com.thepolo49.backend.dto.commons.ContactInfoDto;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
 
-@JGlobalMap
 public record PersonDto(
         String id,
         LocalDateTime createdAt,
@@ -16,5 +12,6 @@ public record PersonDto(
         String firstName,
         String familyName,
         AddressDto address,
-        ContactInfoDto contactInfo) {
+        String email,
+        String phone) {
 }

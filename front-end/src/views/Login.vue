@@ -1,6 +1,6 @@
 <template>
-  <div class="login">
-    <div>
+  <section class="login">
+      <h2>Connexion</h2>
       <form @submit.prevent="submit">
         <div>
           <label for="username">Username:</label>
@@ -13,8 +13,7 @@
         <button type="submit">Submit</button>
       </form>
       <p v-if="showError" id="error"><pre>{{ errorLogin }}</pre></p>
-    </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -63,9 +62,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-}
 
 label {
   padding: 12px 12px 12px 0;

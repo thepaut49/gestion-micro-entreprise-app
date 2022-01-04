@@ -23,8 +23,9 @@ public class Manager {
 
     private String firstName;
 
-    @DBRef
-    private ContactInfo contactInfo;
+    private String email;
+
+    private String phone;
 
     @CreatedDate
     private LocalDateTime createdAt;
