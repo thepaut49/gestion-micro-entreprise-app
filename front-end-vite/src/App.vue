@@ -1,17 +1,25 @@
-<script setup></script>
-
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <router-view></router-view>
+  <div id="app">
+    <app-nav />
+    <router-view class="page" />
+  </div>
 </template>
 
+<script>
+import AppNav from "./components/AppNav.vue";
+
+export default {
+  components: { AppNav },
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import "./assets/styles/global.css";
+.page {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 56px);
 }
 </style>

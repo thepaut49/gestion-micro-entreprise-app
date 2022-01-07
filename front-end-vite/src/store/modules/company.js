@@ -1,6 +1,4 @@
 import axios from "axios";
-import { API } from "../../shared/config";
-import { parseItem, parseList } from "../../shared/data.service";
 
 const state = {
   companies: [],

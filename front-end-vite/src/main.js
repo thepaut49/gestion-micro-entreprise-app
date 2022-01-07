@@ -1,17 +1,15 @@
-import { createApp } from "vue";
+import { createApp, h } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import axios from "axios";
 
-const app = createApp(App);
-app.use(store).use(router);
-app.mixin({
+const app = createApp({
   created() {
     const userString = localStorage.getItem("user");
     if (userString) {
       const userData = JSON.parse(userString);
-      this.$store.commit("setUser", userData);
+      this.$store.commit("SET_USER_DATA", userData);
     }
     axios.interceptors.response.use(
       (response) => response,
@@ -23,7 +21,10 @@ app.mixin({
       }
     );
   },
-});
-app.mount("#app");
+  render: () => h(App),
+})
+  .use(store)
+  .use(router)
+  .mount("#app");
 
 export default app;

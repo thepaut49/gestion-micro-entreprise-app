@@ -1,36 +1,44 @@
 import axios from "axios";
-import { API } from "../../shared/config";
+
+const baseUrl = "toto"; // process.env.VUE_APP_API;
 
 const state = {
   user: null,
 };
 
 const getters = {
-  isAuthenticated: (state) => !!state.user,
-  stateUser: (state) => state.user,
+  loggedIn(state) {
+    return !!state.user;
+  },
 };
 
 const actions = {
-  async loginAction({ commit }, user) {
-    const response = await axios.post(`${API}/public/login`, user);
-    const token = response.headers["authorization"];
-    const userData = response.data;
-    await commit("setUser", userData);
-    localStorage.setItem("token", token);
+  register({ commit }, credentials) {
+    return axios.post(baseUrl + "/users", credentials).then(({ data }) => {
+      commit("SET_USER_DATA", data);
+    });
   },
-
-  async logoutAction({ commit }) {
-    commit("logout");
-    localStorage.removeItem("token");
+  login({ commit }, credentials) {
+    return axios
+      .post("http://localhost:9090/api/public/login", credentials)
+      .then(({ data }) => {
+        commit("SET_USER_DATA", data);
+      });
+  },
+  logout({ commit }) {
+    commit("CLEAR_USER_DATA");
   },
 };
 
 const mutations = {
-  setUser(state, user) {
-    state.user = user;
+  SET_USER_DATA(state, userData) {
+    state.user = userData;
+    localStorage.setItem("user", JSON.stringify(userData));
+    axios.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
   },
-  logout(state) {
-    state.user = null;
+  CLEAR_USER_DATA() {
+    localStorage.removeItem("user");
+    location.reload();
   },
 };
 
