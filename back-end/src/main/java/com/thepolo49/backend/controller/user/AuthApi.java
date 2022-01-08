@@ -2,10 +2,8 @@ package com.thepolo49.backend.controller.user;
 
 
 import com.thepolo49.backend.configuration.security.JwtTokenUtil;
-import com.thepolo49.backend.dto.AuthRequest;
-import com.thepolo49.backend.dto.CreateUserRequest;
-import com.thepolo49.backend.dto.UserDto;
-import com.thepolo49.backend.dto.UserView;
+import com.thepolo49.backend.dto.*;
+import com.thepolo49.backend.mapper.LoginMapper;
 import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.model.user.User;
 import com.thepolo49.backend.service.user.UserService;
@@ -33,22 +31,22 @@ public class AuthApi {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
-    private final UserMapper userMapper;
+    private final LoginMapper loginMapper;
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid AuthRequest request) {
         try {
             Authentication authenticate = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
             User user = (User) authenticate.getPrincipal();
-            UserDto userDto = userMapper.convert(user);
-            userDto.setToken(jwtTokenUtil.generateAccessToken(user));
+            LoginResponseDto loginResponseDto = loginMapper.convert(user);
+            loginResponseDto.setToken(jwtTokenUtil.generateAccessToken(user));
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, userDto.getToken())
-                    .body(userDto);
+                    .header(HttpHeaders.AUTHORIZATION, loginResponseDto.getToken())
+                    .body(loginResponseDto);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

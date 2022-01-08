@@ -1,4 +1,5 @@
 import axios from "axios";
+import { VITE_APP_API_URL } from "../apiConstants";
 
 const state = {
   companies: [],

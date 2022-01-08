@@ -5,6 +5,7 @@ import com.thepolo49.backend.exception.NotFoundException;
 import com.thepolo49.backend.mapper.MicroCompanyMapper;
 import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.model.MicroCompany;
+import com.thepolo49.backend.model.user.ERole;
 import com.thepolo49.backend.model.user.User;
 import com.thepolo49.backend.repository.MicroCompanyRepository;
 import com.thepolo49.backend.repository.user.UserRepo;
@@ -36,8 +37,10 @@ public class MicroCompanyService {
     }
 
     @Transactional
-    public MicroCompanyDto update(MicroCompanyDto microCompanyDto) {
+    public MicroCompanyDto update(MicroCompanyDto microCompanyDto,String username) {
         MicroCompany microCompany = microCompanyMapper.convert(microCompanyDto);
+        Optional<User> user = userRepo.findByUsername(username);
+        microCompany.setUser(user.get());
         microCompany = microCompanyRepository.save(microCompany);
         return microCompanyMapper.convert(microCompany);
     }

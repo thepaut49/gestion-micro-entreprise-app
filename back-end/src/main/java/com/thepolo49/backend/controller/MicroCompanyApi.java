@@ -37,7 +37,10 @@ public class MicroCompanyApi {
 
     @PutMapping("{id}")
     public MicroCompanyDto update(@RequestBody @Valid MicroCompanyDto microCompanyDto) {
-        return microCompanyService.update(microCompanyDto);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        String username = userDetails.getUsername();
+        return microCompanyService.update(microCompanyDto, username);
     }
 
     @DeleteMapping("{id}")
@@ -52,8 +55,9 @@ public class MicroCompanyApi {
     }
 
     @GetMapping()
-    public ListResponse<MicroCompanyDto> findAll() {
-        return new ListResponse<>(microCompanyService.findAll());
+    @RolesAllowed({"USER_ADMIN"})
+    public ListResponse<MicroCompanyDto> getAllMicroForAdmin() {
+        return new ListResponse<>(microCompanyService.getAllMicroForAdmin());
     }
 
 }

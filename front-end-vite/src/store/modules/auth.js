@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const baseUrl = "toto"; // process.env.VUE_APP_API;
+import { VITE_APP_API_URL } from "../apiConstants";
 
 const state = {
   user: null,
@@ -20,7 +19,7 @@ const actions = {
   },
   login({ commit }, credentials) {
     return axios
-      .post("http://localhost:9090/api/public/login", credentials)
+      .post(`${VITE_APP_API_URL}/api/public/login`, credentials)
       .then(({ data }) => {
         commit("SET_USER_DATA", data);
       });

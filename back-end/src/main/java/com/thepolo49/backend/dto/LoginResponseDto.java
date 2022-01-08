@@ -10,11 +10,9 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDto {
+public class LoginResponseDto {
     private String id;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-    private  boolean enabled;
     private String username;
     private Set<String> authorities;
+    private String token;
 }
