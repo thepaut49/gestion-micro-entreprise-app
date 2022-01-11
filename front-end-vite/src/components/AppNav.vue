@@ -1,14 +1,15 @@
 <template>
-  <div id="nav">
+  <nav id="nav">
     <router-link to="/"> Home </router-link>
-    <router-link v-if="loggedIn" to="/dashboard"> Dashboard </router-link>
+    <template v-if="loggedIn">
+      <router-link to="/dashboard"> Dashboard </router-link>
+      <router-link to="/companies"> Companies </router-link>
+      <button type="button" class="logoutButton" @click="logout">Logout</button>
+    </template>
     <router-link v-if="!loggedIn" to="/login" class="button">
       Login
     </router-link>
-    <button v-else type="button" class="logoutButton" @click="logout">
-      Logout
-    </button>
-  </div>
+  </nav>
 </template>
 
 <script>

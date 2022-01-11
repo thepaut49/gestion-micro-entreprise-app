@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VITE_APP_API_URL } from "../apiConstants";
+import { VITE_APP_API_URL } from "../helpers";
 
 const state = {
   user: null,
@@ -8,6 +8,10 @@ const state = {
 const getters = {
   loggedIn(state) {
     return !!state.user;
+  },
+  getToken(state) {
+    if (loggedIn(state)) return state.user.token;
+    else return "";
   },
 };
 

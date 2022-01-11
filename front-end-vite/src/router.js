@@ -4,6 +4,10 @@ import About from "./views/About.vue";
 import Dashboard from "./views/Dashboard.vue";
 import RegisterUser from "./views/RegisterUser.vue";
 import LoginUser from "./views/LoginUser.vue";
+import Companies from "./views/companies.vue";
+import CompanyDetail from "./views/company-detail.vue";
+
+const parseProps = (r) => ({ id: parseInt(r.params.id) });
 
 const router = createRouter({
   history: createWebHistory(),
@@ -34,6 +38,19 @@ const router = createRouter({
       name: "login",
       component: LoginUser,
     },
+    {
+      path: "/companies",
+      name: "companies",
+      component: Companies,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/companies/:id",
+      name: "company-detail",
+      component: CompanyDetail,
+      props: true,
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
@@ -42,8 +59,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
     next("/");
-  }
-  next();
+  } else next();
 });
 
 export default router;

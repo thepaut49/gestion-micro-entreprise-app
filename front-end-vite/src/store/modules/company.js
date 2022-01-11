@@ -1,8 +1,10 @@
 import axios from "axios";
-import { VITE_APP_API_URL } from "../apiConstants";
+import { VITE_APP_API_URL } from "../helpers";
+import { parseItem, parseList } from "../../shared/data.service";
 
 const state = {
   companies: [],
+  company: {},
 };
 
 const mutations = {
@@ -14,97 +16,110 @@ const mutations = {
     state.companies.splice(index, 1, company);
     state.companies = [...state.companies];
   },
-  getCompanies(state, companies) {
+  setCompanies(state, companies) {
     state.companies = companies;
   },
   deleteCompany(state, companyId) {
     state.companies = [...state.companies.filter((p) => p.id !== companyId)];
   },
+  setCompany(state, company) {
+    state.company = company;
+  },
 };
 
 const getters = {
   // parameterized getters are not cached. so this is just a convenience to get the state.
-  getCompanyById: (state) => (id) => state.companies.find((h) => h.id === id),
+  getCompaniesTOTO(state) {
+    return state.companies;
+  },
 };
 
 const actions = {
   // actions let us get to ({ state, getters, commit, dispatch }) {
-  async addCompanyAction({ commit }, company) {
-    try {
-      const headers = {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      const response = await axios.post(`${API}/companies`, company, headers);
-      const addedCompany = parseItem(response, 201);
-      commit("addCompany", addedCompany);
-    } catch (error) {
-      console.error(error);
+  addCompanyAction({ commit }, company) {
+    return axios
+      .post(`${VITE_APP_API_URL}/api/companies`, company)
+      .then((response) => {
+        const addedCompany = parseItem(response, 201);
+        commit("addCompany", addedCompany);
+      })
+      .catch((error) => console.error(error));
+  },
+  deleteCompanyAction({ commit }, company) {
+    return axios
+      .delete(`${VITE_APP_API_URL}/api/companies/${company.id}`)
+      .then((response) => {
+        parseItem(response, 200);
+        commit("deleteCompany", company.id);
+      })
+      .catch((error) => console.error(error));
+  },
+  getCompaniesAction({ commit }) {
+    return axios
+      .get(VITE_APP_API_URL + "/api/companies")
+      .then((response) => {
+        commit("setCompanies", response.data.items);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  updateCompanyAction({ commit }, company) {
+    return axios
+      .put(`${VITE_APP_API_URL}/api/companies/${company.id}`, company)
+      .then((response) => {
+        const updatedCompany = parseItem(response, 200);
+        commit("updateCompany", updatedCompany);
+      })
+      .catch((error) => console.error(error));
+  },
+  getCompanyAction({ commit, state }, id) {
+    const existingCompany = state.companies.find(
+      (company) => company.id === id
+    );
+    if (existingCompany) {
+      commit("setCompany", existingCompany);
+    } else {
+      return axios
+        .get(`${VITE_APP_API_URL}/api/companies/${id}`)
+        .then((response) => {
+          const company = parseItem(response, 200);
+          commit("setCompany", company);
+        })
+        .catch((error) => console.error(error));
     }
   },
-  async deleteCompanyAction({ commit }, company) {
-    try {
-      const headers = {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      const response = await axios.delete(
-        `${API}/companies/${company.id}`,
-        headers
-      );
-      parseItem(response, 200);
-      commit("deleteCompany", company.id);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  async getCompaniesAction({ commit }) {
-    try {
-      const headers = {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      const response = await axios.get(`${API}/companies`, headers);
-      const companies = parseList(response).items;
-      commit("getCompanies", companies);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  async updateCompanyAction({ commit }, company) {
-    try {
-      const headers = {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      const response = await axios.put(
-        `${API}/companies/${company.id}`,
-        company,
-        headers
-      );
-      const updatedCompany = parseItem(response, 200);
-      commit("updateCompany", updatedCompany);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  async getCompanyAction({ commit }, id) {
-    try {
-      const headers = {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      const response = await axios.get(`${API}/companies/${id}`, headers);
-      const company = parseItem(response, 200);
-      commit("getCompany", company);
-    } catch (error) {
-      console.error(error);
-    }
+  createNewCompanyAction({ commit }) {
+    const company = {
+      id: undefined,
+      companyName: "",
+      siret: "",
+      siren: "",
+      phone: "",
+      email: "",
+      createdAt: new Date().toISOString(),
+      modifiedAt: new Date().toISOString(),
+      manager: {
+        id: undefined,
+        familyName: "",
+        firstName: "",
+        createdAt: new Date().toISOString(),
+        modifiedAt: new Date().toISOString(),
+        phone: "",
+        email: "",
+      },
+      address: {
+        id: undefined,
+        addressLine1: "",
+        addressLine2: "",
+        cityName: "",
+        countryName: "",
+        postalCode: "",
+        createdAt: new Date().toISOString(),
+        modifiedAt: new Date().toISOString(),
+      },
+    };
+    commit("setCompany", company);
   },
 };
 

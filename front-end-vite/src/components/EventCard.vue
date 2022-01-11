@@ -1,22 +1,30 @@
 <template>
-  <div class="event-card">
-    <span>@{{ event.time }} on {{ event.date }}</span>
-    <h4>{{ event.title }}</h4>
-  </div>
+  <section class="company-card">
+    <div>{{ company.companytName }}</div>
+    <button @click="askToDelete(company)">
+      <span>Supprimer</span>
+    </button>
+    <router-link
+      tag="button"
+      :to="{ name: 'company-detail', params: { id: company.id } }"
+    >
+      <span>Selectioner</span>
+    </router-link>
+  </section>
 </template>
 
 <script>
 export default {
-  name: 'EventCard',
+  name: "EventCard",
   props: {
     event: {
       type: Object,
       default: () => {
-        return {}
-      }
-    }
-  }
-}
+        return {};
+      },
+    },
+  },
+};
 </script>
 
 <style scoped>

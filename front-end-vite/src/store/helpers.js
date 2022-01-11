@@ -1,5 +1,7 @@
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export const authComputed = {
-  ...mapGetters(['loggedIn'])
-}
+  ...mapGetters(["loggedIn"]),
+};
+
+export const VITE_APP_API_URL = import.meta.env.VITE_APP_API_URL;
