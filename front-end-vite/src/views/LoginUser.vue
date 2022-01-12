@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <form @submit.prevent="login">
-      <label for="username"> Username: </label>
-      <input v-model="username" type="username" name="username" value />
+  <form @submit.prevent="login">
+    <fieldset>
+      <legend>Connexion</legend>
+      <BaseInput v-model="username" label="Username" type="text" />
 
-      <label for="password"> Password: </label>
-      <input v-model="password" type="password" name="password" value />
+      <BaseInput v-model="password" label="Password" type="password" />
 
       <button type="submit" name="button">Login</button>
 
@@ -14,8 +13,8 @@
       <router-link to="/register">
         Don't have an account? Register.
       </router-link>
-    </form>
-  </div>
+    </fieldset>
+  </form>
 </template>
 
 <script>
