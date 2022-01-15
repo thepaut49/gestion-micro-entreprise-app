@@ -10,27 +10,24 @@
         <button @click="showSection('adresse')">Adresse</button>
         <button @click="showSection('gerant')">Gérant</button>
       </aside>
-      <section class="company-form-content" v-show="showSectionInfoGene">
-        <h3>Info générales</h3>
+      <fieldset class="company-form-content" v-show="showSectionInfoGene">
+        <legend>Info générales</legend>
         <div class="field">
           <label class="label" for="id">id</label>
           <label class="input" name="id" readonly>{{ company.id }}</label>
         </div>
         <div class="field">
-          <label class="label" for="companyName">Nom de l'entreprise</label>
-          <input
-            class="input"
-            name="companyName"
+          <BaseInput
             v-model="company.companyName"
+            label="Nom de l'entreprise"
+            type="text"
           />
         </div>
         <div class="field">
-          <label class="label" for="siret">Numéro siret</label>
-          <input class="input" name="siret" v-model="company.siret" />
+          <BaseInput v-model="company.siret" label="Numéro siret" type="text" />
         </div>
         <div class="field">
-          <label class="label" for="siren">Numéro siren</label>
-          <input class="input" name="siren" v-model="company.siren" />
+          <BaseInput v-model="company.siren" label="Numéro siren" type="text" />
         </div>
         <div class="field">
           <label class="label" for="createdAt">Créée le</label>
@@ -44,28 +41,48 @@
             company.modifiedAt
           }}</label>
         </div>
-      </section>
-      <section class="company-form-content" v-show="showSectionEmailPhone">
-        <h3>Email et téléphone</h3>
+      </fieldset>
+      <fieldset class="company-form-content" v-show="showSectionEmailPhone">
+        <legend>Email et téléphone</legend>
         <div class="field">
-          <label class="label" for="companyEmail">Email de l'entreprise</label>
-          <input class="input" name="companyEmail" v-model="company.email" />
+          <BaseInput
+            v-model="company.email"
+            label="Email de l'entreprise"
+            type="text"
+          />
         </div>
         <div class="field">
-          <label class="label" for="companyPhone">Numéro téléphone</label>
-          <input class="input" name="companyPhone" v-model="company.phone" />
+          <BaseInput
+            v-model="company.phone"
+            label="Numéro téléphone"
+            type="text"
+          />
         </div>
-      </section>
+      </fieldset>
 
-      <section class="company-form-content" v-show="showSectionAdresse">
-        <h3>Adresse</h3>
-        <AddressForm v-model="company.address" />
-      </section>
+      <fieldset class="company-form-content" v-show="showSectionAdresse">
+        <legend>Adresse</legend>
+        <AddressForm
+          :address="company.address"
+          @input="
+            (newAddress) => {
+              address = newAddress;
+            }
+          "
+        />
+      </fieldset>
 
-      <section class="company-form-content" v-show="showSectionGerant">
-        <h3>Gérant</h3>
-        <ManagerForm v-model="company.manager" />
-      </section>
+      <fieldset class="company-form-content" v-show="showSectionGerant">
+        <legend>Gérant</legend>
+        <ManagerForm
+          :manager="company.manager"
+          @input="
+            (newManager) => {
+              manager = newManager;
+            }
+          "
+        />
+      </fieldset>
     </main>
     <footer class="company-form-footer">
       <button @click="cancelCompany()">
@@ -81,8 +98,9 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, useStore } from "vuex";
-import { ref, reactive, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { ref, computed } from "vue";
 import AddressForm from "../components/formulaire/AddressForm.vue";
 import ManagerForm from "../components/formulaire/ManagerForm.vue";
 import _ from "lodash";
@@ -101,6 +119,7 @@ export default {
     ManagerForm,
   },
   setup(props) {
+    const router = useRouter();
     const store = useStore();
     const sectionToShow = ref("infoGene");
 
@@ -108,7 +127,9 @@ export default {
       return !props.id;
     });
     const title = computed(() => {
-      return `${isAddMode ? "Créer" : "Modifier"} l'entreprise`;
+      return isAddMode
+        ? "Modifier l'entreprise " + company.value.companyName
+        : "Créer l'entreprise";
     });
     const showSectionInfoGene = computed(() => {
       return sectionToShow.value === "infoGene";
@@ -127,12 +148,6 @@ export default {
       return (sectionToShow.value = sectionName);
     };
 
-    const getCompanyById = function (id) {
-      const companies = store.state.company.companies;
-      const comp = companies.find((h) => h.id === id);
-      return { ...comp };
-    };
-
     if (isAddMode.value) {
       store
         .dispatch("createCompanyAction")
@@ -142,38 +157,27 @@ export default {
         .dispatch("getCompanyAction", props.id)
         .catch((error) => console.log(error));
     }
+
     const company = computed(() => {
       return store.state.company.company;
-      /*{
-        id: "fllklf454521",
-        companyName: "Testo",
-        siret: "",
-        siren: "",
-        phone: "",
-        email: "",
-        createdAt: new Date().toISOString(),
-        modifiedAt: new Date().toISOString(),
-        manager: {
-          id: undefined,
-          familyName: "",
-          firstName: "",
-          createdAt: new Date().toISOString(),
-          modifiedAt: new Date().toISOString(),
-          phone: "",
-          email: "",
-        },
-        address: {
-          id: undefined,
-          addressLine1: "",
-          addressLine2: "",
-          cityName: "",
-          countryName: "",
-          postalCode: "",
-          createdAt: new Date().toISOString(),
-          modifiedAt: new Date().toISOString(),
-        },
-      };*/
     });
+
+    const cancelCompany = function () {
+      router.push({ name: "companies" });
+    };
+
+    const saveCompany = () => {
+      if (isAddMode.value) {
+        store
+          .dispatch("addCompanyAction", company.value)
+          .catch((error) => console.log(error));
+      } else {
+        store
+          .dispatch("updateCompanyAction", company.value)
+          .catch((error) => console.log(error));
+      }
+      router.push({ name: "companies" });
+    };
 
     return {
       sectionToShow,
@@ -185,7 +189,8 @@ export default {
       showSectionAdresse,
       showSectionGerant,
       showSection,
-      getCompanyById,
+      cancelCompany,
+      saveCompany,
     };
   },
 };

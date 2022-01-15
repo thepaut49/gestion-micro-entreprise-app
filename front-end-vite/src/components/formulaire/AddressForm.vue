@@ -1,34 +1,60 @@
 <template>
   <div class="field">
-    <label class="label" for="addressLine1">Première ligne d'adresse</label>
-    <input class="input" name="addressLine1" v-model="$attrs.addressLine1" />
+    <label class="label" for="id">id de l'adresse</label>
+    <label class="input" name="id" readonly v-bind="$attrs">{{
+      address.id
+    }}</label>
   </div>
   <div class="field">
-    <label class="label" for="addressLine2">Deuxième ligne d'adresse</label>
-    <input class="input" name="addressLine2" v-model="$attrs.addressLine2" />
+    <BaseInput
+      v-model="address.addressLine1"
+      label="Première ligne d'adresse"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
-    <label class="label" for="postalCode">Code Postal</label>
-    <input class="input" name="postalCode" v-model="$attrs.postalCode" />
+    <BaseInput
+      v-model="address.addressLine2"
+      label="Deuxième ligne d'adresse"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
-    <label class="label" for="cityName">Ville</label>
-    <input class="input" name="cityName" v-model="$attrs.cityName" />
+    <BaseInput
+      v-model="address.postalCode"
+      label="Code Postal"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
-    <label class="label" for="countryName">Ville</label>
-    <input class="input" name="countryName" v-model="$attrs.countryName" />
+    <BaseInput
+      v-model="address.cityName"
+      label="Ville"
+      type="text"
+      v-bind="$attrs"
+    />
+  </div>
+  <div class="field">
+    <BaseInput
+      v-model="address.countryName"
+      label="Pays"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
     <label class="label" for="addressCreatedAt">Créée le</label>
-    <label class="input" name="addressCreatedAt" readonly>{{
-      $attrs.createdAt
+    <label class="input" name="addressCreatedAt" readonly v-bind="$attrs">{{
+      address.createdAt
     }}</label>
   </div>
   <div class="field">
     <label class="label" for="addressModifiedAt">Modifié le</label>
-    <label class="input" name="addressModifiedAt" readonly>{{
-      $attrs.modifiedAt
+    <label class="input" name="addressModifiedAt" readonly v-bind="$attrs">{{
+      address.modifiedAt
     }}</label>
   </div>
 </template>
@@ -42,6 +68,11 @@ export default {
       default: () => {
         return {};
       },
+    },
+  },
+  watch: {
+    address() {
+      this.$emit("input", this.address);
     },
   },
 };

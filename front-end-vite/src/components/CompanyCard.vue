@@ -1,8 +1,8 @@
 <template>
-  <section class="company-card">
-    <header>
-      <h4>{{ company.companyName }}</h4>
-    </header>
+  <fieldset class="company-card">
+    <legend>
+      {{ company.companyName }}
+    </legend>
     <main>
       <label>Siren : </label>
       <div>{{ company.siren }}</div>
@@ -20,7 +20,7 @@
         <span>Selectioner</span>
       </router-link>
     </footer>
-  </section>
+  </fieldset>
 </template>
 
 <script>

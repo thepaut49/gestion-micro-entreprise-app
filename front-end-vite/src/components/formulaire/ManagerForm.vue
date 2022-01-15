@@ -1,34 +1,52 @@
 <template>
   <div class="field">
     <label class="label" for="idManager">id du gérant</label>
-    <label class="input" name="idManager" readonly>{{ $attrs.id }}</label>
+    <label class="input" name="idManager" readonly v-bind="$attrs">{{
+      manager.id
+    }}</label>
   </div>
   <div class="field">
-    <label class="label" for="familyName">Nom de famille</label>
-    <input class="input" name="familyName" v-model="$attrs.familyName" />
+    <BaseInput
+      v-model="manager.familyName"
+      label="Nom de famille"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
-    <label class="label" for="firstName">Prénom</label>
-    <input class="input" name="firstName" v-model="$attrs.firstName" />
+    <BaseInput
+      v-model="manager.firstName"
+      label="Prénom"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
-    <label class="label" for="managerEmail">Email</label>
-    <input class="input" name="managerEmail" v-model="$attrs.email" />
+    <BaseInput
+      v-model="manager.email"
+      label="Email"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
-    <label class="label" for="managerPhone">Téléphone</label>
-    <input class="input" name="managerPhone" v-model="$attrs.phone" />
+    <BaseInput
+      v-model="manager.phone"
+      label="Téléphone"
+      type="text"
+      v-bind="$attrs"
+    />
   </div>
   <div class="field">
     <label class="label" for="managerCreatedAt">Créée le</label>
-    <label class="input" name="managerCreatedAt" readonly>{{
-      $attrs.createdAt
+    <label class="input" name="managerCreatedAt" readonly v-bind="$attrs">{{
+      manager.createdAt
     }}</label>
   </div>
   <div class="field">
     <label class="label" for="managerModifiedAt">Modifié le</label>
-    <label class="input" name="managerModifiedAt" readonly>{{
-      $attrs.modifiedAt
+    <label class="input" name="managerModifiedAt" readonly v-bind="$attrs">{{
+      manager.modifiedAt
     }}</label>
   </div>
 </template>
@@ -42,6 +60,11 @@ export default {
       default: () => {
         return {};
       },
+    },
+  },
+  watch: {
+    manager() {
+      this.$emit("input", this.manager);
     },
   },
 };
