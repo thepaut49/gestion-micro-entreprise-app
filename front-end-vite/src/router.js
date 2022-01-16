@@ -16,6 +16,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home,
+      meta: { requiresAuth: true },
     },
     {
       path: "/about",
@@ -58,7 +59,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem("user");
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
-    next("/");
+    next("/login");
   } else next();
 });
 
