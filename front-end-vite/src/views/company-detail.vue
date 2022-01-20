@@ -12,34 +12,38 @@
       </aside>
       <fieldset class="company-form-content" v-show="showSectionInfoGene">
         <legend>Info générales</legend>
-        <div class="field">
-          <label class="label" for="id">id</label>
-          <label class="input" name="id" readonly>{{ company.id }}</label>
+        <div class="field-label">
+          <BaseLabel v-model="company.id" label="Id" />
         </div>
         <div class="field">
           <BaseInput
             v-model="company.companyName"
             label="Nom de l'entreprise"
             type="text"
+            :error="error.companyName"
           />
         </div>
         <div class="field">
-          <BaseInput v-model="company.siret" label="Numéro siret" type="text" />
+          <BaseInput
+            v-model="company.siret"
+            label="Numéro siret"
+            type="text"
+            :error="error.siret"
+          />
         </div>
         <div class="field">
-          <BaseInput v-model="company.siren" label="Numéro siren" type="text" />
+          <BaseInput
+            v-model="company.siren"
+            label="Numéro siren"
+            type="text"
+            :error="error.siren"
+          />
         </div>
-        <div class="field">
-          <label class="label" for="createdAt">Créée le</label>
-          <label class="input" name="createdAt" readonly>{{
-            company.createdAt
-          }}</label>
+        <div class="field-label">
+          <BaseLabel v-model="company.createdAt" label="Créée le" />
         </div>
-        <div class="field">
-          <label class="label" for="modifiedAt">Modifié le</label>
-          <label class="input" name="modifiedAt" readonly>{{
-            company.modifiedAt
-          }}</label>
+        <div class="field-label">
+          <BaseLabel v-model="company.modifiedAt" label="Modifié le" />
         </div>
       </fieldset>
       <fieldset class="company-form-content" v-show="showSectionEmailPhone">
@@ -101,9 +105,12 @@
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { ref, computed } from "vue";
-import AddressForm from "../components/formulaire/AddressForm.vue";
-import ManagerForm from "../components/formulaire/ManagerForm.vue";
-import _ from "lodash";
+
+const emptyError = {
+  companyName: "",
+  siret: "",
+  siren: "",
+};
 
 export default {
   name: "CompanyDetail",
@@ -111,17 +118,15 @@ export default {
   props: {
     id: {
       type: String,
-      default: 0,
     },
-  },
-  components: {
-    AddressForm,
-    ManagerForm,
   },
   setup(props) {
     const router = useRouter();
     const store = useStore();
     const sectionToShow = ref("infoGene");
+    const error = ref(emptyError);
+
+    const id = props.id;
 
     const isAddMode = computed(() => {
       return !props.id;
@@ -131,6 +136,7 @@ export default {
         ? "Modifier l'entreprise " + company.value.companyName
         : "Créer l'entreprise";
     });
+
     const showSectionInfoGene = computed(() => {
       return sectionToShow.value === "infoGene";
     });
@@ -150,7 +156,7 @@ export default {
 
     if (isAddMode.value) {
       store
-        .dispatch("createCompanyAction")
+        .dispatch("createNewCompanyAction")
         .catch((error) => console.log(error));
     } else {
       store
@@ -167,22 +173,27 @@ export default {
     };
 
     const saveCompany = () => {
-      if (isAddMode.value) {
-        store
-          .dispatch("addCompanyAction", company.value)
-          .catch((error) => console.log(error));
-      } else {
-        store
-          .dispatch("updateCompanyAction", company.value)
-          .catch((error) => console.log(error));
+      error.value = validateCompany(company.value, error.value);
+      console.log(errorObjectIsEmpty(error.value));
+      if (errorObjectIsEmpty(error.value)) {
+        if (isAddMode.value) {
+          store
+            .dispatch("addCompanyAction", company.value)
+            .catch((errorCatch) => console.log(errorCatch));
+        } else {
+          store
+            .dispatch("updateCompanyAction", company.value)
+            .catch((errorCatch) => console.log(errorCatch));
+        }
+        router.push({ name: "companies" });
       }
-      router.push({ name: "companies" });
     };
 
     return {
       sectionToShow,
       company,
       isAddMode,
+      error,
       title,
       showSectionInfoGene,
       showSectionEmailPhone,
@@ -194,19 +205,45 @@ export default {
     };
   },
 };
+
+const validateCompany = (company, error) => {
+  error = emptyError;
+  if (!company.companyName || company.companyName.length === 0) {
+    error = {
+      ...error,
+      companyName: "Le nom de l'entreprise est obligatoire",
+    };
+  }
+
+  if (company.siret && company.siret.length !== 14) {
+    error = { ...error, siret: "Le numéro siret doit faire 14 caractères" };
+  }
+
+  if (company.siren && company.siren.length !== 9) {
+    error = { ...error, siren: "Le numéro siren doit faire 9 caractères" };
+  }
+  return error;
+};
+
+const errorObjectIsEmpty = (error) => {
+  return Object.values(error).every((value) => value.length === 0);
+};
 </script>
 
 <style scoped>
+.field-label {
+  display: flex;
+  flex-direction: row;
+}
 .field {
   display: flex;
   flex-direction: column;
-  margin: 0.5em;
 }
 
-.field label {
+label {
+  font-weight: bold;
   justify-content: left;
 }
-
 .company-form-footer {
   display: flex;
   flex-direction: row;
@@ -223,6 +260,9 @@ export default {
   border: solid blue;
   flex-grow: 1;
   margin-left: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .company-form-main {

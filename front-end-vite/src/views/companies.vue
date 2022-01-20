@@ -1,6 +1,9 @@
 <template>
-  <section>
+  <section class="listCompanies">
     <h2>Companies</h2>
+    <router-link tag="button" :to="{ name: 'company-detail' }">
+      <span>Ajouter une nouvelle entreprise</span>
+    </router-link>
     <template v-if="!isLoading">
       <CompanyCard
         v-for="company in companies"
@@ -69,3 +72,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.listCompanies {
+  justify-content: start;
+}
+</style>

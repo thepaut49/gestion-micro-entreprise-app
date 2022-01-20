@@ -1,9 +1,6 @@
 <template>
-  <div class="field">
-    <label class="label" for="idManager">id du gérant</label>
-    <label class="input" name="idManager" readonly v-bind="$attrs">{{
-      manager.id
-    }}</label>
+  <div class="field-label">
+    <BaseLabel v-model="manager.id" label="Id du gérant" v-bind="$attrs" />
   </div>
   <div class="field">
     <BaseInput
@@ -37,17 +34,15 @@
       v-bind="$attrs"
     />
   </div>
-  <div class="field">
-    <label class="label" for="managerCreatedAt">Créée le</label>
-    <label class="input" name="managerCreatedAt" readonly v-bind="$attrs">{{
-      manager.createdAt
-    }}</label>
+  <div class="field-label">
+    <BaseLabel v-model="manager.createdAt" label="Créée le" v-bind="$attrs" />
   </div>
-  <div class="field">
-    <label class="label" for="managerModifiedAt">Modifié le</label>
-    <label class="input" name="managerModifiedAt" readonly v-bind="$attrs">{{
-      manager.modifiedAt
-    }}</label>
+  <div class="field-label">
+    <BaseLabel
+      v-model="manager.modifiedAt"
+      label="Modifié le"
+      v-bind="$attrs"
+    />
   </div>
 </template>
 

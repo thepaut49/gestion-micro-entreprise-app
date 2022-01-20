@@ -46,7 +46,7 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/companies/:id",
+      path: "/companies/company-detail/:id?",
       name: "company-detail",
       component: CompanyDetail,
       props: true,

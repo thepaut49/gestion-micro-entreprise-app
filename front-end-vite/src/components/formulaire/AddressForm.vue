@@ -1,9 +1,6 @@
 <template>
-  <div class="field">
-    <label class="label" for="id">id de l'adresse</label>
-    <label class="input" name="id" readonly v-bind="$attrs">{{
-      address.id
-    }}</label>
+  <div class="field-label">
+    <BaseLabel v-model="address.id" label="Id de l'adresse" v-bind="$attrs" />
   </div>
   <div class="field">
     <BaseInput
@@ -45,21 +42,20 @@
       v-bind="$attrs"
     />
   </div>
-  <div class="field">
-    <label class="label" for="addressCreatedAt">Créée le</label>
-    <label class="input" name="addressCreatedAt" readonly v-bind="$attrs">{{
-      address.createdAt
-    }}</label>
+  <div class="field-label">
+    <BaseLabel v-model="address.createdAt" label="Créée le" v-bind="$attrs" />
   </div>
-  <div class="field">
-    <label class="label" for="addressModifiedAt">Modifié le</label>
-    <label class="input" name="addressModifiedAt" readonly v-bind="$attrs">{{
-      address.modifiedAt
-    }}</label>
+  <div class="field-label">
+    <BaseLabel
+      v-model="address.modifiedAt"
+      label="Modifié le"
+      v-bind="$attrs"
+    />
   </div>
 </template>
 
 <script>
+import BaseLabel from "../commons/BaseLabel.vue";
 export default {
   name: "AddressForm",
   props: {
@@ -75,7 +71,12 @@ export default {
       this.$emit("input", this.address);
     },
   },
+  components: { BaseLabel },
 };
 </script>
 
-<style></style>
+<style scoped>
+label {
+  font-weight: bold;
+}
+</style>

@@ -21,10 +21,14 @@ const app = createApp({
     axios.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response.status && error.response.status === 401) {
+        if (
+          error.response &&
+          error.response.status &&
+          error.response.status === 401
+        ) {
           this.$store.dispatch("logout");
         }
-        return Promise.reject(error);
+        throw error;
       }
     );
   },

@@ -17,7 +17,7 @@
         tag="button"
         :to="{ name: 'company-detail', params: { id: company.id } }"
       >
-        <span>Selectioner</span>
+        <span>Sélectioner</span>
       </router-link>
     </footer>
   </fieldset>

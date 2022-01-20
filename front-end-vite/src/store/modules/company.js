@@ -2,9 +2,39 @@ import axios from "axios";
 import { VITE_APP_API_URL } from "../helpers";
 import { parseItem, parseList } from "../../shared/data.service";
 
+const newCompany = {
+  id: undefined,
+  companyName: "",
+  siret: "",
+  siren: "",
+  phone: "",
+  email: "",
+  createdAt: new Date().toISOString(),
+  modifiedAt: new Date().toISOString(),
+  manager: {
+    id: undefined,
+    familyName: "",
+    firstName: "",
+    createdAt: new Date().toISOString(),
+    modifiedAt: new Date().toISOString(),
+    phone: "",
+    email: "",
+  },
+  address: {
+    id: undefined,
+    addressLine1: "",
+    addressLine2: "",
+    cityName: "",
+    countryName: "",
+    postalCode: "",
+    createdAt: new Date().toISOString(),
+    modifiedAt: new Date().toISOString(),
+  },
+};
+
 const state = {
   companies: [],
-  company: {},
+  company: newCompany,
 };
 
 const mutations = {
@@ -74,52 +104,25 @@ const actions = {
       .catch((error) => console.error(error));
   },
   getCompanyAction({ commit, state }, id) {
-    const existingCompany = state.companies.find(
-      (company) => company.id === id
-    );
-    if (existingCompany) {
-      commit("setCompany", existingCompany);
-    } else {
-      return axios
-        .get(`${VITE_APP_API_URL}/api/companies/${id}`)
-        .then((response) => {
-          const company = parseItem(response, 200);
-          commit("setCompany", company);
-        })
-        .catch((error) => console.error(error));
+    if (id) {
+      const existingCompany = state.companies.find(
+        (company) => company.id === id
+      );
+      if (existingCompany) {
+        commit("setCompany", existingCompany);
+      } else {
+        return axios
+          .get(`${VITE_APP_API_URL}/api/companies/${id}`)
+          .then((response) => {
+            const company = parseItem(response, 200);
+            commit("setCompany", company);
+          })
+          .catch((error) => console.error(error));
+      }
     }
   },
   createNewCompanyAction({ commit }) {
-    const company = {
-      id: undefined,
-      companyName: "",
-      siret: "",
-      siren: "",
-      phone: "",
-      email: "",
-      createdAt: new Date().toISOString(),
-      modifiedAt: new Date().toISOString(),
-      manager: {
-        id: undefined,
-        familyName: "",
-        firstName: "",
-        createdAt: new Date().toISOString(),
-        modifiedAt: new Date().toISOString(),
-        phone: "",
-        email: "",
-      },
-      address: {
-        id: undefined,
-        addressLine1: "",
-        addressLine2: "",
-        cityName: "",
-        countryName: "",
-        postalCode: "",
-        createdAt: new Date().toISOString(),
-        modifiedAt: new Date().toISOString(),
-      },
-    };
-    commit("setCompany", company);
+    commit("setCompany", newCompany);
   },
 };
 

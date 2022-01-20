@@ -11,7 +11,7 @@
     :aria-invalid="error ? true : null"
   />
   <p
-    v-if="error"
+    v-if="error && error.length > 0"
     class="errorMessage"
     :id="`${uuid}-error`"
     aria-live="assertive"
@@ -45,3 +45,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+input {
+  /* haut | droit | bas | gauche */
+  margin: 0.5em 0 0 0;
+}
+
+p {
+  /* haut | droit | bas | gauche */
+  margin: 0.5em 0 0 0.5em;
+  color: red;
+  font-weight: bold;
+  font-style: italic;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="login">
-    <fieldset>
+    <fieldset class="loginForm">
       <legend>Connexion</legend>
       <BaseInput v-model="username" label="Username" type="text" />
 
@@ -33,15 +33,29 @@ export default {
           username: this.username,
           password: this.password,
         })
-        .then(() => {
+        .then((response) => {
           this.$router.push({ name: "dashboard" });
+          this.error = response;
         })
         .catch((err) => {
-          this.error = err.response.data.error;
+          console.log(err);
+          /* if (err.response.data && err.response.data.error) {
+            this.error = err.response.data.error;
+          } else {
+            this.error = err.response;
+          }*/
+          this.error = err;
         });
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 2em;
+}
+</style>
