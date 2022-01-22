@@ -33,6 +33,7 @@ export default {
   min-height: 50px;
   padding: 0.2em 1em;
   background: linear-gradient(to right, #16c0b0, #84cf6a);
+  flex-grow: 1;
 }
 .nav-welcome {
   margin-left: auto;

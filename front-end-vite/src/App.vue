@@ -24,5 +24,7 @@ export default {
   margin-right: 0.5em;
   width: 100%;
   justify-content: center;
+  height: 100%;
+  flex-grow: 9;
 }
 </style>

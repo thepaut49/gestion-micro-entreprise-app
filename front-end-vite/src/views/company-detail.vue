@@ -1,104 +1,104 @@
 <template>
-  <section class="company-form">
-    <header>
-      <h2 class="title">{{ title }}</h2>
-    </header>
-    <main class="company-form-main">
-      <aside class="company-form-aside">
-        <button @click="showSection('infoGene')">Info générales</button>
-        <button @click="showSection('emailPhone')">Email et téléphone</button>
-        <button @click="showSection('adresse')">Adresse</button>
-        <button @click="showSection('gerant')">Gérant</button>
-      </aside>
-      <fieldset class="company-form-content" v-show="showSectionInfoGene">
-        <legend>Info générales</legend>
-        <div class="field-label">
-          <BaseLabel v-model="company.id" label="Id" />
-        </div>
-        <div class="field">
-          <BaseInput
-            v-model="company.companyName"
-            label="Nom de l'entreprise"
-            type="text"
-            :error="error.companyName"
-          />
-        </div>
-        <div class="field">
-          <BaseInput
-            v-model="company.siret"
-            label="Numéro siret"
-            type="text"
-            :error="error.siret"
-          />
-        </div>
-        <div class="field">
-          <BaseInput
-            v-model="company.siren"
-            label="Numéro siren"
-            type="text"
-            :error="error.siren"
-          />
-        </div>
-        <div class="field-label">
-          <BaseLabel v-model="company.createdAt" label="Créée le" />
-        </div>
-        <div class="field-label">
-          <BaseLabel v-model="company.modifiedAt" label="Modifié le" />
-        </div>
-      </fieldset>
-      <fieldset class="company-form-content" v-show="showSectionEmailPhone">
-        <legend>Email et téléphone</legend>
-        <div class="field">
-          <BaseInput
-            v-model="company.email"
-            label="Email de l'entreprise"
-            type="text"
-          />
-        </div>
-        <div class="field">
-          <BaseInput
-            v-model="company.phone"
-            label="Numéro téléphone"
-            type="text"
-          />
-        </div>
-      </fieldset>
+  <div class="entity-form-container">
+    <aside class="entity-form-aside">
+      <button @click="showSection('infoGene')">Info générales</button>
+      <button @click="showSection('emailPhone')">Email et téléphone</button>
+      <button @click="showSection('adresse')">Adresse</button>
+      <button @click="showSection('gerant')">Gérant</button>
+    </aside>
+    <section class="entity-form">
+      <header class="title">
+        <h2>{{ title }}</h2>
+      </header>
+      <main>
+        <fieldset class="entity-form-content" v-show="showSectionInfoGene">
+          <legend>Info générales</legend>
+          <div class="field-label">
+            <BaseLabel v-model="company.id" label="Id" />
+          </div>
+          <div class="field">
+            <BaseInput
+              v-model="company.companyName"
+              label="Nom de l'entreprise"
+              type="text"
+              :error="error.companyName"
+            />
+          </div>
+          <div class="field">
+            <BaseInput
+              v-model="company.siret"
+              label="Numéro siret"
+              type="text"
+              :error="error.siret"
+            />
+          </div>
+          <div class="field">
+            <BaseInput
+              v-model="company.siren"
+              label="Numéro siren"
+              type="text"
+              :error="error.siren"
+            />
+          </div>
+          <div class="field-label">
+            <BaseLabel v-model="company.createdAt" label="Créée le" />
+          </div>
+          <div class="field-label">
+            <BaseLabel v-model="company.modifiedAt" label="Modifié le" />
+          </div>
+        </fieldset>
+        <fieldset class="company-form-content" v-show="showSectionEmailPhone">
+          <legend>Email et téléphone</legend>
+          <div class="field">
+            <BaseInput
+              v-model="company.email"
+              label="Email de l'entreprise"
+              type="text"
+            />
+          </div>
+          <div class="field">
+            <BaseInput
+              v-model="company.phone"
+              label="Numéro téléphone"
+              type="text"
+            />
+          </div>
+        </fieldset>
 
-      <fieldset class="company-form-content" v-show="showSectionAdresse">
-        <legend>Adresse</legend>
-        <AddressForm
-          :address="company.address"
-          @input="
-            (newAddress) => {
-              address = newAddress;
-            }
-          "
-        />
-      </fieldset>
+        <fieldset class="entity-form-content" v-show="showSectionAdresse">
+          <legend>Adresse</legend>
+          <AddressForm
+            :address="company.address"
+            @input="
+              (newAddress) => {
+                address = newAddress;
+              }
+            "
+          />
+        </fieldset>
 
-      <fieldset class="company-form-content" v-show="showSectionGerant">
-        <legend>Gérant</legend>
-        <ManagerForm
-          :manager="company.manager"
-          @input="
-            (newManager) => {
-              manager = newManager;
-            }
-          "
-        />
-      </fieldset>
-    </main>
-    <footer class="company-form-footer">
-      <button @click="cancelCompany()">
-        <i class="fas fa-undo"></i>
-        <span>Cancel</span>
-      </button>
-      <button @click="saveCompany()">
-        <i class="fas fa-save"></i>
-        <span>Save</span>
-      </button>
-    </footer>
-  </section>
+        <fieldset class="entity-form-content" v-show="showSectionGerant">
+          <legend>Gérant</legend>
+          <ManagerForm
+            :manager="company.manager"
+            @input="
+              (newManager) => {
+                manager = newManager;
+              }
+            "
+          />
+        </fieldset>
+      </main>
+      <footer class="entity-form-footer">
+        <button @click="cancelCompany()">
+          <span>Cancel</span>
+        </button>
+        <button @click="saveCompany()">
+          <span>Save</span>
+        </button>
+      </footer>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -230,50 +230,6 @@ const errorObjectIsEmpty = (error) => {
 };
 </script>
 
-<style scoped>
-.field-label {
-  display: flex;
-  flex-direction: row;
-}
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  font-weight: bold;
-  justify-content: left;
-}
-.company-form-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-shrink: 1;
-}
-
-.company-form-aside {
-  border: solid black;
-  flex-shrink: 1;
-}
-
-.company-form-content {
-  border: solid blue;
-  flex-grow: 1;
-  margin-left: 0.5em;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.company-form-main {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-}
-
-.company-form {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
+<style>
+@import "../assets/styles/entityEditForm.css";
 </style>
