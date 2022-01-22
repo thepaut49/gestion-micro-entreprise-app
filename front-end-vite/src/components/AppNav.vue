@@ -1,7 +1,7 @@
 <template>
   <nav id="nav">
-    <router-link to="/"> Home </router-link>
     <template v-if="loggedIn">
+      <router-link to="/"> Home </router-link>
       <router-link to="/dashboard"> Dashboard </router-link>
       <router-link to="/companies"> Companies </router-link>
       <button type="button" class="logoutButton" @click="logout">Logout</button>

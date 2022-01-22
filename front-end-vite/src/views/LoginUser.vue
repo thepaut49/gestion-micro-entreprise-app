@@ -2,9 +2,12 @@
   <form @submit.prevent="login">
     <fieldset class="loginForm">
       <legend>Connexion</legend>
-      <BaseInput v-model="username" label="Username" type="text" />
-
-      <BaseInput v-model="password" label="Password" type="password" />
+      <div class="field">
+        <BaseInput v-model="username" label="Username" type="text" />
+      </div>
+      <div class="field">
+        <BaseInput v-model="password" label="Password" type="password" />
+      </div>
 
       <button type="submit" name="button">Login</button>
 
@@ -56,6 +59,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 2em;
+  gap: 1em;
+  padding: 1em;
 }
 </style>
