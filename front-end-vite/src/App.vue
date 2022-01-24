@@ -22,8 +22,6 @@ export default {
   min-height: calc(100vh - 56px);
   margin-left: 0.5em;
   margin-right: 0.5em;
-  width: 100%;
-  justify-content: center;
   height: 100%;
   flex-grow: 9;
 }

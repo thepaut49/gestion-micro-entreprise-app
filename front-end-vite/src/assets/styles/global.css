@@ -26,7 +26,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10em;
   height: 2em;
   margin: 0.5em;
   border-radius: 5px;
@@ -36,6 +35,16 @@ button {
   border: none;
   outline: none;
 }
+
+.link-button {
+  text-decoration: none;
+}
+
+.link-button span {
+  color: white;
+  font-size: 1em;
+}
+
 form {
   display: flex;
   align-items: center;
@@ -82,4 +91,30 @@ h2 {
   text-transform: uppercase;
   color: #555;
   letter-spacing: 0px;
+}
+
+/* list view css */
+.listEntitiesSection {
+  justify-content: start;
+}
+
+.listEntitiesHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  width: 100%;
+}
+
+.listEntitiesMain {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+}
+
+.addButton {
+  width: 1.8em;
+  color: white;
 }

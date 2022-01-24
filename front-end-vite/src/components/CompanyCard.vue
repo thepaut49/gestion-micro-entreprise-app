@@ -3,18 +3,20 @@
     <legend>
       {{ company.companyName }}
     </legend>
-    <main>
-      <label>Siren : </label>
-      <div>{{ company.siren }}</div>
-      <label>Siret : </label>
-      <div>{{ company.siret }}</div>
+    <main class="company-card-content">
+      <div class="field-label">
+        <BaseLabel v-model="company.siren" label="Siren : " />
+      </div>
+      <div class="field-label">
+        <BaseLabel v-model="company.siret" label="Siret : " />
+      </div>
     </main>
     <footer>
       <button @click="askToDelete(company)">
         <span>Supprimer</span>
       </button>
       <router-link
-        tag="button"
+        class="button link-button"
         :to="{ name: 'company-detail', params: { id: company.id } }"
       >
         <span>Sélectioner</span>
@@ -34,13 +36,20 @@ export default {
       },
     },
   },
+  setup(props, { emit }) {
+    const askToDelete = () => {
+      emit("askToDeleteCompanyEvent", props.company);
+    };
+
+    return {
+      askToDelete,
+    };
+  },
 };
 </script>
 
 <style scoped>
 .company-card {
-  width: 90%;
-  margin: 1em auto 1em auto;
   padding: 1em;
   border: solid 1px #2c3e50;
   cursor: pointer;
@@ -58,8 +67,10 @@ export default {
   margin-bottom: 0.3em;
 }
 
-.company-card main {
+.company-card-content {
   text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .company-card footer {

@@ -1,17 +1,35 @@
 <template>
-  <section class="listCompanies">
-    <h2>Companies</h2>
-    <router-link tag="button" :to="{ name: 'company-detail' }">
-      <span>Ajouter une nouvelle entreprise</span>
-    </router-link>
-    <template v-if="!isLoading">
+  <section class="listEntitiesSection">
+    <header class="listEntitiesHeader">
+      <h2>Companies</h2>
+      <router-link
+        tag="button"
+        class="button addButton"
+        :to="{ name: 'company-detail' }"
+      >
+        <font-awesome-icon icon="plus" />
+      </router-link>
+      <button @click="reloadCompanies">
+        <font-awesome-icon icon="sync" />
+      </button>
+    </header>
+
+    <main class="listEntitiesMain" v-if="!isLoading">
       <CompanyCard
         v-for="company in companies"
         :key="company.id"
         :company="company"
+        @askToDeleteCompanyEvent="askToDelete(company)"
       />
-    </template>
+    </main>
     <p v-else>Récupération des entreprises en cours, veuillez patienter</p>
+    <Modal
+      :message="modalMessage"
+      :isOpen="showModal"
+      @handleNo="closeModal"
+      @handleYes="deleteCompany"
+    >
+    </Modal>
   </section>
 </template>
 
@@ -25,6 +43,7 @@ export default {
       isLoading: true,
       companyToDelete: null,
       showModal: false,
+      modalMessage: "",
     };
   },
   components: {
@@ -45,6 +64,8 @@ export default {
     askToDelete(company) {
       this.companyToDelete = company;
       this.showModal = true;
+      this.modalMessage =
+        "Voulez vous supprimer l'entreprise " + company.companyName + " ?";
     },
     closeModal() {
       this.showModal = false;
@@ -52,8 +73,20 @@ export default {
     deleteCompany() {
       this.closeModal();
       if (this.companyToDelete) {
-        this.deleteCompanyAction(this.companyToDelete);
+        this.$store.dispatch("deleteCompanyAction", this.companyToDelete);
       }
+      this.$store
+        .dispatch("getCompaniesAction")
+        .then(() => {
+          this.isLoading = false;
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.log(error);
+        });
+    },
+    reloadCompanies() {
+      this.isLoading = true;
       this.$store
         .dispatch("getCompaniesAction")
         .then(() => {
@@ -72,9 +105,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.listCompanies {
-  justify-content: start;
-}
-</style>
