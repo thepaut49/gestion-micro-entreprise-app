@@ -4,6 +4,7 @@
       <router-link to="/"> Home </router-link>
       <router-link to="/dashboard"> Dashboard </router-link>
       <router-link to="/companies"> Companies </router-link>
+      <router-link to="/persons"> Personnes </router-link>
       <button type="button" class="logoutButton" @click="logout">Logout</button>
     </template>
     <router-link v-if="!loggedIn" to="/login" class="button">

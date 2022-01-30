@@ -4,7 +4,6 @@
       <button @click="showSection('infoGene')">Info générales</button>
       <button @click="showSection('emailPhone')">Email et téléphone</button>
       <button @click="showSection('adresse')">Adresse</button>
-      <button @click="showSection('gerant')">Gérant</button>
     </aside>
     <section class="entity-form">
       <header class="title">
@@ -14,51 +13,43 @@
         <fieldset class="entity-form-content" v-show="showSectionInfoGene">
           <legend>Info générales</legend>
           <div class="field-label">
-            <BaseLabel v-model="company.id" label="Id" />
+            <BaseLabel v-model="person.id" label="Id" />
           </div>
           <div class="field">
             <BaseInput
-              v-model="company.companyName"
-              label="Nom de l'entreprise"
+              v-model="person.familyName"
+              label="Nom"
               type="text"
-              :error="error.companyName"
+              :error="error.familyName"
             />
           </div>
           <div class="field">
             <BaseInput
-              v-model="company.siret"
-              label="Numéro siret"
+              v-model="person.firstName"
+              label="Prénom"
               type="text"
-              :error="error.siret"
-            />
-          </div>
-          <div class="field">
-            <BaseInput
-              v-model="company.siren"
-              label="Numéro siren"
-              type="text"
-              :error="error.siren"
+              :error="error.firstName"
             />
           </div>
           <div class="field-label">
-            <BaseLabel v-model="company.createdAt" label="Créée le" />
+            <BaseLabel v-model="person.createdAt" label="Créée le" />
           </div>
           <div class="field-label">
-            <BaseLabel v-model="company.modifiedAt" label="Modifié le" />
+            <BaseLabel v-model="person.modifiedAt" label="Modifié le" />
           </div>
         </fieldset>
-        <fieldset class="company-form-content" v-show="showSectionEmailPhone">
+        <fieldset class="person-form-content" v-show="showSectionEmailPhone">
           <legend>Email et téléphone</legend>
           <div class="field">
             <BaseInput
-              v-model="company.email"
+              v-model="person.email"
               label="Email de l'entreprise"
               type="text"
             />
           </div>
           <div class="field">
             <BaseInput
-              v-model="company.phone"
+              v-model="person.phone"
               label="Numéro téléphone"
               type="text"
             />
@@ -68,7 +59,7 @@
         <fieldset class="entity-form-content" v-show="showSectionAdresse">
           <legend>Adresse</legend>
           <AddressForm
-            :address="company.address"
+            :address="person.address"
             @input="
               (newAddress) => {
                 address = newAddress;
@@ -76,24 +67,12 @@
             "
           />
         </fieldset>
-
-        <fieldset class="entity-form-content" v-show="showSectionGerant">
-          <legend>Gérant</legend>
-          <ManagerForm
-            :manager="company.manager"
-            @input="
-              (newManager) => {
-                manager = newManager;
-              }
-            "
-          />
-        </fieldset>
       </main>
       <footer class="entity-form-footer">
-        <button @click="cancelCompany()">
+        <button @click="cancelPerson()">
           <span>Cancel</span>
         </button>
-        <button @click="saveCompany()">
+        <button @click="savePerson()">
           <span>Save</span>
         </button>
       </footer>
@@ -107,13 +86,12 @@ import { useStore } from "vuex";
 import { ref, computed } from "vue";
 
 const emptyError = {
-  companyName: "",
-  siret: "",
-  siren: "",
+  familyName: "",
+  firstName: "",
 };
 
 export default {
-  name: "CompanyDetail",
+  name: "PersonDetail",
   inheritAttrs: false,
   props: {
     id: {
@@ -133,8 +111,11 @@ export default {
     });
     const title = computed(() => {
       return isAddMode
-        ? "Créer une entreprise"
-        : "Modifier l'entreprise " + company.value.companyName;
+        ? "Créer une personne"
+        : "Modifier la personne " +
+            person.value.familyName +
+            " " +
+            person.value.firstName;
     });
 
     const showSectionInfoGene = computed(() => {
@@ -146,9 +127,6 @@ export default {
     const showSectionAdresse = computed(() => {
       return sectionToShow.value === "adresse";
     });
-    const showSectionGerant = computed(() => {
-      return sectionToShow.value === "gerant";
-    });
 
     const showSection = function (sectionName) {
       return (sectionToShow.value = sectionName);
@@ -156,71 +134,66 @@ export default {
 
     if (isAddMode.value) {
       store
-        .dispatch("createNewCompanyAction")
+        .dispatch("createNewPersonAction")
         .catch((error) => console.log(error));
     } else {
       store
-        .dispatch("getCompanyAction", props.id)
+        .dispatch("getPersonAction", props.id)
         .catch((error) => console.log(error));
     }
 
-    const company = computed(() => {
-      return store.state.company.company;
+    const person = computed(() => {
+      return store.state.person.person;
     });
 
-    const cancelCompany = function () {
-      router.push({ name: "companies" });
+    const cancelPerson = function () {
+      router.push({ name: "persons" });
     };
 
-    const saveCompany = () => {
-      error.value = validateCompany(company.value, error.value);
+    const savePerson = () => {
+      error.value = validatePerson(person.value, error.value);
       console.log(errorObjectIsEmpty(error.value));
       if (errorObjectIsEmpty(error.value)) {
         if (isAddMode.value) {
           store
-            .dispatch("addCompanyAction", company.value)
+            .dispatch("addPersonAction", person.value)
             .catch((errorCatch) => console.log(errorCatch));
         } else {
           store
-            .dispatch("updateCompanyAction", company.value)
+            .dispatch("updatePersonAction", person.value)
             .catch((errorCatch) => console.log(errorCatch));
         }
-        router.push({ name: "companies" });
+        router.push({ name: "persons" });
       }
     };
 
     return {
       sectionToShow,
-      company,
+      person,
       isAddMode,
       error,
       title,
       showSectionInfoGene,
       showSectionEmailPhone,
       showSectionAdresse,
-      showSectionGerant,
       showSection,
-      cancelCompany,
-      saveCompany,
+      cancelPerson,
+      savePerson,
     };
   },
 };
 
-const validateCompany = (company, error) => {
+const validatePerson = (person, error) => {
   error = emptyError;
-  if (!company.companyName || company.companyName.length === 0) {
+  if (!person.familyName || person.familyName.length === 0) {
     error = {
       ...error,
-      companyName: "Le nom de l'entreprise est obligatoire",
+      familyName: "Le nom est obligatoire",
     };
   }
 
-  if (company.siret && company.siret.length !== 14) {
-    error = { ...error, siret: "Le numéro siret doit faire 14 caractères" };
-  }
-
-  if (company.siren && company.siren.length !== 9) {
-    error = { ...error, siren: "Le numéro siren doit faire 9 caractères" };
+  if (!person.firstName && person.firstName.length === 0) {
+    error = { ...error, firstName: "Le prénom est obligatoire" };
   }
   return error;
 };
@@ -231,5 +204,5 @@ const errorObjectIsEmpty = (error) => {
 </script>
 
 <style>
-@import "../assets/styles/entityEditForm.css";
+@import "../../assets/styles/entityEditForm.css";
 </style>

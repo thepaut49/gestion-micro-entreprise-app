@@ -6,8 +6,8 @@ import RegisterUser from "./views/RegisterUser.vue";
 import LoginUser from "./views/LoginUser.vue";
 import Companies from "./views/companies.vue";
 import CompanyDetail from "./views/company-detail.vue";
-
-const parseProps = (r) => ({ id: parseInt(r.params.id) });
+import Persons from "./views/person/persons.vue";
+import PersonDetail from "./views/person/person-detail.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -49,6 +49,19 @@ const router = createRouter({
       path: "/companies/company-detail/:id?",
       name: "company-detail",
       component: CompanyDetail,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/persons",
+      name: "persons",
+      component: Persons,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/persons/person-detail/:id?",
+      name: "person-detail",
+      component: PersonDetail,
       props: true,
       meta: { requiresAuth: true },
     },

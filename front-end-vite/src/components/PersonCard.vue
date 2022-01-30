@@ -1,23 +1,21 @@
 <template>
-  <fieldset class="company-card">
-    <legend>
-      {{ company.companyName }}
-    </legend>
-    <main class="company-card-content">
+  <fieldset class="person-card">
+    <legend>{{ fullName }}</legend>
+    <main class="person-card-content">
       <div class="field-label">
-        <BaseLabel v-model="company.siren" label="Siren : " />
+        <BaseLabel v-model="person.email" label="Email : " />
       </div>
       <div class="field-label">
-        <BaseLabel v-model="company.siret" label="Siret : " />
+        <BaseLabel v-model="person.phone" label="Phone : " />
       </div>
     </main>
     <footer>
-      <button @click="askToDelete(company)">
+      <button @click="askToDelete(person)">
         <span>Supprimer</span>
       </button>
       <router-link
         class="button link-button"
-        :to="{ name: 'company-detail', params: { id: company.id } }"
+        :to="{ name: 'person-detail', params: { id: person.id } }"
       >
         <span>Sélectioner</span>
       </router-link>
@@ -26,10 +24,12 @@
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
-  name: "CompanyCard",
+  name: "PersonCard",
   props: {
-    company: {
+    person: {
       type: Object,
       default: () => {
         return {};
@@ -37,11 +37,18 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const personProp = props.person;
+
     const askToDelete = () => {
-      emit("askToDeleteCompanyEvent", props.company);
+      emit("askToDeletePersonEvent", props.person);
     };
 
+    const fullName = computed(() => {
+      return personProp.familyName + " " + personProp.firstName;
+    });
+
     return {
+      fullName,
       askToDelete,
     };
   },
@@ -49,7 +56,7 @@ export default {
 </script>
 
 <style scoped>
-.company-card {
+.person-card {
   padding: 1em;
   border: solid 1px #2c3e50;
   cursor: pointer;
@@ -57,18 +64,18 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.company-card:hover {
+.person-card:hover {
   transform: scale(1.01);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2), 0 1px 15px 0 rgba(0, 0, 0, 0.19);
 }
 
-.company-card-content {
+.person-card-content {
   text-align: left;
   display: flex;
   flex-direction: column;
 }
 
-.company-card footer {
+.person-card footer {
   display: flex;
   flex-direction: row;
   align-items: center;
