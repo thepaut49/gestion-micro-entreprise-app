@@ -8,6 +8,8 @@ import Companies from "./views/companies.vue";
 import CompanyDetail from "./views/company-detail.vue";
 import Persons from "./views/person/persons.vue";
 import PersonDetail from "./views/person/person-detail.vue";
+import MicroCompanies from "./views/microcompany/microCompanies.vue";
+import MicroCompanyDetail from "./views/microcompany/microCompany-detail.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -62,6 +64,19 @@ const router = createRouter({
       path: "/persons/person-detail/:id?",
       name: "person-detail",
       component: PersonDetail,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/micro-companies",
+      name: "microCompanies",
+      component: MicroCompanies,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/microcompanies/microcompany-detail/:id?",
+      name: "microCompany-detail",
+      component: MicroCompanyDetail,
       props: true,
       meta: { requiresAuth: true },
     },

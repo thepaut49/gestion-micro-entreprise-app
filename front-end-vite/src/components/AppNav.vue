@@ -3,6 +3,7 @@
     <template v-if="loggedIn">
       <router-link to="/"> Home </router-link>
       <router-link to="/dashboard"> Dashboard </router-link>
+      <router-link to="/micro-companies"> Micro entreprise </router-link>
       <router-link to="/companies"> Companies </router-link>
       <router-link to="/persons"> Personnes </router-link>
       <button type="button" class="logoutButton" @click="logout">Logout</button>
