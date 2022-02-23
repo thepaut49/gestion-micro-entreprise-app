@@ -1,20 +1,12 @@
 <template>
-  <component
-    v-for="option in options"
-    :key="option.value"
-    :is="vertical ? 'div' : 'span'"
-    :class="{
-      horizontal: !vertical,
-    }"
+  <select
+    v-model="modelValue"
+    @change="$emit('update:modelValue', $event.target.value)"
   >
-    <BaseRadio
-      :label="option.label"
-      :value="option.value"
-      :modelValue="modelValue"
-      :name="name"
-      @update:modelValue="$emit('update:modelValue', $event)"
-    />
-  </component>
+    <option v-for="option in options" :key="option">
+      {{ option }}
+    </option>
+  </select>
 </template>
 
 <script>
@@ -31,10 +23,6 @@ export default {
     modelValue: {
       type: [String, Number],
       required: true,
-    },
-    vertical: {
-      type: Boolean,
-      default: false,
     },
   },
 };

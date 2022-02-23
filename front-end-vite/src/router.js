@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./views/Home.vue";
 import About from "./views/About.vue";
+import Calendar from "./views/Calendar.vue";
 import Dashboard from "./views/Dashboard.vue";
 import RegisterUser from "./views/RegisterUser.vue";
 import LoginUser from "./views/LoginUser.vue";
@@ -24,6 +25,12 @@ const router = createRouter({
       path: "/about",
       name: "about",
       component: About,
+    },
+    {
+      path: "/calendar",
+      name: "calendar",
+      component: Calendar,
+      meta: { requiresAuth: true },
     },
     {
       path: "/dashboard",
