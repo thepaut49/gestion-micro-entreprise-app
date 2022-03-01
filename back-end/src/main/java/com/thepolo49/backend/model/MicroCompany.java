@@ -48,7 +48,6 @@ public class MicroCompany implements Serializable {
 	@DBRef
 	private User user;
 
-	@DBRef
 	private User accountant;
 
 	private boolean accessibleByAdmin;

@@ -35,7 +35,7 @@
 
 <script>
 import BaseSelect from "../components/commons/BaseSelect.vue";
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import {
   monthName,
   getDaysForMonthCalendar,
