@@ -1,7 +1,6 @@
 package com.thepolo49.backend.mapper;
 
 import com.thepolo49.backend.model.user.Role;
-import org.bson.types.ObjectId;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

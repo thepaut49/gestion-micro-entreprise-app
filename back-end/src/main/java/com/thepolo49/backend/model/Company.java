@@ -39,14 +39,12 @@ public class Company implements Serializable {
 	@Indexed(unique=true)
 	private String companyName;
 
-	@DBRef
 	private Manager manager;
 
 	private String email;
 
 	private String phone;
 
-	@DBRef
 	private Address address;
 
 }

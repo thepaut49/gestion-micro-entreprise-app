@@ -1,6 +1,6 @@
 package com.thepolo49.backend.repository.user;
 
-import com.thepolo49.backend.dto.Page;
+import com.thepolo49.backend.dto.commons.Page;
 import com.thepolo49.backend.dto.SearchUsersQuery;
 import com.thepolo49.backend.model.user.User;
 import lombok.RequiredArgsConstructor;

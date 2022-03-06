@@ -4,7 +4,6 @@ import com.thepolo49.backend.dto.*;
 
 import com.thepolo49.backend.dto.MicroCompanyDto;
 import com.thepolo49.backend.service.MicroCompanyService;
-import com.thepolo49.backend.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name = "MicroCompany")
 @RestController
@@ -25,22 +25,19 @@ import javax.validation.Valid;
 public class MicroCompanyApi {
 
     private final MicroCompanyService microCompanyService;
-    private final UserService userService;
 
     @PostMapping
     public MicroCompanyDto create(@RequestBody @Valid MicroCompanyDto microCompanyDto) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        String username = userDetails.getUsername();
-        return microCompanyService.create(microCompanyDto, username);
+        return microCompanyService.create(microCompanyDto, userDetails.getUsername());
     }
 
     @PutMapping("{id}")
     public MicroCompanyDto update(@RequestBody @Valid MicroCompanyDto microCompanyDto) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        String username = userDetails.getUsername();
-        return microCompanyService.update(microCompanyDto, username);
+        return microCompanyService.update(microCompanyDto, userDetails.getUsername());
     }
 
     @DeleteMapping("{id}")
@@ -54,10 +51,24 @@ public class MicroCompanyApi {
         return microCompanyService.getMicroCompany(new ObjectId(id));
     }
 
-    @GetMapping()
+    @GetMapping("getAllMicroForAdmin")
     @RolesAllowed({"USER_ADMIN"})
     public ListResponse<MicroCompanyDto> getAllMicroForAdmin() {
         return new ListResponse<>(microCompanyService.getAllMicroForAdmin());
+    }
+
+    @GetMapping("canUserCreateMicroCompany")
+    public boolean canUserCreateMicroCompany() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return microCompanyService.canUserCreateMicroCompany(userDetails.getUsername());
+    }
+
+    @GetMapping("getAllMicroForUser")
+    public ListResponse<MicroCompanyDto> getAllMicroForUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return new ListResponse<>(microCompanyService.getAllMicroForUser(userDetails.getUsername()));
     }
 
 }

@@ -2,6 +2,7 @@ package com.thepolo49.backend.controller.user;
 
 
 import com.thepolo49.backend.dto.*;
+import com.thepolo49.backend.dto.commons.SearchRequest;
 import com.thepolo49.backend.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

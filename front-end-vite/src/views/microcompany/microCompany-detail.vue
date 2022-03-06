@@ -18,10 +18,10 @@
           </div>
           <div class="field">
             <BaseInput
-              v-model="microCompany.microCompanyName"
+              v-model="microCompany.companyName"
               label="Nom de l'entreprise"
               type="text"
-              :error="error.microCompanyName"
+              :error="error.companyName"
             />
           </div>
           <div class="field">
@@ -110,7 +110,7 @@ import { useStore } from "vuex";
 import { ref, computed } from "vue";
 
 const emptyError = {
-  microCompanyName: "",
+  companyName: "",
   siret: "",
   siren: "",
 };
@@ -137,7 +137,7 @@ export default {
     const title = computed(() => {
       return isAddMode
         ? "Créer une micro entreprise"
-        : "Modifier la micro entreprise " + microCompany.value.microCompanyName;
+        : "Modifier la micro entreprise " + microCompany.value.companyName;
     });
 
     const showSectionInfoGene = computed(() => {
@@ -211,13 +211,10 @@ export default {
 
 const validateMicroCompany = (microCompany, error) => {
   error = emptyError;
-  if (
-    !microCompany.microCompanyName ||
-    microCompany.microCompanyName.length === 0
-  ) {
+  if (!microCompany.companyName || microCompany.companyName.length === 0) {
     error = {
       ...error,
-      microCompanyName: "Le nom de l'entreprise est obligatoire",
+      companyName: "Le nom de l'entreprise est obligatoire",
     };
   }
 

@@ -12,23 +12,17 @@ const newCompany = {
   createdAt: new Date().toISOString(),
   modifiedAt: new Date().toISOString(),
   manager: {
-    id: undefined,
     familyName: "",
     firstName: "",
-    createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString(),
     phone: "",
     email: "",
   },
   address: {
-    id: undefined,
     addressLine1: "",
     addressLine2: "",
     cityName: "",
     countryName: "",
     postalCode: "",
-    createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString(),
   },
 };
 

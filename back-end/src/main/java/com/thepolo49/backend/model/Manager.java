@@ -1,23 +1,14 @@
 package com.thepolo49.backend.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
-@Document(collection = "managers")
-@Data
-@NoArgsConstructor
-public class Manager {
 
-    @Id
-    private ObjectId id;
+@Getter
+@Setter
+@ToString
+public class Manager implements Serializable {
 
     private String familyName;
 
@@ -26,10 +17,5 @@ public class Manager {
     private String email;
 
     private String phone;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime modifiedAt;
 
 }

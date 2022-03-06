@@ -4,7 +4,7 @@ import com.thepolo49.backend.dto.MicroCompanyDto;
 import com.thepolo49.backend.model.MicroCompany;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = { RoleMapper.class, ObjectIdMapper.class, AddressMapper.class, ManagerMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = { RoleMapper.class, ObjectIdMapper.class, UserMapper.class})
 public abstract class MicroCompanyMapper {
 
     public abstract MicroCompany convert(MicroCompanyDto MicroCompanyDto);

@@ -6,6 +6,7 @@
         tag="button"
         class="button addButton"
         :to="{ name: 'microCompany-detail' }"
+        v-if="canCreateMicroCompany"
       >
         <font-awesome-icon icon="plus" />
       </router-link>
@@ -59,15 +60,16 @@ export default {
         this.isLoading = false;
         console.log(error);
       });
+    this.$store.dispatch("canCreateMicroCompanyAction").catch((error) => {
+      console.log(error);
+    });
   },
   methods: {
     askToDelete(microCompany) {
       this.microCompanyToDelete = microCompany;
       this.showModal = true;
       this.modalMessage =
-        "Voulez vous supprimer l'entreprise " +
-        microCompany.microCompanyName +
-        " ?";
+        "Voulez vous supprimer l'entreprise " + microCompany.companyName + " ?";
     },
     closeModal() {
       this.showModal = false;
@@ -79,6 +81,9 @@ export default {
           "deleteMicroCompanyAction",
           this.microCompanyToDelete
         );
+        this.$store.dispatch("canCreateMicroCompanyAction").catch((error) => {
+          console.log(error);
+        });
       }
       this.$store
         .dispatch("getMicroCompaniesAction")
@@ -101,11 +106,17 @@ export default {
           this.isLoading = false;
           console.log(error);
         });
+      this.$store.dispatch("canCreateMicroCompanyAction").catch((error) => {
+        console.log(error);
+      });
     },
   },
   computed: {
     microCompanies() {
       return this.$store.state.microCompany.microCompanies;
+    },
+    canCreateMicroCompany() {
+      return this.$store.state.microCompany.canCreateMicroCompany;
     },
   },
 };

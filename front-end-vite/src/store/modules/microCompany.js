@@ -11,15 +11,18 @@ const newMicroCompany = {
   email: "",
   createdAt: new Date().toISOString(),
   modifiedAt: new Date().toISOString(),
+  manager: {
+    familyName: "",
+    firstName: "",
+    phone: "",
+    email: "",
+  },
   address: {
-    id: undefined,
     addressLine1: "",
     addressLine2: "",
     cityName: "",
     countryName: "",
     postalCode: "",
-    createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString(),
   },
   user: {
     id: undefined,
@@ -36,6 +39,7 @@ const newMicroCompany = {
 const state = {
   microCompanies: [],
   microCompany: newMicroCompany,
+  canCreateMicroCompany: false,
 };
 
 const mutations = {
@@ -59,6 +63,9 @@ const mutations = {
   },
   setMicroCompany(state, microCompany) {
     state.microCompany = microCompany;
+  },
+  setCanCreateMicroCompany(state, canCreateMicroCompany) {
+    state.canCreateMicroCompany = canCreateMicroCompany;
   },
 };
 
@@ -91,7 +98,7 @@ const actions = {
   },
   getMicroCompaniesAction({ commit }) {
     return axios
-      .get(VITE_APP_API_URL + "/api/micro-companies")
+      .get(VITE_APP_API_URL + "/api/micro-companies/getAllMicroForUser")
       .then((response) => {
         commit("setMicroCompanies", response.data.items);
       })
@@ -131,6 +138,13 @@ const actions = {
   },
   createNewMicroCompanyAction({ commit }) {
     commit("setMicroCompany", newMicroCompany);
+  },
+  canCreateMicroCompanyAction({ commit }) {
+    return axios
+      .get(`${VITE_APP_API_URL}/api/micro-companies/canUserCreateMicroCompany`)
+      .then(({ data }) => {
+        commit("setCanCreateMicroCompany", data);
+      });
   },
 };
 

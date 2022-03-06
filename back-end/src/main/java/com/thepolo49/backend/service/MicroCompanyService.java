@@ -3,9 +3,7 @@ package com.thepolo49.backend.service;
 import com.thepolo49.backend.dto.MicroCompanyDto;
 import com.thepolo49.backend.exception.NotFoundException;
 import com.thepolo49.backend.mapper.MicroCompanyMapper;
-import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.model.MicroCompany;
-import com.thepolo49.backend.model.user.ERole;
 import com.thepolo49.backend.model.user.User;
 import com.thepolo49.backend.repository.MicroCompanyRepository;
 import com.thepolo49.backend.repository.user.UserRepo;
@@ -81,6 +79,19 @@ public class MicroCompanyService {
                 .map(microCompany -> microCompanyMapper.convert(microCompany))
                 .collect(Collectors.toList());
         return microCompanys;
+    }
+
+    public boolean canUserCreateMicroCompany(String userName) {
+        Optional<User> user = userRepo.findByUsername(userName);
+        List<MicroCompany> microCompanys = microCompanyRepository.findByUserId(user.get().getId());
+        return microCompanys == null || microCompanys.isEmpty();
+    }
+
+    public List<MicroCompanyDto> getAllMicroForUser(String userName) {
+        Optional<User> user = userRepo.findByUsername(userName);
+        return microCompanyRepository.findByUserId(user.get().getId()).stream()
+                .map(microCompany -> microCompanyMapper.convert(microCompany))
+                .collect(Collectors.toList());
     }
 
 }

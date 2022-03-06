@@ -1,7 +1,4 @@
 <template>
-  <div class="field-label">
-    <BaseLabel v-model="address.id" label="Id de l'adresse" v-bind="$attrs" />
-  </div>
   <div class="field">
     <BaseInput
       v-model="address.addressLine1"
@@ -39,16 +36,6 @@
       v-model="address.countryName"
       label="Pays"
       type="text"
-      v-bind="$attrs"
-    />
-  </div>
-  <div class="field-label">
-    <BaseLabel v-model="address.createdAt" label="Créée le" v-bind="$attrs" />
-  </div>
-  <div class="field-label">
-    <BaseLabel
-      v-model="address.modifiedAt"
-      label="Modifié le"
       v-bind="$attrs"
     />
   </div>

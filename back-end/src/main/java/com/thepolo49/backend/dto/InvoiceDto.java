@@ -7,9 +7,9 @@ import java.util.List;
 public record InvoiceDto(
         String id,
         String invoiceType,
-        CompanyDto company,
-        PersonDto person,
-        MicroCompanyDto microCompany,
+        String companyId,
+        String personId,
+        String microCompanyId,
         List<InvoiceLineDto> invoiceLines,
         Double amountExcludingTax,
         Double amountWithTax,

@@ -1,7 +1,4 @@
 <template>
-  <div class="field-label">
-    <BaseLabel v-model="manager.id" label="Id du gérant" v-bind="$attrs" />
-  </div>
   <div class="field">
     <BaseInput
       v-model="manager.familyName"
@@ -31,16 +28,6 @@
       v-model="manager.phone"
       label="Téléphone"
       type="text"
-      v-bind="$attrs"
-    />
-  </div>
-  <div class="field-label">
-    <BaseLabel v-model="manager.createdAt" label="Créée le" v-bind="$attrs" />
-  </div>
-  <div class="field-label">
-    <BaseLabel
-      v-model="manager.modifiedAt"
-      label="Modifié le"
       v-bind="$attrs"
     />
   </div>

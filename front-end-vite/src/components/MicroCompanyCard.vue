@@ -1,7 +1,7 @@
 <template>
   <fieldset class="microCompany-card">
     <legend>
-      {{ microCompany.microCompanyName }}
+      {{ microCompany.companyName }}
     </legend>
     <main class="microCompany-card-content">
       <div class="field-label">

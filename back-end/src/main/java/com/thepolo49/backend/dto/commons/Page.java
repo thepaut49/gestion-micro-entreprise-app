@@ -1,4 +1,4 @@
-package com.thepolo49.backend.dto;
+package com.thepolo49.backend.dto.commons;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

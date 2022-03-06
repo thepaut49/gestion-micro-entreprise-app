@@ -1,6 +1,7 @@
 package com.thepolo49.backend.service.user;
 
 import com.thepolo49.backend.dto.*;
+import com.thepolo49.backend.dto.commons.Page;
 import com.thepolo49.backend.mapper.UserEditMapper;
 import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.mapper.UserViewMapper;

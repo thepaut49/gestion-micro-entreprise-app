@@ -11,14 +11,11 @@ const newPerson = {
   createdAt: new Date().toISOString(),
   modifiedAt: new Date().toISOString(),
   address: {
-    id: undefined,
     addressLine1: "",
     addressLine2: "",
     cityName: "",
     countryName: "",
     postalCode: "",
-    createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString(),
   },
 };
 

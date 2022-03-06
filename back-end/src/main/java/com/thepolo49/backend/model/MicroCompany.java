@@ -1,6 +1,5 @@
 package com.thepolo49.backend.model;
 
-import com.thepolo49.backend.model.user.Role;
 import com.thepolo49.backend.model.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-@Document(collection = "companies")
+@Document(collection = "micro_companies")
 @Data
 @NoArgsConstructor
 public class MicroCompany implements Serializable {
@@ -39,10 +36,12 @@ public class MicroCompany implements Serializable {
 	@Indexed(unique=true)
 	private String companyName;
 
-	@DBRef
+	private String email;
+
+	private String phone;
+
 	private Manager manager;
 
-	@DBRef
 	private Address address;
 
 	@DBRef

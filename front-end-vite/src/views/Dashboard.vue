@@ -2,7 +2,7 @@
   <div>
     <h1>Dashboard</h1>
     <template v-if="!isLoading">
-      <EventCard v-for="event in events" :key="event.id" :event="event" />
+      <p>Is loaded !!!</p>
     </template>
     <p v-else>Loading events</p>
   </div>
@@ -10,10 +10,8 @@
 
 <script>
 import axios from "axios";
-import EventCard from "../components/EventCard.vue";
 
 export default {
-  components: { EventCard },
   data() {
     return {
       isLoading: true,

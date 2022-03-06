@@ -28,13 +28,13 @@ public class Invoice implements Serializable {
     // Expense or Revenue or Tax
     private InvoiceType invoiceType;
 
-    private Company company;
+    private ObjectId companyId;
 
-    private Person person;
+    private ObjectId personId;
+
+    private ObjectId microCompanyId;
 
     @DBRef
-    private MicroCompany microCompany;
-
     private List<InvoiceLine> invoiceLines;
 
     @Transient
