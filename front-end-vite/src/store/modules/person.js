@@ -27,11 +27,13 @@ const state = {
 const mutations = {
   addPerson(state, person) {
     state.persons.unshift(person); // mutable addition
+    state.person = newPerson;
   },
   updatePerson(state, person) {
     const index = state.persons.findIndex((h) => h.id === person.id);
     state.persons.splice(index, 1, person);
     state.persons = [...state.persons];
+    state.person = newPerson;
   },
   setPersons(state, persons) {
     state.persons = persons;

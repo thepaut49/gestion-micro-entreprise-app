@@ -9,6 +9,8 @@ export const parseList = (response) => {
 };
 
 export const parseItem = (response, code) => {
+  console.log("response : " + response);
+  console.log("code : " + code);
   if (response.status !== code) throw Error(response.message);
   let item = response.data;
   if (typeof item !== "object") {

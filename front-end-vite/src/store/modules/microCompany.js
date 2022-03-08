@@ -45,6 +45,7 @@ const state = {
 const mutations = {
   addMicroCompany(state, microCompany) {
     state.microCompanies.unshift(microCompany); // mutable addition
+    state.microCompany = newMicroCompany;
   },
   updateMicroCompany(state, microCompany) {
     const index = state.microCompanies.findIndex(
@@ -52,6 +53,7 @@ const mutations = {
     );
     state.microCompanies.splice(index, 1, microCompany);
     state.microCompanies = [...state.microCompanies];
+    state.microCompany = newMicroCompany;
   },
   setMicroCompanies(state, microCompanies) {
     state.microCompanies = microCompanies;

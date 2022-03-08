@@ -34,11 +34,13 @@ const state = {
 const mutations = {
   addCompany(state, company) {
     state.companies.unshift(company); // mutable addition
+    state.company = newCompany;
   },
   updateCompany(state, company) {
     const index = state.companies.findIndex((h) => h.id === company.id);
     state.companies.splice(index, 1, company);
     state.companies = [...state.companies];
+    state.company = newCompany;
   },
   setCompanies(state, companies) {
     state.companies = companies;
