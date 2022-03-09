@@ -172,7 +172,7 @@ export default {
     });
 
     const cancelMicroCompany = function () {
-      router.push({ name: "microCompanies" });
+      router.go(-1);
     };
 
     const saveMicroCompany = () => {
@@ -188,7 +188,7 @@ export default {
             .dispatch("updateMicroCompanyAction", microCompany.value)
             .catch((errorCatch) => console.log(errorCatch));
         }
-        router.push({ name: "microCompanies" });
+        router.go(-1);
       }
     };
 
