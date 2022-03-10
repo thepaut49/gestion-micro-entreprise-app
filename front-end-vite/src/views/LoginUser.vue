@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <div>
-      <form @submit.prevent="login">
-        <fieldset class="loginForm">
-          <legend>Connexion</legend>
-          <div class="field">
-            <BaseInput v-model="username" label="Username" type="text" />
-          </div>
-          <div class="field">
-            <BaseInput v-model="password" label="Password" type="password" />
-          </div>
+  <section class="login-container">
+    <form @submit.prevent="login">
+      <fieldset class="loginForm">
+        <legend>Connexion</legend>
+        <div class="field">
+          <BaseInput v-model="username" label="Username" type="text" />
+        </div>
+        <div class="field">
+          <BaseInput v-model="password" label="Password" type="password" />
+        </div>
 
-          <button type="submit" name="button">Login</button>
+        <button type="submit" name="button">Login</button>
 
-          <p>{{ error }}</p>
+        <p>{{ error }}</p>
 
-          <router-link to="/register">
-            Don't have an account? Register.
-          </router-link>
-        </fieldset>
-      </form>
-      <Spinner v-if="showBouncer" />
-    </div>
-  </div>
+        <router-link to="/register">
+          Don't have an account? Register.
+        </router-link>
+      </fieldset>
+    </form>
+    <Spinner v-if="showBouncer" />
+  </section>
 </template>
 
 <script>
@@ -63,10 +61,11 @@ export default {
 </script>
 
 <style scoped>
-.page {
+.login-container {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  height: 100%;
 }
 .loginForm {
   display: flex;

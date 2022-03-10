@@ -1,17 +1,15 @@
 <template>
-  <div>
+  <section class="dashboard-content">
     <h2>Dashboard</h2>
-    <section class="dashboard-content">
-      <router-link
-        tag="button"
-        class="button createMicroButton"
-        :to="{ name: 'microCompany-detail' }"
-        v-if="canCreateMicroCompany"
-      >
-        Créer une micro entreprise
-      </router-link>
-    </section>
-  </div>
+    <router-link
+      tag="button"
+      class="button createMicroButton"
+      :to="{ name: 'microCompany-detail' }"
+      v-if="canCreateMicroCompany"
+    >
+      Créer une micro entreprise
+    </router-link>
+  </section>
 </template>
 
 <script>
@@ -40,8 +38,6 @@ export default {
 
 <style scoped>
 .dashboard-content {
-  display: flex;
-  flex-direction: column;
 }
 .createMicroButton {
   /*color: white;*/

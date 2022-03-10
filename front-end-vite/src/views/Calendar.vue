@@ -1,5 +1,9 @@
 <template>
-  <div class="calendar-page">
+  <section class="calendar-page">
+    <header>
+      <h2>Calendrier</h2>
+    </header>
+
     <section class="section-select-mont-calendar">
       <BaseSelect
         :options="months"
@@ -30,7 +34,7 @@
         {{ day.toLocaleDateString() }}
       </div>
     </section>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -81,9 +85,8 @@ export default {
 .calendar-page {
   display: flex;
   flex-direction: column;
-}
-.calendar-section {
-  width: 100%;
+  justify-items: stretch;
+  height: 100%;
 }
 .year-calendar {
   display: grid;
@@ -92,6 +95,7 @@ export default {
 .section-select-mont-calendar {
   margin-top: 0.5em;
   display: flex;
+  flex-grow: 0;
 }
 
 .month-calendar {
@@ -100,9 +104,7 @@ export default {
   display: grid;
   gap: 0.5em;
   grid: min-content repeat(5, 1fr) / repeat(7, 1fr);
-  justify-items: stretch;
-  align-items: stretch;
-  flex-grow: 4;
+  flex-grow: 1;
 }
 
 .month-calendar div {
