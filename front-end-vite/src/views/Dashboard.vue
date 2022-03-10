@@ -1,15 +1,27 @@
 <template>
-  <section class="dashboard-content">
-    <h2>Dashboard</h2>
-    <router-link
-      tag="button"
-      class="button createMicroButton"
-      :to="{ name: 'microCompany-detail' }"
-      v-if="canCreateMicroCompany"
-    >
-      Créer une micro entreprise
-    </router-link>
-  </section>
+  <div class="entity-form-container">
+    <aside class="entity-form-aside">
+      <button class="button">Créer une facture</button>
+      <button class="button">Créer un devis</button>
+    </aside>
+    <section class="entity-form">
+      <header class="title">
+        <h2>Dashboard</h2>
+      </header>
+      <main class="dashboard-content">
+        Main
+        <router-link
+          tag="button"
+          class="button createMicroButton"
+          :to="{ name: 'microCompany-detail' }"
+          v-if="canCreateMicroCompany"
+        >
+          Créer une micro entreprise
+        </router-link>
+      </main>
+      <footer class="entity-form-footer">Toto le ousititi</footer>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -38,6 +50,11 @@ export default {
 
 <style scoped>
 .dashboard-content {
+  flex-grow: 1;
+  margin-left: 0.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 .createMicroButton {
   /*color: white;*/

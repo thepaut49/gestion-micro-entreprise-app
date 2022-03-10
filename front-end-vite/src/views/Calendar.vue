@@ -87,6 +87,8 @@ export default {
   flex-direction: column;
   justify-items: stretch;
   height: 100%;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 .year-calendar {
   display: grid;
