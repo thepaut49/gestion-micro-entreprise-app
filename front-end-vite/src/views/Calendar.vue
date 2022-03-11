@@ -30,7 +30,7 @@
       <div class="calendar-header">Vendredi</div>
       <div class="calendar-header">Samedi</div>
       <div class="calendar-header">Dimanche</div>
-      <div v-for="(day, index) in days" :key="index" class="day">
+      <div v-for="(day, index) in days" :key="index" :class="dayClass(day)">
         {{ day.toLocaleDateString() }}
       </div>
     </section>
@@ -68,6 +68,21 @@ export default {
       );
     }
 
+    function dayClass(day) {
+      console.log("day = " + day);
+      console.log("selectedMonth = " + selectedMonth.value);
+      let classCss = "current-month-day";
+      if (
+        selectedMonth &&
+        day &&
+        day.getMonth() !== getMonthNumber(selectedMonth.value)
+      ) {
+        console.log("not-current-month-day ! " + day);
+        classCss = "not-current-month-day";
+      }
+      return classCss;
+    }
+
     return {
       days,
       months,
@@ -75,6 +90,7 @@ export default {
       selectedMonth,
       selectedYear,
       updateDaysForMonthCalendar,
+      dayClass,
     };
   },
   components: { BaseSelect },
@@ -105,13 +121,20 @@ export default {
   padding-bottom: 0.5em;
   display: grid;
   gap: 0.5em;
-  grid: min-content repeat(5, 1fr) / repeat(7, 1fr);
+  grid: min-content repeat(6, 1fr) / repeat(7, 1fr);
   flex-grow: 1;
 }
 
-.month-calendar div {
+.current-month-day {
   border: 1px solid #000;
   background-color: blue;
+  color: white;
+  border-radius: 5px;
+}
+
+.not-current-month-day {
+  border: 1px solid #000;
+  background-color: rgba(0, 162, 255, 0.705);
   color: white;
   border-radius: 5px;
 }

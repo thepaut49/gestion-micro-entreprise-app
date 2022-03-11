@@ -27,11 +27,12 @@ export const getDaysForMonthCalendar = (year, month) => {
   const firstDayOfMonth = new Date(year, month, 1);
   let firstDay = firstDayOfMonth;
   // cas le premier jour du mois est un lundi
-  while (firstDay.getDay() != 0) {
+  while (firstDay.getDay() != 1) {
     firstDay.setDate(firstDay.getDate() - 1);
   }
+  listOfDaysForMonthCalendar.push(new Date(firstDay.getTime()));
   let newDay = firstDay;
-  for (let index = 0; index < 35; index++) {
+  for (let index = 0; index < 41; index++) {
     newDay.setDate(newDay.getDate() + 1);
     listOfDaysForMonthCalendar.push(new Date(newDay.getTime()));
   }
