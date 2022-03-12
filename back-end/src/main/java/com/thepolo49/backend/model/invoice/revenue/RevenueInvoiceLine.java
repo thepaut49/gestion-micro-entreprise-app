@@ -1,5 +1,7 @@
-package com.thepolo49.backend.model;
+package com.thepolo49.backend.model.invoice.revenue;
 
+import com.thepolo49.backend.model.AccountingCode;
+import com.thepolo49.backend.model.invoice.QuantityType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -8,15 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@Document(collection = "invoiceLines")
+@Document(collection = "revenue-invoices-lines")
 @Data
 @NoArgsConstructor
-public class InvoiceLine implements Serializable {
+public class RevenueInvoiceLine implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    private InvoiceLineId invoiceLineId;
+    private RevenueInvoiceLineId invoiceLineId;
 
     private String description;
 

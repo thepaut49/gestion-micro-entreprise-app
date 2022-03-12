@@ -1,5 +1,6 @@
-package com.thepolo49.backend.model;
+package com.thepolo49.backend.model.invoice.expense;
 
+import com.thepolo49.backend.model.MicroCompany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -15,27 +16,23 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collection = "invoices")
+@Document(collection = "expense-invoices")
 @Data
 @NoArgsConstructor
-public class Invoice implements Serializable {
+public class ExpenseInvoice implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     private ObjectId id;
 
-    // Expense or Revenue or Tax
-    private InvoiceType invoiceType;
+    @DBRef
+    private MicroCompany microCompany;
 
-    private ObjectId companyId;
-
-    private ObjectId personId;
-
-    private ObjectId microCompanyId;
+    private Supplier supplier;
 
     @DBRef
-    private List<InvoiceLine> invoiceLines;
+    private List<ExpenseInvoiceLine> invoiceLines;
 
     @Transient
     private Double amountExcludingTax;

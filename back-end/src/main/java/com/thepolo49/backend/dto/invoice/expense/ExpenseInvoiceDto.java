@@ -1,16 +1,16 @@
-package com.thepolo49.backend.dto;
+package com.thepolo49.backend.dto.invoice.expense;
+
+import com.thepolo49.backend.dto.MicroCompanyDto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record InvoiceDto(
+public record ExpenseInvoiceDto (
         String id,
-        String invoiceType,
-        String companyId,
-        String personId,
-        String microCompanyId,
-        List<InvoiceLineDto> invoiceLines,
+        MicroCompanyDto microCompany,
+        SupplierDto supplier,
+        List<ExpenseInvoiceLineDto> invoiceLines,
         Double amountExcludingTax,
         Double amountWithTax,
         LocalDate dueDate,

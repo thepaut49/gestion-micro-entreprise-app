@@ -1,4 +1,4 @@
-package com.thepolo49.backend.model;
+package com.thepolo49.backend.model.invoice;
 
 public enum QuantityType {
     KG,

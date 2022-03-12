@@ -1,4 +1,4 @@
-package com.thepolo49.backend.model;
+package com.thepolo49.backend.model.invoice.revenue;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvoiceLineId implements Serializable {
+public class RevenueInvoiceLineId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
