@@ -9,7 +9,7 @@ import Companies from "./views/companies.vue";
 import CompanyDetail from "./views/company-detail.vue";
 import Persons from "./views/person/persons.vue";
 import PersonDetail from "./views/person/person-detail.vue";
-import MicroCompanies from "./views/microcompany/microCompanies.vue";
+import MicroCompanyDetailVisu from "./views/microcompany/microCompany-detail-visu.vue";
 import MicroCompanyDetail from "./views/microcompany/microCompany-detail.vue";
 
 const router = createRouter({
@@ -75,16 +75,16 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/micro-companies",
-      name: "microCompanies",
-      component: MicroCompanies,
+      path: "/micro-companies/me",
+      name: "microCompany-detail-visu",
+      component: MicroCompanyDetailVisu,
       meta: { requiresAuth: true },
     },
     {
-      path: "/microcompanies/microcompany-detail/:id?",
+      path: "/microcompanies/microcompany-detail",
       name: "microCompany-detail",
       component: MicroCompanyDetail,
-      props: true,
+      props: { isAddMode: true },
       meta: { requiresAuth: true },
     },
   ],

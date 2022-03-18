@@ -71,4 +71,11 @@ public class MicroCompanyApi {
         return new ListResponse<>(microCompanyService.getAllMicroForUser(userDetails.getUsername()));
     }
 
+    @GetMapping("me")
+    public MicroCompanyDto getMyMicroCompany() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return microCompanyService.getMyMicroCompany(userDetails.getUsername());
+    }
+
 }

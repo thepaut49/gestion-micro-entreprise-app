@@ -8,6 +8,7 @@ import java.util.List;
 
 public record ExpenseInvoiceDto (
         String id,
+        String externalRef,
         MicroCompanyDto microCompany,
         SupplierDto supplier,
         List<ExpenseInvoiceLineDto> invoiceLines,

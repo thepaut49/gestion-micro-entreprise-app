@@ -6,6 +6,8 @@ public record ClientDto(
 	String companyId,
 	String personId,
 	String clientType,
+	String siret,
+	String siren,
 	AddressDto address,
 	String phone,
 	String email) {

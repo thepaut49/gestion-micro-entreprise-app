@@ -41,18 +41,21 @@ export default {
           username: this.username,
           password: this.password,
         })
-        .then((response) => {
-          this.showBouncer = false;
-          this.$router.push({ name: "dashboard" });
-          this.error = response;
+        .then(() => {
+          this.$store
+            .dispatch("getMicroCompanyForUserAction")
+            .then(() => {
+              this.showBouncer = false;
+              this.$router.push({ name: "dashboard" });
+              this.error = null;
+            })
+            .catch((err) => {
+              console.log(err);
+              this.error = err;
+            });
         })
         .catch((err) => {
           console.log(err);
-          /* if (err.response.data && err.response.data.error) {
-            this.error = err.response.data.error;
-          } else {
-            this.error = err.response;
-          }*/
           this.error = err;
         });
     },

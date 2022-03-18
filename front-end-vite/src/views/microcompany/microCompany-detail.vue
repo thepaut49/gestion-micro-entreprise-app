@@ -119,8 +119,8 @@ export default {
   name: "MicroMicroCompanyDetail",
   inheritAttrs: false,
   props: {
-    id: {
-      type: String,
+    isAddMode: {
+      type: Boolean,
     },
   },
   setup(props) {
@@ -129,13 +129,8 @@ export default {
     const sectionToShow = ref("infoGene");
     const error = ref(emptyError);
 
-    const id = props.id;
-
-    const isAddMode = computed(() => {
-      return !props.id;
-    });
     const title = computed(() => {
-      return isAddMode
+      return props.isAddMode
         ? "Créer une micro entreprise"
         : "Modifier la micro entreprise " + microCompany.value.companyName;
     });
@@ -157,13 +152,13 @@ export default {
       return (sectionToShow.value = sectionName);
     };
 
-    if (isAddMode.value) {
+    if (props.isAddMode) {
       store
         .dispatch("createNewMicroCompanyAction")
         .catch((error) => console.log(error));
     } else {
       store
-        .dispatch("getMicroCompanyAction", props.id)
+        .dispatch("getMicroCompanyForUserAction")
         .catch((error) => console.log(error));
     }
 
@@ -195,7 +190,6 @@ export default {
     return {
       sectionToShow,
       microCompany,
-      isAddMode,
       error,
       title,
       showSectionInfoGene,

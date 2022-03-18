@@ -13,7 +13,7 @@
         <router-link
           tag="button"
           class="button createMicroButton"
-          :to="{ name: 'microCompany-detail' }"
+          :to="{ name: 'microCompany-detail', props: { isAddMode: true } }"
           v-if="canCreateMicroCompany"
         >
           Créer une micro entreprise

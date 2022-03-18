@@ -6,6 +6,8 @@ public record SupplierDto (
 	String companyId,
 	String personId,
 	String supplierType,
+	String siret,
+	String siren,
 	AddressDto address,
 	String phone,
 	String email) {

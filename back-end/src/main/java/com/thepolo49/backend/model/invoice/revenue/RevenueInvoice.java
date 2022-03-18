@@ -1,6 +1,6 @@
 package com.thepolo49.backend.model.invoice.revenue;
 
-import com.thepolo49.backend.model.MicroCompany;
+import com.thepolo49.backend.model.invoice.MicroCompanyInvoice;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
@@ -26,8 +26,7 @@ public class RevenueInvoice implements Serializable {
     @Id
     private ObjectId id;
 
-    @DBRef
-    private MicroCompany microCompany;
+    private MicroCompanyInvoice microCompany;
 
     private Client client;
 

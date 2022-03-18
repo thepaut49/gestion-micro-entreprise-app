@@ -94,4 +94,21 @@ public class MicroCompanyService {
                 .collect(Collectors.toList());
     }
 
+    public MicroCompanyDto getMyMicroCompany(String username) {
+        MicroCompanyDto microCompanyDto;
+        Optional<User> user = userRepo.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new NotFoundException("User " + username + " not found");
+        }
+        else {
+           Optional<MicroCompany> microCompanyOptional = microCompanyRepository.findByUserId(user.get().getId()).stream().findFirst();
+           if (microCompanyOptional.isEmpty()) {
+               throw new NotFoundException("Micro company of user " + username + " not found");
+           }
+           else {
+               microCompanyDto =  microCompanyMapper.convert(microCompanyOptional.get());
+           }
+        }
+        return microCompanyDto;
+    }
 }

@@ -19,6 +19,10 @@ public class Client implements Serializable {
 
 	private ClientType clientType;
 
+	private String siret;
+
+	private String siren;
+
 	private Address address;
 
 	private String phone;
