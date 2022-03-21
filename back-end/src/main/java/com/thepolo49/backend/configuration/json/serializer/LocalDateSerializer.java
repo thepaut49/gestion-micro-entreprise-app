@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalDateSerializer extends JsonSerializer<LocalDate> {
 
-    private final DateTimeFormatter fmt = DateTimeFormatter.ISO_DATE;
+    private static final DateTimeFormatter fmt = DateTimeFormatter.ISO_DATE;
 
     @Override
     public void serialize(LocalDate value, JsonGenerator gen, SerializerProvider serializers) throws IOException {

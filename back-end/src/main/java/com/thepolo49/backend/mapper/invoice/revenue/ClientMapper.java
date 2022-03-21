@@ -1,10 +1,8 @@
 package com.thepolo49.backend.mapper.invoice.revenue;
 
 import com.thepolo49.backend.dto.invoice.revenue.ClientDto;
-import com.thepolo49.backend.dto.invoice.revenue.RevenueInvoiceDto;
 import com.thepolo49.backend.mapper.ObjectIdMapper;
 import com.thepolo49.backend.model.invoice.revenue.Client;
-import com.thepolo49.backend.model.invoice.revenue.RevenueInvoice;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = { ObjectIdMapper.class })

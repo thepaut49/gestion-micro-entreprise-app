@@ -1,18 +1,15 @@
 package com.thepolo49.backend.configuration.security;
 
-import com.thepolo49.backend.model.user.ERole;
 import com.thepolo49.backend.repository.user.UserRepo;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -146,7 +143,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     static BeanFactoryPostProcessor removeErrorSecurityFilter() {
-        return (beanFactory) ->
+        return beanFactory ->
                 ((DefaultListableBeanFactory)beanFactory).removeBeanDefinition("errorPageSecurityInterceptor");
     }
 }

@@ -60,8 +60,8 @@ public class ExpenseInvoiceLineService {
     public List<ExpenseInvoiceLineDto> findAll() {
         return expenseInvoiceLineRepository.findAll()
                 .stream()
-                .map(expenseInvoiceLine -> expenseInvoiceLineMapper.convert(expenseInvoiceLine))
-                .collect(Collectors.toList());
+                .map(expenseInvoiceLineMapper::convert)
+                .toList();
     }
 
 }

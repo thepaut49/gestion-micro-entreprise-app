@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
 
-    private final DateTimeFormatter fmt = DateTimeFormatter.ISO_DATE_TIME;
+    private static final DateTimeFormatter fmt = DateTimeFormatter.ISO_DATE_TIME;
 
     @Override
     public LocalDateTime deserialize(JsonParser p, DeserializationContext context) throws IOException {

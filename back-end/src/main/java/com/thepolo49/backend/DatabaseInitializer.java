@@ -1,6 +1,6 @@
 package com.thepolo49.backend;
 
-import com.thepolo49.backend.dto.CreateUserRequest;
+
 import com.thepolo49.backend.model.user.ERole;
 import com.thepolo49.backend.service.user.UserService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Set;
 
 @Component
 public class DatabaseInitializer implements ApplicationListener<ApplicationReadyEvent> {

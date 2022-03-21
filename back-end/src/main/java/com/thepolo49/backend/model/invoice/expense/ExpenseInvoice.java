@@ -1,6 +1,5 @@
 package com.thepolo49.backend.model.invoice.expense;
 
-import com.thepolo49.backend.model.MicroCompany;
 import com.thepolo49.backend.model.invoice.MicroCompanyInvoice;
 import lombok.Data;
 import lombok.NoArgsConstructor;

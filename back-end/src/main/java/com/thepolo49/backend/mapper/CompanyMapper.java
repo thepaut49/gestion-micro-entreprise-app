@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = { ObjectIdMapper.class} )
 public abstract class CompanyMapper {
 
-    public abstract Company convert(CompanyDto CompanyDto);
+    public abstract Company convert(CompanyDto companyDto);
 
-    public abstract CompanyDto convert(Company Company);
+    public abstract CompanyDto convert(Company company);
     
 }

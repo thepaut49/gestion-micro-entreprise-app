@@ -4,7 +4,6 @@ package com.thepolo49.backend.controller.user;
 import com.thepolo49.backend.configuration.security.JwtTokenUtil;
 import com.thepolo49.backend.dto.*;
 import com.thepolo49.backend.mapper.LoginMapper;
-import com.thepolo49.backend.mapper.UserMapper;
 import com.thepolo49.backend.model.user.User;
 import com.thepolo49.backend.service.user.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;

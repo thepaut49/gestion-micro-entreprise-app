@@ -59,8 +59,7 @@ public class AccountingCodeService {
     public List<AccountingCodeDto> findAll() {
         return accountingCodeRepository.findAll()
                 .stream()
-                .map(address -> accountingCodeMapper.convert(address))
-                .collect(Collectors.toList());
+                .map(accountingCodeMapper::convert).toList();
     }
 
 }

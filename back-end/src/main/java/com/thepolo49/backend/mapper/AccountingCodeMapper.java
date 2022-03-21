@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = ObjectIdMapper.class)
 public abstract class AccountingCodeMapper {
 
-    public abstract AccountingCode convert(AccountingCodeDto AccountingCodeDto);
+    public abstract AccountingCode convert(AccountingCodeDto accountingCodeDto);
 
-    public abstract AccountingCodeDto convert(AccountingCode AccountingCode);
+    public abstract AccountingCodeDto convert(AccountingCode accountingCode);
     
 }

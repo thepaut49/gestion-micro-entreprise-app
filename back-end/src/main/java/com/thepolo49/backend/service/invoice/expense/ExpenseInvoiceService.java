@@ -61,8 +61,8 @@ public class ExpenseInvoiceService {
     public List<ExpenseInvoiceDto> findAll() {
         return expenseInvoiceRepository.findAll()
                 .stream()
-                .map(expenseInvoice -> expenseInvoiceMapper.convert(expenseInvoice))
-                .collect(Collectors.toList());
+                .map(expenseInvoiceMapper::convert)
+                .toList();
     }
 
 }

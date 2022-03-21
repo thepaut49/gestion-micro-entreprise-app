@@ -60,8 +60,8 @@ public class CompanyService {
     public List<CompanyDto> findAll() {
         return companyRepository.findAll()
                 .stream()
-                .map(company -> companyMapper.convert(company))
-                .collect(Collectors.toList());
+                .map(companyMapper::convert)
+                .toList();
     }
 
 }

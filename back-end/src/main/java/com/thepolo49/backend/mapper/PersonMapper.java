@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = { ObjectIdMapper.class})
 public abstract class PersonMapper {
 
-    public abstract Person convert(PersonDto PersonDto);
+    public abstract Person convert(PersonDto personDto);
 
-    public abstract PersonDto convert(Person Person);
+    public abstract PersonDto convert(Person person);
     
 }

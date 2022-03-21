@@ -66,19 +66,17 @@ public class MicroCompanyService {
     }
 
     public List<MicroCompanyDto> findAll() {
-        List<MicroCompanyDto> microCompanys = microCompanyRepository.findAll()
+        return microCompanyRepository.findAll()
                 .stream()
-                .map(microCompany -> microCompanyMapper.convert(microCompany))
+                .map(microCompanyMapper::convert)
                 .collect(Collectors.toList());
-        return microCompanys;
     }
 
     public List<MicroCompanyDto> getAllMicroForAdmin() {
-        List<MicroCompanyDto> microCompanys = microCompanyRepository.findByAccessibleByAdminTrue()
+        return microCompanyRepository.findByAccessibleByAdminTrue()
                 .stream()
-                .map(microCompany -> microCompanyMapper.convert(microCompany))
+                .map(microCompanyMapper::convert)
                 .collect(Collectors.toList());
-        return microCompanys;
     }
 
     public boolean canUserCreateMicroCompany(String userName) {

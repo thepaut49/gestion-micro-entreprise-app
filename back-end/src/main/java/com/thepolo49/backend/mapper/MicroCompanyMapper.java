@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", uses = { RoleMapper.class, ObjectIdMapper.class, UserMapper.class})
 public abstract class MicroCompanyMapper {
 
-    public abstract MicroCompany convert(MicroCompanyDto MicroCompanyDto);
+    public abstract MicroCompany convert(MicroCompanyDto microCompanyDto);
 
-    public abstract MicroCompanyDto convert(MicroCompany MicroCompany);
+    public abstract MicroCompanyDto convert(MicroCompany microCompany);
     
 }
