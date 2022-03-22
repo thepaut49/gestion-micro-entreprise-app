@@ -11,7 +11,7 @@
         <h2>{{ title }}</h2>
         <router-link
           class="button link-button"
-          :to="{ name: 'microCompany-detail', params: { id: microCompany.id } }"
+          :to="{ name: 'microCompany-detail', props: { isAddMode: false } }"
         >
           <font-awesome-icon icon="edit" />
         </router-link>
@@ -117,10 +117,6 @@ export default {
     const microCompany = computed(() => {
       return store.state.microCompany.microCompany;
     });
-
-    const cancelMicroCompany = function () {
-      router.go(-1);
-    };
 
     return {
       sectionToShow,

@@ -84,7 +84,7 @@ const router = createRouter({
       path: "/microcompanies/microcompany-detail",
       name: "microCompany-detail",
       component: MicroCompanyDetail,
-      props: { isAddMode: true },
+      props: true,
       meta: { requiresAuth: true },
     },
   ],

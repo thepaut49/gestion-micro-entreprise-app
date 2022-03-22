@@ -139,6 +139,13 @@ const state = {
   expenseInvoice: newExpenseInvoice,
 };
 
+const getters = {
+  hasMicroCompany(state) {
+    // This is because null == undefined evaluates to true
+    return state.microCompany.id != null && state.microCompany.id != undefined;
+  },
+};
+
 const mutations = {
   // Micro company
   addMicroCompany(state, microCompany) {
@@ -378,6 +385,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   actions,
   mutations,
 };
