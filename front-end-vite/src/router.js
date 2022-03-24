@@ -11,6 +11,10 @@ import Persons from "./views/person/persons.vue";
 import PersonDetail from "./views/person/person-detail.vue";
 import MicroCompanyDetailVisu from "./views/microcompany/microCompany-detail-visu.vue";
 import MicroCompanyDetail from "./views/microcompany/microCompany-detail.vue";
+import ExpenseInvoices from "./views/invoice/expense/expenseInvoices.vue";
+import RevenueInvoices from "./views/invoice/revenue/revenueInvoices.vue";
+import ExpenseInvoiceDetail from "./views/invoice/expense/expense-invoice-detail.vue";
+import RevenueInvoiceDetail from "./views/invoice/revenue/revenue-invoice-detail.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -81,10 +85,34 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/microcompanies/microcompany-detail",
+      path: "/micro-companies/microcompany-detail",
       name: "microCompany-detail",
       component: MicroCompanyDetail,
       props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/expense-invoices/me",
+      name: "expenseInvoices",
+      component: ExpenseInvoices,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/expense-invoices/expense-invoice-detail",
+      name: "expense-invoice-detail",
+      component: ExpenseInvoiceDetail,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/revenue-invoices/me",
+      name: "revenueInvoices",
+      component: RevenueInvoices,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/revenue-invoices/revenue-invoice-detail",
+      name: "revenue-invoice-detail",
+      component: RevenueInvoiceDetail,
       meta: { requiresAuth: true },
     },
   ],

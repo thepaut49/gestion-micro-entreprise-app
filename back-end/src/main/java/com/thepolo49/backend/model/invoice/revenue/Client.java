@@ -17,6 +17,8 @@ public class Client implements Serializable {
 
 	private ObjectId personId;
 
+	private String name;
+
 	private ClientType clientType;
 
 	private String siret;

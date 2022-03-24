@@ -7,6 +7,10 @@
       <router-link v-if="hasMicroCompany" to="/micro-companies/me">
         Micro entreprise
       </router-link>
+      <router-link to="/expense-invoices/me">
+        Factures fournisseur
+      </router-link>
+      <router-link to="/revenue-invoices/me"> Factures client </router-link>
       <router-link to="/companies"> Companies </router-link>
       <router-link to="/persons"> Personnes </router-link>
       <button type="button" class="logoutButton" @click="logout">Logout</button>

@@ -19,6 +19,8 @@ public class Supplier implements Serializable {
 
 	private SupplierType supplierType;
 
+	private String name;
+
 	private String siren;
 
 	private String siret;

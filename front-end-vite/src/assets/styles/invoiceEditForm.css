@@ -1,0 +1,14 @@
+.invoice-form-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.invoice-form-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
