@@ -10,7 +10,7 @@
           <BaseInput v-model="password" label="Password" type="password" />
         </div>
 
-        <button type="submit" name="button">Login</button>
+        <button class="button" type="submit" name="button">Login</button>
 
         <p>{{ error }}</p>
 

@@ -41,6 +41,7 @@ const newRevenueInvoice = {
   client: {
     companyId: undefined,
     personId: undefined,
+    name: "",
     clientType: "",
     siret: "",
     siren: "",
@@ -89,6 +90,7 @@ const newExpenseInvoice = {
     companyId: undefined,
     personId: undefined,
     supplierType: "",
+    name: "",
     siret: "",
     siren: "",
     address: {
