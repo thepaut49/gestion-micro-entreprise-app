@@ -4,19 +4,7 @@
       <h2>{{ title }}</h2>
     </header>
     <main>
-      <SupplierForm
-        :supplier="expense.supplier"
-        @input="
-          (newSupplier) => {
-            supplier = newSupplier;
-          }
-        "
-        @change="
-          (newSupplier) => {
-            supplier = newSupplier;
-          }
-        "
-      />
+      <SupplierForm :supplier="expense.supplier" />
       <section>
         <br />
         <table>
@@ -88,43 +76,8 @@ import { ref, computed } from "vue";
 import SupplierForm from "../../../components/formulaire/SupplierForm.vue";
 
 const emptyError = {
-  supplier: {
-    supplierType: "",
-    name: "",
-    siret: "",
-    siren: "",
-    address: {
-      addressLine1: "",
-      addressLine2: "",
-      cityName: "",
-      countryName: "",
-      postalCode: "",
-    },
-    phone: "",
-    email: "",
-  },
-  microCompany: {
-    companyName: "",
-    siren: "",
-    siret: "",
-    address: {
-      addressLine1: "",
-      addressLine2: "",
-      cityName: "",
-      countryName: "",
-      postalCode: "",
-    },
-    email: "",
-    phone: "",
-  },
-  invoiceLines: [],
-  amountExcludingTax: "",
-  amountWithTax: "",
-  dueDate: "",
-  paymentDate: "",
-  quote: "",
-  paymentMethod: "",
-  payed: "",
+  familyName: "",
+  firstName: "",
 };
 
 export default {

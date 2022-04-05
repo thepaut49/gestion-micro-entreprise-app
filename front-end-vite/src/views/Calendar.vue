@@ -8,18 +8,10 @@
       <BaseSelect
         :options="months"
         v-model="selectedMonth"
-        label="Selectionner le mois"
         name="selectedMonth"
-        @change="updateDaysForMonthCalendar()"
       />
 
-      <BaseSelect
-        :options="years"
-        v-model="selectedYear"
-        label="Selectionner l'année"
-        name="selectedYear"
-        @change="updateDaysForMonthCalendar()"
-      />
+      <BaseSelect :options="years" v-model="selectedYear" name="selectedYear" />
     </section>
 
     <section class="month-calendar">
@@ -39,7 +31,7 @@
 
 <script>
 import BaseSelect from "../components/commons/BaseSelect.vue";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import {
   monthName,
   getDaysForMonthCalendar,
@@ -82,6 +74,10 @@ export default {
       }
       return classCss;
     }
+
+    watchEffect(() => {
+      updateDaysForMonthCalendar();
+    });
 
     return {
       days,
