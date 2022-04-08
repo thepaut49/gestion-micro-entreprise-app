@@ -18,6 +18,24 @@
     <div class="field" v-show="showCompanyFields">
       <BaseInput v-model="supplier.siret" label="Siret" type="text" />
     </div>
+
+    <fieldset>
+      <legend>Email et téléphone</legend>
+      <BaseInput v-model="supplier.email" label="Email" type="text" />
+      <BaseInput v-model="supplier.phone" label="Téléphone" type="text" />
+    </fieldset>
+
+    <fieldset>
+      <legend>Adresse</legend>
+      <AddressForm
+        :address="supplier.address"
+        @input="
+          (newAddress) => {
+            address = newAddress;
+          }
+        "
+      />
+    </fieldset>
   </fieldset>
 </template>
 

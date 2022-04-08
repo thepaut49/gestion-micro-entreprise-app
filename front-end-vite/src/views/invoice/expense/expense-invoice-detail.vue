@@ -24,28 +24,26 @@
             <tr>
               <th>N°</th>
               <th>Description</th>
-              <th>Prix unitaire HT</th>
+              <th>Prix unitaire HT (€)</th>
               <th>Quantité</th>
               <th>TVA (%)</th>
-              <th>Montant HT</th>
-              <th>Montant TTC</th>
+              <th>Montant HT (€)</th>
+              <th>Montant TTC (€)</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            <ExpenseInvoiceLineDetail
+              v-for="invoiceLine in expense.invoiceLines"
+              :key="invoiceLine.id"
+              :invoiceLine="invoiceLine"
+            />
           </tbody>
           <tfoot>
             <tr>
               <td colspan="7">
-                <button class="invoice-add-line">Ajouter une ligne</button>
+                <button class="invoice-add-line" @click="addInvoiceLine()">
+                  Ajouter une ligne
+                </button>
               </td>
             </tr>
             <tr>
@@ -55,7 +53,7 @@
               <td></td>
               <td></td>
               <th>Total HT</th>
-              <td>100 €</td>
+              <td>{{ expense.amountExcludingTax }} €</td>
             </tr>
             <tr>
               <td></td>
@@ -64,7 +62,7 @@
               <td></td>
               <td></td>
               <th>Total TTC</th>
-              <td>120 €</td>
+              <td>{{ expense.amountWithTax }} €</td>
             </tr>
           </tfoot>
         </table>
@@ -84,8 +82,40 @@
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import SupplierForm from "../../../components/formulaire/SupplierForm.vue";
+import ExpenseInvoiceLineDetail from "./expense-invoice-line-detail.vue";
+
+const createNewLine = (invoiceLines) => {
+  let invoiceLinesLocal = invoiceLines;
+
+  const newLine = {
+    invoiceId: undefined,
+    lineNumber: newLineNumber(invoiceLines),
+    description: "",
+    taxPercentage: 19.6,
+    accountingCode: "000",
+    quantity: 1,
+    quantityType: "NO_TYPE",
+    amountForRefQuantity: 0.0,
+    amountExcludingTax: 0.0,
+    amountWithTax: 0.0,
+  };
+
+  invoiceLinesLocal.push(newLine);
+
+  return invoiceLinesLocal;
+};
+
+const newLineNumber = (invoiceLines) => {
+  let newLineNumber = 0;
+  invoiceLines.forEach((invoiceLine) => {
+    if (invoiceLine.lineNumber > newLineNumber) {
+      newLineNumber = invoiceLine.lineNumber;
+    }
+  });
+  return newLineNumber + 1;
+};
 
 const emptyError = {
   supplier: {
@@ -162,9 +192,28 @@ export default {
     const expense = computed(() => {
       return store.state.microCompany.expenseInvoice;
     });
+
+    const addInvoiceLine = () => {
+      expense.value.invoiceLines = createNewLine(expense.value.invoiceLines);
+    };
+
+    watchEffect(() => {
+      expense.value.amountExcludingTax = 0.0;
+      expense.value.amountWithTax = 0.0;
+      expense.value.invoiceLines.forEach((invoiceLine) => {
+        expense.value.amountExcludingTax += invoiceLine.amountExcludingTax;
+        expense.value.amountWithTax += invoiceLine.amountWithTax;
+        expense.value.amountExcludingTax =
+          Math.round(expense.value.amountExcludingTax * 100) / 100;
+        expense.value.amountWithTax =
+          Math.round(expense.value.amountWithTax * 100) / 100;
+      });
+    });
+
     const cancelExpense = function () {
       router.go(-1);
     };
+
     const saveExpense = () => {
       error.value = validateExpense(expense.value, error.value);
       console.log(errorObjectIsEmpty(error.value));
@@ -198,9 +247,10 @@ export default {
       cancelExpense,
       saveExpense,
       showCompanyFields,
+      addInvoiceLine,
     };
   },
-  components: { SupplierForm },
+  components: { SupplierForm, ExpenseInvoiceLineDetail },
 };
 
 const validateExpense = (expense, error) => {
