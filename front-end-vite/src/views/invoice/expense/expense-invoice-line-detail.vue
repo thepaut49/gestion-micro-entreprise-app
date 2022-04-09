@@ -14,7 +14,6 @@
 
 <script>
 import { ref, watchEffect } from "vue";
-import BaseInputMontant from "../../../components/commons/BaseInputMontant.vue";
 
 const emptyError = {
   lineNumber: "",
@@ -55,7 +54,6 @@ export default {
       error,
     };
   },
-  components: { BaseInputMontant },
 };
 
 const errorObjectIsEmpty = (error) => {

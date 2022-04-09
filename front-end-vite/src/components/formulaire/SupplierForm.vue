@@ -1,12 +1,15 @@
 <template>
   <fieldset>
     <legend>Fournisseur</legend>
-    <BaseSelect
-      :options="supplierTypes"
-      v-model="supplier.supplierType"
-      label="Type fournisseur"
-      name="supplierType"
-    />
+    <div class="field">
+      <BaseSelect
+        :options="supplierTypes"
+        v-model="supplier.supplierType"
+        label="Type fournisseur"
+        name="supplierType"
+      />
+    </div>
+
     <div class="field">
       <BaseInput v-model="supplier.name" label="Nom" type="text" />
     </div>
@@ -21,8 +24,13 @@
 
     <fieldset>
       <legend>Email et téléphone</legend>
-      <BaseInput v-model="supplier.email" label="Email" type="text" />
-      <BaseInput v-model="supplier.phone" label="Téléphone" type="text" />
+      <div class="field">
+        <BaseInput v-model="supplier.email" label="Email" type="text" />
+      </div>
+
+      <div class="field">
+        <BaseInput v-model="supplier.phone" label="Téléphone" type="text" />
+      </div>
     </fieldset>
 
     <fieldset>
@@ -44,6 +52,7 @@ import { watchEffect, ref } from "vue";
 
 export default {
   name: "SupplierForm",
+  inheritAttrs: true,
   props: {
     supplier: {
       type: Object,

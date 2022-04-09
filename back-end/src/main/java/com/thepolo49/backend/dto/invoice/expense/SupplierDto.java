@@ -5,6 +5,7 @@ import com.thepolo49.backend.dto.commons.AddressDto;
 public record SupplierDto (
 	String companyId,
 	String personId,
+	String name,
 	String supplierType,
 	String siret,
 	String siren,

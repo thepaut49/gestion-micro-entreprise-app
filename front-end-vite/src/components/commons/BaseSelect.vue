@@ -1,6 +1,7 @@
 <template>
   <label :for="uuid" v-if="label">{{ label }}</label>
   <select
+    v-bind="$attrs"
     v-model="modelValue"
     @change="$emit('update:modelValue', $event.target.value)"
     :id="uuid"
@@ -42,4 +43,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+label {
+  font-weight: bold;
+}
+
+select {
+  /* haut | droit | bas | gauche */
+  margin: 0.5em 0 0 0;
+
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.6em;
+  padding: 0.5em;
+  font: 1em "Avenir", Helvetica, sans-serif;
+}
+</style>

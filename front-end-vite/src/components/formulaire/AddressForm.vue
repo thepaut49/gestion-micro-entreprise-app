@@ -62,8 +62,4 @@ export default {
 };
 </script>
 
-<style scoped>
-label {
-  font-weight: bold;
-}
-</style>
+<style scoped></style>

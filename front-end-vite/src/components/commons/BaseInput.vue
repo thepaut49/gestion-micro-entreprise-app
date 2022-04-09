@@ -5,7 +5,6 @@
     :value="modelValue"
     :placeholder="label"
     @input="$emit('update:modelValue', $event.target.value)"
-    class="field"
     :id="uuid"
     :aria-describedby="error ? `${uuid}-error` : null"
     :aria-invalid="error ? true : null"
@@ -47,6 +46,10 @@ export default {
 </script>
 
 <style scoped>
+label {
+  font-weight: bold;
+}
+
 input {
   /* haut | droit | bas | gauche */
   margin: 0.5em 0 0 0;

@@ -1,5 +1,5 @@
 <template>
-  <label :for="uuid" v-if="label">{{ label }}</label>
+  <label class="first-label" :for="uuid" v-if="label">{{ label }}</label>
   <label v-bind="$attrs" :value="modelValue" class="second-label" :id="uuid">
     {{ modelValue }}
   </label>
@@ -28,6 +28,9 @@ export default {
 </script>
 
 <style scoped>
+.first-label {
+  font-weight: bold;
+}
 .second-label {
   margin-left: 0.2em;
 }

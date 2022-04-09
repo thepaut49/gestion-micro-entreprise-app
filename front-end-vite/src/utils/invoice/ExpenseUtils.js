@@ -79,12 +79,15 @@ export const validateExpense = (expense) => {
   let error = emptyError;
   let isExpenseValid = false;
 
-  if (!suplier.supplierType || suplier.supplierType.length === 0) {
+  if (
+    !expense.supplier.supplierType ||
+    expense.supplier.supplierType.length === 0
+  ) {
     error.supplier.supplierType = "Le type de fournisseur est obligatoire !";
     isExpenseValid = true;
   }
 
-  if (!suplier.name || suplier.name.length === 0) {
+  if (!expense.supplier.name || expense.supplier.name.length === 0) {
     error.supplier.supplierType = "Le nom du fournisseur est obligatoire !";
     isExpenseValid = true;
   }
