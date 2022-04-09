@@ -1,5 +1,5 @@
 <template>
-  <fieldset class="invoice-form-content">
+  <fieldset>
     <legend>Fournisseur</legend>
     <BaseSelect
       :options="supplierTypes"

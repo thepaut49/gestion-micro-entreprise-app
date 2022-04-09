@@ -7,8 +7,8 @@
     </td>
     <td><BaseInput v-model="invoiceLine.quantity" type="number" /></td>
     <td><BaseInput v-model="invoiceLine.taxPercentage" type="number" /></td>
-    <td>{{ invoiceLine.amountExcludingTax }} €</td>
-    <td>{{ invoiceLine.amountWithTax }} €</td>
+    <td class="cellAmount">{{ invoiceLine.amountExcludingTax }} €</td>
+    <td class="cellAmount">{{ invoiceLine.amountWithTax }} €</td>
   </tr>
 </template>
 
@@ -42,9 +42,8 @@ export default {
         invoiceLine.amountExcludingTax =
           invoiceLine.quantity * invoiceLine.amountForRefQuantity;
         invoiceLine.amountWithTax =
-          (invoiceLine.amountExcludingTax *
-            (100.0 + invoiceLine.taxPercentage)) /
-          100.0;
+          invoiceLine.amountExcludingTax +
+          (invoiceLine.amountExcludingTax * invoiceLine.taxPercentage) / 100.0;
         invoiceLine.amountExcludingTax =
           Math.round(invoiceLine.amountExcludingTax * 100) / 100;
         invoiceLine.amountWithTax =

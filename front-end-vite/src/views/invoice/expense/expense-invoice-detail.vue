@@ -53,7 +53,7 @@
               <td></td>
               <td></td>
               <th>Total HT</th>
-              <td>{{ expense.amountExcludingTax }} €</td>
+              <td class="cellAmount">{{ expense.amountExcludingTax }} €</td>
             </tr>
             <tr>
               <td></td>
@@ -62,17 +62,17 @@
               <td></td>
               <td></td>
               <th>Total TTC</th>
-              <td>{{ expense.amountWithTax }} €</td>
+              <td class="cellAmount">{{ expense.amountWithTax }} €</td>
             </tr>
           </tfoot>
         </table>
       </section>
     </main>
     <footer class="invoice-form-footer">
-      <button class="button">
+      <button class="button" @click="cancelExpense()">
         <span>Cancel</span>
       </button>
-      <button class="button">
+      <button class="button" @click="saveExpense()">
         <span>Save</span>
       </button>
     </footer>
@@ -85,81 +85,15 @@ import { useStore } from "vuex";
 import { ref, computed, watchEffect } from "vue";
 import SupplierForm from "../../../components/formulaire/SupplierForm.vue";
 import ExpenseInvoiceLineDetail from "./expense-invoice-line-detail.vue";
-
-const createNewLine = (invoiceLines) => {
-  let invoiceLinesLocal = invoiceLines;
-
-  const newLine = {
-    invoiceId: undefined,
-    lineNumber: newLineNumber(invoiceLines),
-    description: "",
-    taxPercentage: 19.6,
-    accountingCode: "000",
-    quantity: 1,
-    quantityType: "NO_TYPE",
-    amountForRefQuantity: 0.0,
-    amountExcludingTax: 0.0,
-    amountWithTax: 0.0,
-  };
-
-  invoiceLinesLocal.push(newLine);
-
-  return invoiceLinesLocal;
-};
-
-const newLineNumber = (invoiceLines) => {
-  let newLineNumber = 0;
-  invoiceLines.forEach((invoiceLine) => {
-    if (invoiceLine.lineNumber > newLineNumber) {
-      newLineNumber = invoiceLine.lineNumber;
-    }
-  });
-  return newLineNumber + 1;
-};
-
-const emptyError = {
-  supplier: {
-    supplierType: "",
-    name: "",
-    siret: "",
-    siren: "",
-    address: {
-      addressLine1: "",
-      addressLine2: "",
-      cityName: "",
-      countryName: "",
-      postalCode: "",
-    },
-    phone: "",
-    email: "",
-  },
-  microCompany: {
-    companyName: "",
-    siren: "",
-    siret: "",
-    address: {
-      addressLine1: "",
-      addressLine2: "",
-      cityName: "",
-      countryName: "",
-      postalCode: "",
-    },
-    email: "",
-    phone: "",
-  },
-  invoiceLines: [],
-  amountExcludingTax: "",
-  amountWithTax: "",
-  dueDate: "",
-  paymentDate: "",
-  quote: "",
-  paymentMethod: "",
-  payed: "",
-};
+import {
+  supplierTypes,
+  emptyError,
+  createNewLine,
+  validateExpense,
+} from "../../../utils/invoice/ExpenseUtils";
 
 export default {
   name: "ExpenseInvoiceDetail",
-  inheritAttrs: false,
   props: {
     id: {
       type: String,
@@ -169,7 +103,6 @@ export default {
     const router = useRouter();
     const store = useStore();
     const error = ref(emptyError);
-    const supplierTypes = ["ENTREPRISE", "PARTICULIER", "ETAT"];
     let showCompanyFields = ref(false);
     const id = props.id;
     const isAddMode = computed(() => {
@@ -215,9 +148,9 @@ export default {
     };
 
     const saveExpense = () => {
-      error.value = validateExpense(expense.value, error.value);
-      console.log(errorObjectIsEmpty(error.value));
-      if (errorObjectIsEmpty(error.value)) {
+      let expenseIsValid = true;
+      [error.value, expenseIsValid] = validateExpense(expense.value);
+      if (expenseIsValid) {
         if (isAddMode.value) {
           store
             .dispatch("addExpenseInvoiceAction", expense.value)
@@ -251,15 +184,6 @@ export default {
     };
   },
   components: { SupplierForm, ExpenseInvoiceLineDetail },
-};
-
-const validateExpense = (expense, error) => {
-  error = emptyError;
-  return error;
-};
-
-const errorObjectIsEmpty = (error) => {
-  return Object.values(error).every((value) => value.length === 0);
 };
 </script>
 
