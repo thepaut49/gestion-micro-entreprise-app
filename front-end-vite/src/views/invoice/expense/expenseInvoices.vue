@@ -61,8 +61,8 @@ export default {
 
     const deleteExpense = () => {
       closeModal();
-      if (personToDelete) {
-        store.dispatch("deleteExpenseAction", personToDelete);
+      if (expenseToDelete) {
+        store.dispatch("deleteExpenseAction", expenseToDelete);
       }
       store
         .dispatch("getExpensesAction")

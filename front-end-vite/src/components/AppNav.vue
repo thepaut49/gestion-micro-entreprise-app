@@ -13,7 +13,9 @@
       <router-link to="/revenue-invoices/me"> Factures client </router-link>
       <router-link to="/companies"> Companies </router-link>
       <router-link to="/persons"> Personnes </router-link>
-      <button type="button" class="logoutButton" @click="logout">Logout</button>
+      <button type="button" class="button logoutButton" @click="logout">
+        Logout
+      </button>
     </template>
     <router-link v-if="!loggedIn" to="/login" class="button">
       Login
@@ -62,7 +64,7 @@ a {
   color: white;
   border-bottom: 2px solid #fff;
 }
-button,
+
 .button {
   margin-left: auto;
   background: white;

@@ -4,6 +4,21 @@
       <h2>{{ title }}</h2>
     </header>
     <main>
+      <div class="supplier-button">
+        <button
+          v-show="!isSupplierSelected()"
+          @click="showModalToSelectSupplier()"
+        >
+          Sélectionner le fournisseur
+        </button>
+        <button
+          v-show="isSupplierSelected()"
+          @click="showModalToSelectSupplier()"
+        >
+          Changer de fournisseur
+        </button>
+      </div>
+
       <SupplierForm
         :supplier="expense.supplier"
         @input="
@@ -67,6 +82,12 @@
           </tfoot>
         </table>
       </section>
+      <ModalSelectSupplier
+        :isOpen="showModal"
+        @handleSelectSupplier="selectSupplier"
+        @handleCancel="closeModal"
+      >
+      </ModalSelectSupplier>
     </main>
     <footer class="invoice-form-footer">
       <button class="button" @click="cancelExpense()">
@@ -105,9 +126,25 @@ export default {
     const error = ref(emptyError);
     let showCompanyFields = ref(false);
     const id = props.id;
+    let showModal = ref(false);
+
+    const showModalToSelectSupplier = () => {
+      showModal.value = true;
+    };
+
+    const closeModal = () => {
+      showModal.value = false;
+    };
+
+    const selectSupplier = (selectedSupplier) => {
+      showModal = false;
+      expense.value.supplier = selectedSupplier;
+    };
+
     const isAddMode = computed(() => {
       return !id;
     });
+
     const title = computed(() => {
       return isAddMode
         ? "Créer une facture fournisseur"
@@ -128,6 +165,13 @@ export default {
 
     const addInvoiceLine = () => {
       expense.value.invoiceLines = createNewLine(expense.value.invoiceLines);
+    };
+
+    const isSupplierSelected = () => {
+      if (expense.value.supplier.companyId || expense.value.supplier.personId) {
+        return true;
+      }
+      return false;
     };
 
     watchEffect(() => {
@@ -163,6 +207,7 @@ export default {
         router.go(-1);
       }
     };
+
     function updateSupplierType() {
       if (expense.supplier && expense.supplier.supplierType === "ENTREPRISE") {
         showCompanyFields = true;
@@ -170,7 +215,12 @@ export default {
         showCompanyFields = false;
       }
     }
+
     return {
+      closeModal,
+      selectSupplier,
+      showModal,
+      showModalToSelectSupplier,
       expense,
       isAddMode,
       error,
@@ -181,6 +231,7 @@ export default {
       saveExpense,
       showCompanyFields,
       addInvoiceLine,
+      isSupplierSelected,
     };
   },
   components: { SupplierForm, ExpenseInvoiceLineDetail },
@@ -189,6 +240,12 @@ export default {
 
 <style>
 @import "../../../assets/styles/invoiceEditForm.css";
+
+.supplier-button {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
 
 th {
   background-color: #42b983;
