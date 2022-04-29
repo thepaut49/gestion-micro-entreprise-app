@@ -34,14 +34,12 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { computed } from "vue";
 
 export default {
   name: "ExpenseInvoices",
   setup() {
-    const router = useRouter();
     const store = useStore();
     let isLoading = true;
     let expenseToDelete = null;

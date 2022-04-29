@@ -45,6 +45,8 @@ export default {
           this.$store
             .dispatch("getMicroCompanyForUserAction")
             .then(() => {
+              this.$store.dispatch("getCompaniesAction");
+              this.$store.dispatch("getPersonsAction");
               this.showBouncer = false;
               this.$router.push({ name: "dashboard" });
               this.error = null;

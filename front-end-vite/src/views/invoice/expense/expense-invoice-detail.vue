@@ -84,10 +84,9 @@
       </section>
       <ModalSelectSupplier
         :isOpen="showModal"
-        @handleSelectSupplier="selectSupplier"
+        @handleSelectSupplierChild="selectSupplier"
         @handleCancel="closeModal"
-      >
-      </ModalSelectSupplier>
+      />
     </main>
     <footer class="invoice-form-footer">
       <button class="button" @click="cancelExpense()">
@@ -137,7 +136,7 @@ export default {
     };
 
     const selectSupplier = (selectedSupplier) => {
-      showModal = false;
+      showModal.value = false;
       expense.value.supplier = selectedSupplier;
     };
 

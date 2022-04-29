@@ -7,9 +7,9 @@
         <button class="close" @click="onCancel">&times;</button>
       </header>
       <main class="modal-body">
-        <fieldset>
+        <fieldset class="fieldset-filters">
           <legend>Critères de recherche</legend>
-          <div>
+          <div class="field">
             <BaseSelect
               :options="supplierTypes"
               v-model="supplierType"
@@ -17,38 +17,56 @@
               name="supplierType"
             />
           </div>
-          <div v-show="isSupplierACompany()">
+          <div class="field" v-show="isSupplierACompany()">
             <BaseInput
               v-model="companyName"
               label="Nom de l'entreprise"
               type="text"
             />
           </div>
-          <div v-show="isSupplierACompany()">
+          <div class="field" v-show="isSupplierACompany()">
             <BaseInput v-model="siren" label="Siren" type="text" />
           </div>
-          <div v-show="isSupplierACompany()">
+          <div class="field" v-show="isSupplierACompany()">
             <BaseInput v-model="siret" label="Siren" type="text" />
           </div>
-          <div v-show="!isSupplierACompany()">
-            <BaseInput v-model="firstname" label="Prénom" type="text" />
+          <div class="field" v-show="!isSupplierACompany()">
+            <BaseInput v-model="firstName" label="Prénom" type="text" />
           </div>
-          <div v-show="!isSupplierACompany()">
-            <BaseInput v-model="lastname" label="Nom" type="text" />
+          <div class="field" v-show="!isSupplierACompany()">
+            <BaseInput v-model="familyName" label="Nom" type="text" />
+          </div>
+          <div>
+            <button @click="searchSupplier">Rechercher</button>
           </div>
         </fieldset>
+        <div v-show="foundSuppliers">
+          <SupplierCard
+            v-for="supplier in suppliers"
+            :key="supplier.id"
+            :supplier="supplier"
+            v-bind="$attrs"
+            @handleSelectSupplierGranChild="selectSupplierChild"
+          />
+        </div>
+        <p v-show="!foundSuppliers">
+          Pas de fournisseur(s) correspondant au critère(s).
+        </p>
       </main>
-      <footer class="modal-footer">
-        <button @click="onCancel">Annuler</button>
-      </footer>
     </section>
   </div>
 </template>
 
 <script>
 import BaseSelect from "../commons/BaseSelect.vue";
-import { ref } from "vue";
-import { supplierTypes } from "../../utils/invoice/ExpenseUtils";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import {
+  supplierTypes,
+  mapPersonToSupplier,
+  mapCompanyToSupplier,
+} from "../../utils/invoice/ExpenseUtils";
+import SupplierCard from "./SupplierCard.vue";
 
 export default {
   name: "ModalSelectSupplier",
@@ -59,20 +77,91 @@ export default {
     },
   },
   setup(props, { emit }) {
-    let supplierType = ref("");
-    let companyName = ref("");
-    let siren = ref("");
-    let siret = ref("");
-    let firstname = ref("");
-    let lastname = ref("");
-    let selectedSupplier = ref({});
+    const store = useStore();
+
+    const supplierType = ref("");
+    const companyName = ref("");
+    const siren = ref("");
+    const siret = ref("");
+    const firstName = ref("");
+    const familyName = ref("");
+    const suppliers = ref([]);
+
+    const selectSupplierChild = (supplier) => {
+      emit("handleSelectSupplierChild", supplier);
+    };
+
+    const searchSupplierInCompanies = () => {
+      const companies = ref(store.state.company.companies);
+
+      companies.value.forEach((company) => {
+        console.log("company.companyName : " + company.companyName);
+        console.log("company.siren : " + company.siren);
+        console.log("company.siret : " + company.siret);
+        let addCompany = true;
+        if (
+          companyName.value !== "" &&
+          !company.companyName.includes(companyName.value)
+        ) {
+          addCompany = false;
+        }
+        if (siren.value !== "" && !company.siren.includes(siren.value)) {
+          addCompany = false;
+        }
+        if (siret.value !== "" && !company.siret.includes(siret.value)) {
+          addCompany = false;
+        }
+
+        if (addCompany) {
+          suppliers.value.push(mapCompanyToSupplier(company));
+        }
+      });
+    };
+
+    const searchSupplierInPersons = () => {
+      const persons = ref(store.state.person.persons);
+      persons.value.forEach((person) => {
+        console.log("Person : " + person);
+        let addPerson = true;
+        console.log("person.firstName : " + person.firstName);
+        console.log("person.familyName : " + person.familyName);
+        if (
+          firstName.value !== "" &&
+          !person.firstName.includes(firstName.value)
+        ) {
+          addPerson = false;
+        }
+        if (
+          familyName.value !== "" &&
+          !person.familyName.includes(familyName.value)
+        ) {
+          addPerson = false;
+        }
+        if (addPerson) {
+          suppliers.value.push(mapPersonToSupplier(person));
+        }
+      });
+    };
+
+    const searchSupplier = () => {
+      suppliers.value = [];
+      console.log("Supplier Type : " + supplierType.value);
+      if (supplierType.value === "ENTREPRISE") {
+        searchSupplierInCompanies();
+      } else if (supplierType.value === "PARTICULIER") {
+        searchSupplierInPersons();
+      } else {
+        searchSupplierInCompanies();
+        searchSupplierInPersons();
+      }
+    };
+
+    const foundSuppliers = computed(() => {
+      return suppliers.value && suppliers.value.length > 0;
+    });
 
     const isSupplierACompany = () => {
       return supplierType.value === "ENTREPRISE";
-    };
-
-    const selectSupplier = () => {
-      emit("handleSelectSupplier", selectedSupplier.value);
     };
 
     const onCancel = () => {
@@ -80,19 +169,24 @@ export default {
     };
 
     return {
-      selectSupplier,
+      foundSuppliers,
+      suppliers,
+      selectSupplierChild,
+      searchSupplierInCompanies,
+      searchSupplierInPersons,
+      searchSupplier,
       isSupplierACompany,
       supplierTypes,
       supplierType,
       companyName,
       siren,
       siret,
-      firstname,
-      lastname,
+      firstName,
+      familyName,
       onCancel,
     };
   },
-  components: { BaseSelect },
+  components: { BaseSelect, SupplierCard },
 };
 </script>
 
@@ -181,13 +275,15 @@ export default {
   justify-content: space-between;
 }
 
-.modal-body {
-  text-align: center;
-}
-
 .modal-footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.fieldset-filters {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 </style>

@@ -13,9 +13,7 @@ import java.io.Serializable;
 @ToString
 public class Client implements Serializable {
 
-	private ObjectId companyId;
-
-	private ObjectId personId;
+	private ObjectId id;
 
 	private String name;
 

@@ -13,9 +13,7 @@ import java.io.Serializable;
 @ToString
 public class Supplier implements Serializable {
 
-	private ObjectId companyId;
-
-	private ObjectId personId;
+	private ObjectId id;
 
 	private SupplierType supplierType;
 

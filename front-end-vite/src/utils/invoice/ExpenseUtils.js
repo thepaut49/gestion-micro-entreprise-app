@@ -94,3 +94,29 @@ export const validateExpense = (expense) => {
 
   return [error, isExpenseValid];
 };
+
+export const mapPersonToSupplier = (person) => {
+  return {
+    id: person.id,
+    name: person.familyName + " " + person.firstName,
+    supplierType: "PARTICULIER",
+    siret: undefined,
+    siren: undefined,
+    address: person.address,
+    phone: person.phone,
+    email: person.email,
+  };
+};
+
+export const mapCompanyToSupplier = (company) => {
+  return {
+    id: company.id,
+    name: company.companyName,
+    supplierType: "ENTREPRISE",
+    siret: company.siret,
+    siren: company.siren,
+    address: company.address,
+    phone: company.phone,
+    email: company.email,
+  };
+};
