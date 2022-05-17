@@ -4,7 +4,6 @@ import com.thepolo49.backend.model.AccountingCode;
 import com.thepolo49.backend.model.invoice.QuantityType;
 
 public record RevenueInvoiceLineDto(
-        String invoiceId,
         Integer lineNumber,
         String description,
         Double taxPercentage,

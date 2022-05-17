@@ -1,4 +1,5 @@
-INSERT INTO ACCOUNTING_CODES VALUES( 1011,"Capital souscrit – non appelé",	"Compte de passif",	"Compte de bilan"),
+INSERT INTO ACCOUNTING_CODES VALUES( 0,"Capital souscrit – non appelé",	"Compte de passif",	"Compte de bilan"),
+S( 1011,"Capital souscrit – non appelé",	"Compte de passif",	"Compte de bilan"),
     (1012,"Capital souscrit – appelé, non versé","Compte de passif",	"Compte de bilan"),
             (1013,"Capital souscrit – appelé, versé","Compte de passif","Compte de bilan"),
             (1018,"Capital souscrit soumis à des réglementations particulières","Compte de passif","Compte de bilan"),

@@ -1,43 +1,42 @@
 <template>
   <fieldset class="expense-card">
     <legend>Facteur fournisseur {{ expense.id }}</legend>
-    <fieldset class="expense-card-supplier">
-      <legend>Fournisseur</legend>
-      <BaseLabel v-model="expense.supplier" label="Nom fournisseur : " />
-    </fieldset>
-    <fieldset class="expense-card-details">
-      <legend>Détails</legend>
+    <div class="field-label">
+      <BaseLabel v-model="expense.supplier.name" label="Fournisseur : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="expense.externalRef" label="Réf externe : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="expense.amountExcludingTax" label="Montant HT : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="expense.amountWithTax" label="Montant TTC : " />
-      <BaseLabel v-model="expense.dueDate" label="Montant HT : " />
+    </div>
+    <div class="field-label">
+      <BaseLabel v-model="expense.dueDate" label="Date d'échéance : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="expense.paymentDate" label="Date de règlement : " />
+    </div>
+    <div class="field-label">
       <BaseLabel
         v-model="expense.paymentMethod"
         label="Méthode de paiement : "
       />
-      <BaseLabel v-model="expense.payed" label="Payé : " />
-      <BaseLabel v-model="expense.quote" label="Devis : " />
-    </fieldset>
-    <main class="expense-card-content">
-      <div class="field-label">
-        <BaseLabel v-model="expense.email" label="Email : " />
-      </div>
-      <div class="field-label">
-        <BaseLabel v-model="expense.phone" label="Phone : " />
-      </div>
-    </main>
-    <footer>
+    </div>
+    <!-- BaseLabel v-model="expense.payed" label="Payé : " /-->
+    <div class="expense-card-buttons">
       <button @click="askToDelete(expense)">
         <span>Supprimer</span>
       </button>
       <router-link
         class="button link-button"
-        :to="{ name: 'expense-detail', params: { id: expense.id } }"
+        :to="{ name: 'expense-invoice-detail', params: { id: expense.id } }"
       >
         <span>Sélectioner</span>
       </router-link>
-    </footer>
+    </div>
   </fieldset>
 </template>
 
@@ -86,13 +85,7 @@ export default {
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2), 0 1px 15px 0 rgba(0, 0, 0, 0.19);
 }
 
-.expense-card-content {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
-
-.expense-card footer {
+.expense-card-buttons {
   display: flex;
   flex-direction: row;
   align-items: center;

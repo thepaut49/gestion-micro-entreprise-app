@@ -1,6 +1,7 @@
 import axios from "axios";
 import { VITE_APP_API_URL } from "../helpers";
 import { parseItem } from "../../shared/data.service";
+import { mapMicroToMicroCompanyExpense } from "../../utils/invoice/ExpenseUtils";
 
 const newMicroCompany = {
   id: undefined,
@@ -39,8 +40,7 @@ const newMicroCompany = {
 const newRevenueInvoice = {
   id: undefined,
   client: {
-    companyId: undefined,
-    personId: undefined,
+    id: undefined,
     name: "",
     clientType: "",
     siret: "",
@@ -87,8 +87,7 @@ const newRevenueInvoice = {
 const newExpenseInvoice = {
   id: undefined,
   supplier: {
-    companyId: undefined,
-    personId: undefined,
+    id: undefined,
     supplierType: "",
     name: "",
     siret: "",
@@ -122,11 +121,15 @@ const newExpenseInvoice = {
   },
   invoiceLines: [
     {
-      invoiceId: undefined,
       lineNumber: 1,
       description: "",
       taxPercentage: 19.6,
-      accountingCode: "000",
+      accountingCode: {
+        code: 0,
+        account: "code par defaut",
+        compteDuBilan: "",
+        accountType: "",
+      },
       quantity: 1,
       quantityType: "NO_TYPE",
       amountForRefQuantity: 0.0,
@@ -136,8 +139,8 @@ const newExpenseInvoice = {
   ],
   amountExcludingTax: 0.0,
   amountWithTax: 0.0,
-  dueDate: new Date().toISOString(),
-  paymentDate: new Date().toISOString(),
+  dueDate: null, //new Date().format("dd-mm-yyyy"),
+  paymentDate: null,
   quote: false,
   paymentMethod: "",
   payed: false,
@@ -185,6 +188,16 @@ const mutations = {
     state.canCreateMicroCompany = canCreateMicroCompany;
   },
   // Expense
+  addExpenseInvoice(state, expense) {
+    state.expenseInvoices.unshift(expense); // mutable addition
+    state.expenseInvoice = newExpenseInvoice;
+  },
+  updateExpenseInvoice(state, expense) {
+    const index = state.expenseInvoices.findIndex((h) => h.id === expense.id);
+    state.expenseInvoices.splice(index, 1, expense);
+    state.expenseInvoices = [...state.expenseInvoices];
+    state.expenseInvoice = newExpenseInvoice;
+  },
   setExpenseInvoices(state, expenseInvoices) {
     state.expenseInvoices = expenseInvoices;
   },
@@ -200,6 +213,10 @@ const mutations = {
     state.expenseInvoices = [];
   },
   // Revenue
+  addRevenueInvoice(state, revenue) {
+    state.revenueInvoices.unshift(revenue); // mutable addition
+    state.revenueInvoice = newRevenueInvoice;
+  },
   setRevenueInvoices(state, revenueInvoices) {
     state.revenueInvoices = revenueInvoices;
   },
@@ -282,7 +299,7 @@ const actions = {
   // Expense invoice
   getExpenseInvoicesAction({ commit }) {
     return axios
-      .get(VITE_APP_API_URL + "/api/expense-invoices")
+      .get(VITE_APP_API_URL + "/api/expense-invoices/me")
       .then((response) => {
         commit("setExpenseInvoices", response.data.items);
       })
@@ -296,6 +313,7 @@ const actions = {
       .post(`${VITE_APP_API_URL}/api/expense-invoices`, expenseInvoice)
       .then((response) => {
         const addedExpenseInvoice = parseItem(response, 201);
+        console.log("addExpenseInvoice : " + addedExpenseInvoice);
         commit("addExpenseInvoice", addedExpenseInvoice);
       })
       .catch((error) => console.error(error));
@@ -317,6 +335,7 @@ const actions = {
       )
       .then((response) => {
         const updatedExpenseInvoice = parseItem(response, 200);
+        console.log("updatedExpenseInvoice : " + updatedExpenseInvoice);
         commit("updateExpenseInvoice", updatedExpenseInvoice);
       })
       .catch((error) => console.error(error));
@@ -339,7 +358,10 @@ const actions = {
       }
     }
   },
-  createNewExpenseInvoiceAction({ commit }) {
+  createNewExpenseInvoiceAction({ commit, state }) {
+    newExpenseInvoice.microCompany = mapMicroToMicroCompanyExpense(
+      state.microCompany
+    );
     commit("setExpenseInvoice", newExpenseInvoice);
   },
 

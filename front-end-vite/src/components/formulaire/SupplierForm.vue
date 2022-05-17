@@ -58,8 +58,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          companyId: undefined,
-          personId: undefined,
+          id: undefined,
           supplierType: "",
           name: "",
           siret: "",

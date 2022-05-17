@@ -32,6 +32,9 @@
           }
         "
       />
+
+      <MicroCompanyForm :microCompany="expense.microCompany" />
+
       <section>
         <br />
         <table>
@@ -89,10 +92,10 @@
       />
     </main>
     <footer class="invoice-form-footer">
-      <button class="button" @click="cancelExpense()">
+      <button @click="cancelExpense()">
         <span>Cancel</span>
       </button>
-      <button class="button" @click="saveExpense()">
+      <button @click="saveExpense()">
         <span>Save</span>
       </button>
     </footer>
@@ -111,6 +114,7 @@ import {
   createNewLine,
   validateExpense,
 } from "../../../utils/invoice/ExpenseUtils";
+import MicroCompanyForm from "../../../components/invoice/MicroCompanyForm.vue";
 
 export default {
   name: "ExpenseInvoiceDetail",
@@ -167,7 +171,7 @@ export default {
     };
 
     const isSupplierSelected = () => {
-      if (expense.value.supplier.companyId || expense.value.supplier.personId) {
+      if (expense.value.supplier.id) {
         return true;
       }
       return false;
@@ -186,24 +190,31 @@ export default {
       });
     });
 
-    const cancelExpense = function () {
+    const cancelExpense = () => {
       router.go(-1);
     };
 
     const saveExpense = () => {
       let expenseIsValid = true;
       [error.value, expenseIsValid] = validateExpense(expense.value);
-      if (expenseIsValid) {
-        if (isAddMode.value) {
-          store
-            .dispatch("addExpenseInvoiceAction", expense.value)
-            .catch((errorCatch) => console.log(errorCatch));
-        } else {
-          store
-            .dispatch("updateExpenseInvoiceAction", expense.value)
-            .catch((errorCatch) => console.log(errorCatch));
+      try {
+        if (expenseIsValid) {
+          if (isAddMode.value) {
+            store
+              .dispatch("addExpenseInvoiceAction", expense.value)
+              .then(() => {
+                router.push({ name: "expenseInvoices" });
+              })
+              .catch((error) => console.log(error));
+          } else {
+            store
+              .dispatch("updateExpenseInvoiceAction", expense.value)
+              .then(() => router.push({ name: "expenseInvoices" }))
+              .catch((error) => console.log(error));
+          }
         }
-        router.go(-1);
+      } catch (error) {
+        console.log(error);
       }
     };
 
@@ -233,7 +244,7 @@ export default {
       isSupplierSelected,
     };
   },
-  components: { SupplierForm, ExpenseInvoiceLineDetail },
+  components: { SupplierForm, ExpenseInvoiceLineDetail, MicroCompanyForm },
 };
 </script>
 

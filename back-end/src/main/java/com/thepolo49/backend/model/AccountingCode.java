@@ -15,7 +15,7 @@ public class AccountingCode {
 
     private String account;
 
-    private String coteDuBilan;
+    private String compteDuBilan;
 
     private String accountType;
 }

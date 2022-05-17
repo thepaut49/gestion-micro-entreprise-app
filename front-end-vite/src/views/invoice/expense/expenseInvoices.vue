@@ -14,7 +14,7 @@
       </button>
     </header>
 
-    <main class="listEntitiesMain" v-if="!isLoading">
+    <main class="listEntitiesMain" v-show="!isLoading">
       <ExpenseCard
         v-for="expense in expenses"
         :key="expense.id"
@@ -22,7 +22,9 @@
         @askToDeleteExpenseEvent="askToDelete(expense)"
       />
     </main>
-    <p v-else>Récupération des personnes en cours, veuillez patienter</p>
+    <p v-show="isLoading">
+      Récupération des facture fournisseurs en cours, veuillez patienter
+    </p>
     <Modal
       :message="modalMessage"
       :isOpen="showModal"
@@ -35,16 +37,27 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 export default {
   name: "ExpenseInvoices",
   setup() {
     const store = useStore();
-    let isLoading = true;
+    let isLoading = ref(true);
     let expenseToDelete = null;
     let showModal = false;
     let modalMessage = "";
+
+    store
+      .dispatch("getExpenseInvoicesAction")
+      .then(() => {
+        isLoading.value = false;
+        console.log("loading complete");
+      })
+      .catch((error) => {
+        isLoading.value = false;
+        console.log(error);
+      });
 
     const askToDelete = (expense) => {
       expenseToDelete = expense;
@@ -63,7 +76,7 @@ export default {
         store.dispatch("deleteExpenseAction", expenseToDelete);
       }
       store
-        .dispatch("getExpensesAction")
+        .dispatch("getExpenseInvoicesAction")
         .then(() => {
           isLoading = false;
         })
@@ -74,14 +87,15 @@ export default {
     };
 
     const reloadExpenses = () => {
-      isLoading = true;
+      isLoading.value = true;
       store
-        .dispatch("getExpensesAction")
+        .dispatch("getExpenseInvoicesAction")
         .then(() => {
-          isLoading = false;
+          isLoading.value = false;
+          console.log("loading complete");
         })
         .catch((error) => {
-          isLoading = false;
+          isLoading.value = false;
           console.log(error);
         });
     };

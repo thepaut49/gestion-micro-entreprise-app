@@ -47,6 +47,7 @@ export default {
             .then(() => {
               this.$store.dispatch("getCompaniesAction");
               this.$store.dispatch("getPersonsAction");
+              this.$store.dispatch("getExpenseInvoicesAction");
               this.showBouncer = false;
               this.$router.push({ name: "dashboard" });
               this.error = null;

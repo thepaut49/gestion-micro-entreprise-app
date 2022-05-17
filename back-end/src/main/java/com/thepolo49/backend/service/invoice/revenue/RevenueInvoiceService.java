@@ -59,8 +59,7 @@ public class RevenueInvoiceService {
     public List<RevenueInvoiceDto> findAll() {
         return revenueInvoiceRepository.findAll()
                 .stream()
-                .map(address -> revenueInvoiceMapper.convert(address))
-                .collect(Collectors.toList());
+                .map(revenueInvoiceMapper::convert).toList();
     }
 
 }

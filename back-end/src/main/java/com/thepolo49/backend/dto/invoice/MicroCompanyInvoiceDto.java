@@ -1,7 +1,5 @@
 package com.thepolo49.backend.dto.invoice;
 
-import com.thepolo49.backend.dto.ManagerDto;
-import com.thepolo49.backend.dto.UserDto;
 import com.thepolo49.backend.dto.commons.AddressDto;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,5 @@
 package com.thepolo49.backend.dto.commons;
 
-import com.thepolo49.backend.dto.commons.Page;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

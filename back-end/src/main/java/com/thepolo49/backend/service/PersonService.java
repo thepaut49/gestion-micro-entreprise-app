@@ -59,8 +59,7 @@ public class PersonService {
     public List<PersonDto> findAll() {
         return personRepository.findAll()
                 .stream()
-                .map(person -> personMapper.convert(person))
-                .collect(Collectors.toList());
+                .map(personMapper::convert).toList();
     }
 
 }

@@ -88,7 +88,7 @@ public class MicroCompanyService {
     public List<MicroCompanyDto> getAllMicroForUser(String userName) {
         Optional<User> user = userRepo.findByUsername(userName);
         return microCompanyRepository.findByUserId(user.get().getId()).stream()
-                .map(microCompany -> microCompanyMapper.convert(microCompany))
+                .map(microCompanyMapper::convert)
                 .collect(Collectors.toList());
     }
 

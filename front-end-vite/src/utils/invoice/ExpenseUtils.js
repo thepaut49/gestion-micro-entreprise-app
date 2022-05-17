@@ -48,11 +48,15 @@ export const createNewLine = (invoiceLines) => {
   let invoiceLinesLocal = invoiceLines;
 
   const newLine = {
-    invoiceId: undefined,
     lineNumber: newLineNumber(invoiceLines),
     description: "",
     taxPercentage: 19.6,
-    accountingCode: "000",
+    accountingCode: {
+      code: 0,
+      account: "code par defaut",
+      compteDuBilan: "",
+      accountType: "",
+    },
     quantity: 1,
     quantityType: "NO_TYPE",
     amountForRefQuantity: 0.0,
@@ -77,25 +81,26 @@ const newLineNumber = (invoiceLines) => {
 
 export const validateExpense = (expense) => {
   let error = emptyError;
-  let isExpenseValid = false;
+  let isExpenseValid = true;
 
   if (
     !expense.supplier.supplierType ||
     expense.supplier.supplierType.length === 0
   ) {
     error.supplier.supplierType = "Le type de fournisseur est obligatoire !";
-    isExpenseValid = true;
+    isExpenseValid = false;
   }
 
   if (!expense.supplier.name || expense.supplier.name.length === 0) {
     error.supplier.supplierType = "Le nom du fournisseur est obligatoire !";
-    isExpenseValid = true;
+    isExpenseValid = false;
   }
 
   return [error, isExpenseValid];
 };
 
-export const mapPersonToSupplier = (person) => {
+export const mapPersonToSupplier = (pPerson) => {
+  const person = Object.assign(pPerson);
   return {
     id: person.id,
     name: person.familyName + " " + person.firstName,
@@ -108,7 +113,8 @@ export const mapPersonToSupplier = (person) => {
   };
 };
 
-export const mapCompanyToSupplier = (company) => {
+export const mapCompanyToSupplier = (pCompany) => {
+  const company = Object.assign(pCompany);
   return {
     id: company.id,
     name: company.companyName,
@@ -118,5 +124,18 @@ export const mapCompanyToSupplier = (company) => {
     address: company.address,
     phone: company.phone,
     email: company.email,
+  };
+};
+
+export const mapMicroToMicroCompanyExpense = (pMicroCompany) => {
+  const microCompany = Object.assign(pMicroCompany);
+  return {
+    id: microCompany.id,
+    companyName: microCompany.companyName,
+    siret: microCompany.siret,
+    siren: microCompany.siren,
+    address: microCompany.address,
+    phone: microCompany.phone,
+    email: microCompany.email,
   };
 };
