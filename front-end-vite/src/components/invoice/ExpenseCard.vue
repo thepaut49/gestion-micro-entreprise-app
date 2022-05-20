@@ -19,12 +19,6 @@
     <div class="field-label">
       <BaseLabel v-model="expense.paymentDate" label="Date de règlement : " />
     </div>
-    <div class="field-label">
-      <BaseLabel
-        v-model="expense.paymentMethod"
-        label="Méthode de paiement : "
-      />
-    </div>
     <!-- BaseLabel v-model="expense.payed" label="Payé : " /-->
     <div class="expense-card-buttons">
       <button @click="askToDelete(expense)">

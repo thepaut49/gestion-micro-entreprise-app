@@ -1,4 +1,5 @@
 <template>
+  <label :for="uuid" v-if="label">{{ label }}</label>
   <input
     v-bind="$attrs"
     type="checkbox"
@@ -6,7 +7,6 @@
     @change="$emit('update:modelValue', $event.target.checked)"
     :id="uuid"
   />
-  <label :for="uuid" v-if="label">{{ label }}</label>
 </template>
 
 <script>
@@ -34,5 +34,11 @@ export default {
 <style scoped>
 label {
   font-weight: bold;
+}
+
+input {
+  width: 1em;
+  height: 1em;
+  margin: 0.4rem;
 }
 </style>

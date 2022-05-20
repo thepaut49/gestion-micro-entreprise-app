@@ -82,6 +82,7 @@ const newRevenueInvoice = {
   payed: false,
   createdAt: new Date().toISOString(),
   modifiedAt: new Date().toISOString(),
+  externalRef: "",
 };
 
 const newExpenseInvoice = {
@@ -146,6 +147,7 @@ const newExpenseInvoice = {
   payed: false,
   createdAt: new Date().toISOString(),
   modifiedAt: new Date().toISOString(),
+  externalRef: "",
 };
 
 const state = {
@@ -342,7 +344,7 @@ const actions = {
   },
   getExpenseInvoiceAction({ commit, state }, id) {
     if (id) {
-      const existingExpenseInvoice = state.microCompanies.find(
+      const existingExpenseInvoice = state.expenseInvoices.find(
         (expenseInvoice) => expenseInvoice.id === id
       );
       if (existingExpenseInvoice) {

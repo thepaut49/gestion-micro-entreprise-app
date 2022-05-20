@@ -98,9 +98,10 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/expense-invoices/expense-invoice-detail",
+      path: "/expense-invoices/expense-invoice-detail/:id?",
       name: "expense-invoice-detail",
       component: ExpenseInvoiceDetail,
+      props: true,
       meta: { requiresAuth: true },
     },
     {

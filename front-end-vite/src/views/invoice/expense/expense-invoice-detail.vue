@@ -19,6 +19,55 @@
         </button>
       </div>
 
+      <div class="field">
+        <BaseInput
+          v-model="expense.externalRef"
+          label="Référence externe"
+          name="externalRef"
+        />
+      </div>
+
+      <div class="field">
+        <BaseInputDate
+          v-model="expense.dueDate"
+          label="Date d'échéance"
+          name="dueDate"
+        />
+      </div>
+
+      <div class="field-checkbox">
+        <BaseCheckboxAfterLabel
+          v-model="expense.quote"
+          label="Devis"
+          name="quote"
+        />
+      </div>
+
+      <div class="field">
+        <BaseSelect
+          :options="paymentMethods"
+          v-model="expense.paymentMethod"
+          label="Méthode de paiement"
+          name="paymentMethod"
+        />
+      </div>
+
+      <div class="field-checkbox">
+        <BaseCheckboxAfterLabel
+          v-model="expense.payed"
+          label="Payé"
+          name="payed"
+        />
+      </div>
+
+      <div class="field">
+        <BaseInputDate
+          v-model="expense.paymentDate"
+          label="Date de règlement"
+          name="paymentDate"
+        />
+      </div>
+
       <SupplierForm
         :supplier="expense.supplier"
         @input="
@@ -115,6 +164,9 @@ import {
   validateExpense,
 } from "../../../utils/invoice/ExpenseUtils";
 import MicroCompanyForm from "../../../components/invoice/MicroCompanyForm.vue";
+import BaseCheckbox from "../../../components/commons/BaseCheckbox.vue";
+import { paymentMethods } from "../../../utils/invoice/InvoiceUtils";
+import BaseCheckboxAfterLabel from "../../../components/commons/BaseCheckboxAfterLabel.vue";
 
 export default {
   name: "ExpenseInvoiceDetail",
@@ -149,7 +201,7 @@ export default {
     });
 
     const title = computed(() => {
-      return isAddMode
+      return isAddMode.value
         ? "Créer une facture fournisseur"
         : "Modifier la facture fournisseur " + expense.value.id;
     });
@@ -159,7 +211,7 @@ export default {
         .catch((error) => console.log(error));
     } else {
       store
-        .dispatch("getExpenseInvoiceAction", props.id)
+        .dispatch("getExpenseInvoiceAction", id)
         .catch((error) => console.log(error));
     }
     const expense = computed(() => {
@@ -236,6 +288,7 @@ export default {
       error,
       title,
       supplierTypes,
+      paymentMethods,
       updateSupplierType,
       cancelExpense,
       saveExpense,
@@ -244,7 +297,13 @@ export default {
       isSupplierSelected,
     };
   },
-  components: { SupplierForm, ExpenseInvoiceLineDetail, MicroCompanyForm },
+  components: {
+    SupplierForm,
+    ExpenseInvoiceLineDetail,
+    MicroCompanyForm,
+    BaseCheckbox,
+    BaseCheckboxAfterLabel,
+  },
 };
 </script>
 
