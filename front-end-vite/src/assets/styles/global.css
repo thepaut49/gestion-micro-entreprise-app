@@ -132,3 +132,9 @@ h2 {
   width: 1.8em;
   color: white;
 }
+
+@media print {
+  .noprint {
+    visibility: hidden;
+  }
+}

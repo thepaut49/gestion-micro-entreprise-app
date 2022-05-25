@@ -203,6 +203,6 @@ const errorObjectIsEmpty = (error) => {
 };
 </script>
 
-<style>
+<style scoped>
 @import "../../assets/styles/entityEditForm.css";
 </style>

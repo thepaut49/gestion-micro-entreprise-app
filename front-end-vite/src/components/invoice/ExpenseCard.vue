@@ -26,7 +26,10 @@
       </button>
       <router-link
         class="button link-button"
-        :to="{ name: 'expense-invoice-detail', params: { id: expense.id } }"
+        :to="{
+          name: 'expense-invoice-detail-visu',
+          params: { id: expense.id },
+        }"
       >
         <span>Sélectioner</span>
       </router-link>

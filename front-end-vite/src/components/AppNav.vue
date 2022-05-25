@@ -1,5 +1,5 @@
 <template>
-  <nav id="nav">
+  <nav id="nav" class="noprint">
     <template v-if="loggedIn">
       <router-link to="/"> Home </router-link>
       <router-link to="/dashboard"> Dashboard </router-link>

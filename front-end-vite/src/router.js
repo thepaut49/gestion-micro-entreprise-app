@@ -14,6 +14,7 @@ import MicroCompanyDetail from "./views/microcompany/microCompany-detail.vue";
 import ExpenseInvoices from "./views/invoice/expense/expenseInvoices.vue";
 import RevenueInvoices from "./views/invoice/revenue/revenueInvoices.vue";
 import ExpenseInvoiceDetail from "./views/invoice/expense/expense-invoice-detail.vue";
+import ExpenseInvoiceDetailVisu from "./views/invoice/expense/expense-invoice-detail-visu.vue";
 import RevenueInvoiceDetail from "./views/invoice/revenue/revenue-invoice-detail.vue";
 
 const router = createRouter({
@@ -95,6 +96,13 @@ const router = createRouter({
       path: "/expense-invoices/me",
       name: "expenseInvoices",
       component: ExpenseInvoices,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/expense-invoices/expense-invoice-detail-visu/:id?",
+      name: "expense-invoice-detail-visu",
+      component: ExpenseInvoiceDetailVisu,
+      props: true,
       meta: { requiresAuth: true },
     },
     {

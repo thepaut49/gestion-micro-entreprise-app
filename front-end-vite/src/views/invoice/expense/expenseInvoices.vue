@@ -5,7 +5,7 @@
       <router-link
         tag="button"
         class="button addButton"
-        :to="{ name: 'expense-invoice-detail' }"
+        :to="{ name: 'expense-invoice-detail-visu' }"
       >
         <font-awesome-icon icon="plus" />
       </router-link>

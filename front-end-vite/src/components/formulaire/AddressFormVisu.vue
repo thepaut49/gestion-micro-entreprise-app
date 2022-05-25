@@ -1,30 +1,18 @@
 <template>
-  <div class="field">
-    <BaseLabel
-      v-model="address.addressLine1"
-      label="Première ligne d'adresse"
-      v-bind="$attrs"
-    />
+  <div>
+    <BaseLabel v-model="address.addressLine1" v-bind="$attrs" />
   </div>
-  <div class="field">
-    <BaseLabel
-      v-model="address.addressLine2"
-      label="Deuxième ligne d'adresse"
-      v-bind="$attrs"
-    />
+  <div>
+    <BaseLabel v-model="address.addressLine2" v-bind="$attrs" />
   </div>
-  <div class="field">
-    <BaseLabel
-      v-model="address.postalCode"
-      label="Code Postal"
-      v-bind="$attrs"
-    />
+  <div>
+    <BaseLabel v-model="address.postalCode" v-bind="$attrs" />
   </div>
-  <div class="field">
-    <BaseLabel v-model="address.cityName" label="Ville" v-bind="$attrs" />
+  <div>
+    <BaseLabel v-model="address.cityName" v-bind="$attrs" />
   </div>
-  <div class="field">
-    <BaseLabel v-model="address.countryName" label="Pays" v-bind="$attrs" />
+  <div>
+    <BaseLabel v-model="address.countryName" v-bind="$attrs" />
   </div>
 </template>
 
