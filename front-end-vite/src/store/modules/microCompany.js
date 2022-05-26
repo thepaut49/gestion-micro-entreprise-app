@@ -2,6 +2,7 @@ import axios from "axios";
 import { VITE_APP_API_URL } from "../helpers";
 import { parseItem } from "../../shared/data.service";
 import { mapMicroToMicroCompanyExpense } from "../../utils/invoice/ExpenseUtils";
+import { mapMicroToMicroCompanyRevenue } from "../../utils/invoice/revenueUtils";
 
 const newMicroCompany = {
   id: undefined,
@@ -75,14 +76,13 @@ const newRevenueInvoice = {
   invoiceLines: [],
   amountExcludingTax: 0.0,
   amountWithTax: 0.0,
-  dueDate: new Date().toISOString(),
-  paymentDate: new Date().toISOString(),
+  dueDate: null,
+  paymentDate: null,
   quote: false,
   paymentMethod: "",
   payed: false,
   createdAt: new Date().toISOString(),
   modifiedAt: new Date().toISOString(),
-  externalRef: "",
 };
 
 const newExpenseInvoice = {
@@ -217,6 +217,12 @@ const mutations = {
   // Revenue
   addRevenueInvoice(state, revenue) {
     state.revenueInvoices.unshift(revenue); // mutable addition
+    state.revenueInvoice = newRevenueInvoice;
+  },
+  updateRevenueInvoice(state, revenue) {
+    const index = state.revenueInvoices.findIndex((h) => h.id === revenue.id);
+    state.revenueInvoices.splice(index, 1, revenue);
+    state.revenueInvoices = [...state.revenueInvoices];
     state.revenueInvoice = newRevenueInvoice;
   },
   setRevenueInvoices(state, revenueInvoices) {
@@ -370,13 +376,23 @@ const actions = {
   // Revenue Invoice
   getRevenueInvoicesAction({ commit }) {
     return axios
-      .get(VITE_APP_API_URL + "/api/revenue-invoices")
+      .get(VITE_APP_API_URL + "/api/revenue-invoices/me")
       .then((response) => {
         commit("setRevenueInvoices", response.data.items);
       })
       .catch((error) => {
         console.log(error);
       });
+  },
+  // actions let us get to ({ state, getters, commit, dispatch }) {
+  addRevenueInvoiceAction({ commit }, revenueInvoice) {
+    return axios
+      .post(`${VITE_APP_API_URL}/api/revenue-invoices`, revenueInvoice)
+      .then((response) => {
+        const addedRevenueInvoice = parseItem(response, 201);
+        commit("addRevenueInvoice", addedRevenueInvoice);
+      })
+      .catch((error) => console.error(error));
   },
   deleteRevenueInvoiceAction({ commit }, revenueInvoice) {
     return axios
@@ -401,7 +417,7 @@ const actions = {
   },
   getRevenueInvoiceAction({ commit, state }, id) {
     if (id) {
-      const existingRevenueInvoice = state.microCompanies.find(
+      const existingRevenueInvoice = state.revenueInvoices.find(
         (revenueInvoice) => revenueInvoice.id === id
       );
       if (existingRevenueInvoice) {
@@ -418,6 +434,9 @@ const actions = {
     }
   },
   createNewRevenueInvoiceAction({ commit }) {
+    newRevenueInvoice.microCompany = mapMicroToMicroCompanyRevenue(
+      state.microCompany
+    );
     commit("setRevenueInvoice", newRevenueInvoice);
   },
 };

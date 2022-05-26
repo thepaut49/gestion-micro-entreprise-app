@@ -1,43 +1,36 @@
 <template>
   <fieldset class="revenue-card">
-    <legend>Facteur fournisseur {{ revenue.id }}</legend>
-    <fieldset class="revenue-card-supplier">
-      <legend>Fournisseur</legend>
-      <BaseLabel v-model="revenue.supplier" label="Nom fournisseur : " />
-    </fieldset>
-    <fieldset class="revenue-card-details">
-      <legend>Détails</legend>
-      <BaseLabel v-model="revenue.externalRef" label="Réf externe : " />
+    <legend>Facture client {{ revenue.id }}</legend>
+    <div class="field-label">
+      <BaseLabel v-model="revenue.client.name" label="Client : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="revenue.amountExcludingTax" label="Montant HT : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="revenue.amountWithTax" label="Montant TTC : " />
-      <BaseLabel v-model="revenue.dueDate" label="Montant HT : " />
+    </div>
+    <div class="field-label">
+      <BaseLabel v-model="revenue.dueDate" label="Date d'échéance : " />
+    </div>
+    <div class="field-label">
       <BaseLabel v-model="revenue.paymentDate" label="Date de règlement : " />
-      <BaseLabel
-        v-model="revenue.paymentMethod"
-        label="Méthode de paiement : "
-      />
-      <BaseLabel v-model="revenue.payed" label="Payé : " />
-      <BaseLabel v-model="revenue.quote" label="Devis : " />
-    </fieldset>
-    <main class="revenue-card-content">
-      <div class="field-label">
-        <BaseLabel v-model="revenue.email" label="Email : " />
-      </div>
-      <div class="field-label">
-        <BaseLabel v-model="revenue.phone" label="Phone : " />
-      </div>
-    </main>
-    <footer>
+    </div>
+    <!-- BaseLabel v-model="revenue.payed" label="Payé : " /-->
+    <div class="revenue-card-buttons">
       <button @click="askToDelete(revenue)">
         <span>Supprimer</span>
       </button>
       <router-link
         class="button link-button"
-        :to="{ name: 'revenue-detail', params: { id: revenue.id } }"
+        :to="{
+          name: 'revenue-invoice-detail-visu',
+          params: { id: revenue.id },
+        }"
       >
         <span>Sélectioner</span>
       </router-link>
-    </footer>
+    </div>
   </fieldset>
 </template>
 
@@ -61,7 +54,7 @@ export default {
     };
 
     const fullName = computed(() => {
-      return "Facteur fournisseur " + revenueProp.id;
+      return "Facteur client " + revenueProp.id;
     });
 
     return {
@@ -86,13 +79,7 @@ export default {
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2), 0 1px 15px 0 rgba(0, 0, 0, 0.19);
 }
 
-.revenue-card-content {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
-
-.revenue-card footer {
+.revenue-card-buttons {
   display: flex;
   flex-direction: row;
   align-items: center;

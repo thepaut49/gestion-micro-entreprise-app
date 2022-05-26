@@ -155,7 +155,7 @@
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { ref, computed, watchEffect } from "vue";
-import SupplierForm from "../../../components/formulaire/SupplierForm.vue";
+import SupplierForm from "../../../components/formulaire/expense/SupplierForm.vue";
 import ExpenseInvoiceLineDetail from "./expense-invoice-line-detail.vue";
 import {
   supplierTypes,

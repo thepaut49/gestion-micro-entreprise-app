@@ -18,7 +18,6 @@ public abstract class ExpenseInvoiceMapper {
     @BeforeMapping
     protected void amountsCalculation(ExpenseInvoice invoice) {
 
-
         double amountExcludingtax = 0.0d;
         double amountWithtax = 0.0d;
 

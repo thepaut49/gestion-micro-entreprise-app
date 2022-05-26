@@ -15,13 +15,13 @@ public class Client implements Serializable {
 
 	private ObjectId id;
 
-	private String name;
-
 	private ClientType clientType;
 
-	private String siret;
+	private String name;
 
 	private String siren;
+
+	private String siret;
 
 	private Address address;
 

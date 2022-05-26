@@ -3,7 +3,7 @@
   <div class="modal" v-show="isOpen">
     <section class="modal-content">
       <header class="modal-header">
-        <h2>Sélection du fournisseur</h2>
+        <h2>Sélection du client</h2>
         <button class="close" @click="onCancel">&times;</button>
       </header>
       <main class="modal-body">
@@ -11,45 +11,45 @@
           <legend>Critères de recherche</legend>
           <div class="field">
             <BaseSelect
-              :options="supplierTypes"
-              v-model="supplierType"
-              label="Type fournisseur"
-              name="supplierType"
+              :options="clientTypes"
+              v-model="clientType"
+              label="Type de client"
+              name="clientType"
             />
           </div>
-          <div class="field" v-show="isSupplierACompany()">
+          <div class="field" v-show="isClientACompany()">
             <BaseInput
               v-model="companyName"
               label="Nom de l'entreprise"
               type="text"
             />
           </div>
-          <div class="field" v-show="isSupplierACompany()">
+          <div class="field" v-show="isClientACompany()">
             <BaseInput v-model="siren" label="Siren" type="text" />
           </div>
-          <div class="field" v-show="isSupplierACompany()">
+          <div class="field" v-show="isClientACompany()">
             <BaseInput v-model="siret" label="Siren" type="text" />
           </div>
-          <div class="field" v-show="!isSupplierACompany()">
+          <div class="field" v-show="!isClientACompany()">
             <BaseInput v-model="firstName" label="Prénom" type="text" />
           </div>
-          <div class="field" v-show="!isSupplierACompany()">
+          <div class="field" v-show="!isClientACompany()">
             <BaseInput v-model="familyName" label="Nom" type="text" />
           </div>
           <div>
-            <button @click="searchSupplier">Rechercher</button>
+            <button @click="searchClient">Rechercher</button>
           </div>
         </fieldset>
-        <div v-show="foundSuppliers">
-          <SupplierCard
-            v-for="supplier in suppliers"
-            :key="supplier.id"
-            :supplier="supplier"
+        <div v-show="foundClients">
+          <ClientCard
+            v-for="client in clients"
+            :key="client.id"
+            :client="client"
             v-bind="$attrs"
-            @handleSelectSupplierGranChild="selectSupplierChild"
+            @handleSelectClientGranChild="selectClientChild"
           />
         </div>
-        <p v-show="!foundSuppliers">
+        <p v-show="!foundClients">
           Pas de fournisseur(s) correspondant au critère(s).
         </p>
       </main>
@@ -58,18 +58,18 @@
 </template>
 
 <script>
-import BaseSelect from "../commons/BaseSelect.vue";
+import BaseSelect from "../../commons/BaseSelect.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import {
-  supplierTypes,
-  mapPersonToSupplier,
-  mapCompanyToSupplier,
-} from "../../utils/invoice/ExpenseUtils";
-import SupplierCard from "./SupplierCard.vue";
+  clientTypes,
+  mapPersonToClient,
+  mapCompanyToClient,
+} from "../../../utils/invoice/RevenueUtils";
+import ClientCard from "../revenue/ClientCard.vue";
 
 export default {
-  name: "ModalSelectSupplier",
+  name: "ModalSelectClient",
   props: {
     isOpen: {
       type: Boolean,
@@ -79,19 +79,19 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
 
-    const supplierType = ref("");
+    const clientType = ref("");
     const companyName = ref("");
     const siren = ref("");
     const siret = ref("");
     const firstName = ref("");
     const familyName = ref("");
-    const suppliers = ref([]);
+    const clients = ref([]);
 
-    const selectSupplierChild = (supplier) => {
-      emit("handleSelectSupplierChild", supplier);
+    const selectClientChild = (client) => {
+      emit("handleSelectClientChild", client);
     };
 
-    const searchSupplierInCompanies = () => {
+    const searchClientInCompanies = () => {
       const companies = ref(store.state.company.companies);
 
       companies.value.forEach((company) => {
@@ -113,12 +113,12 @@ export default {
         }
 
         if (addCompany) {
-          suppliers.value.push(mapCompanyToSupplier(company));
+          clients.value.push(mapCompanyToClient(company));
         }
       });
     };
 
-    const searchSupplierInPersons = () => {
+    const searchClientInPersons = () => {
       const persons = ref(store.state.person.persons);
       persons.value.forEach((person) => {
         console.log("Person : " + person);
@@ -138,30 +138,30 @@ export default {
           addPerson = false;
         }
         if (addPerson) {
-          suppliers.value.push(mapPersonToSupplier(person));
+          clients.value.push(mapPersonToClient(person));
         }
       });
     };
 
-    const searchSupplier = () => {
-      suppliers.value = [];
-      console.log("Supplier Type : " + supplierType.value);
-      if (supplierType.value === "ENTREPRISE") {
-        searchSupplierInCompanies();
-      } else if (supplierType.value === "PARTICULIER") {
-        searchSupplierInPersons();
+    const searchClient = () => {
+      clients.value = [];
+      console.log("Client Type : " + clientType.value);
+      if (clientType.value === "ENTREPRISE") {
+        searchClientInCompanies();
+      } else if (clientType.value === "PARTICULIER") {
+        searchClientInPersons();
       } else {
-        searchSupplierInCompanies();
-        searchSupplierInPersons();
+        searchClientInCompanies();
+        searchClientInPersons();
       }
     };
 
-    const foundSuppliers = computed(() => {
-      return suppliers.value && suppliers.value.length > 0;
+    const foundClients = computed(() => {
+      return clients.value && clients.value.length > 0;
     });
 
-    const isSupplierACompany = () => {
-      return supplierType.value === "ENTREPRISE";
+    const isClientACompany = () => {
+      return clientType.value === "ENTREPRISE";
     };
 
     const onCancel = () => {
@@ -169,15 +169,15 @@ export default {
     };
 
     return {
-      foundSuppliers,
-      suppliers,
-      selectSupplierChild,
-      searchSupplierInCompanies,
-      searchSupplierInPersons,
-      searchSupplier,
-      isSupplierACompany,
-      supplierTypes,
-      supplierType,
+      foundClients,
+      clients,
+      selectClientChild,
+      searchClientInCompanies,
+      searchClientInPersons,
+      searchClient,
+      isClientACompany,
+      clientTypes,
+      clientType,
       companyName,
       siren,
       siret,
@@ -186,7 +186,7 @@ export default {
       onCancel,
     };
   },
-  components: { BaseSelect, SupplierCard },
+  components: { BaseSelect, ClientCard },
 };
 </script>
 

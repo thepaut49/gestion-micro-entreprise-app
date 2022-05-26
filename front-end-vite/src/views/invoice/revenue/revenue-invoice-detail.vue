@@ -1,93 +1,161 @@
 <template>
-  <div class="invoice-form-container">
-    <section class="invoice-form">
-      <header class="title">
-        <h2>{{ title }}</h2>
-      </header>
-      <main>
-        <fieldset class="invoice-form-content">
-          <legend>Fournisseur</legend>
-          <div class="field-label">
-            <BaseLabel v-model="expense.id" label="Id" />
-          </div>
-          <div class="field">
-            <BaseInput
-              v-model="expense.name"
-              label="Nom fournisseur"
-              type="text"
-              :error="error.name"
-            />
-          </div>
-          <div class="field">
-            <BaseInput
-              v-model="expense.firstName"
-              label="Prénom"
-              type="text"
-              :error="error.firstName"
-            />
-          </div>
-          <div class="field-label">
-            <BaseLabel v-model="expense.createdAt" label="Créée le" />
-          </div>
-          <div class="field-label">
-            <BaseLabel v-model="expense.modifiedAt" label="Modifié le" />
-          </div>
-          <fieldset class="expense-form-content">
-            <legend>Email et téléphone</legend>
-            <div class="field">
-              <BaseInput
-                v-model="expense.email"
-                label="Email de l'entreprise"
-                type="text"
-              />
-            </div>
-            <div class="field">
-              <BaseInput
-                v-model="expense.phone"
-                label="Numéro téléphone"
-                type="text"
-              />
-            </div>
-          </fieldset>
+  <section class="invoice-form-container">
+    <header class="title">
+      <h2>{{ title }}</h2>
+    </header>
+    <main>
+      <div class="client-button">
+        <button v-show="!isClientSelected()" @click="showModalToSelectClient()">
+          Sélectionner le client
+        </button>
+        <button v-show="isClientSelected()" @click="showModalToSelectClient()">
+          Changer de client
+        </button>
+      </div>
 
-          <fieldset class="invoice-form-content">
-            <legend>Adresse</legend>
-            <AddressForm
-              :address="expense.address"
-              @input="
-                (newAddress) => {
-                  address = newAddress;
-                }
-              "
+      <div class="field">
+        <BaseInputDate
+          v-model="revenue.dueDate"
+          label="Date d'échéance"
+          name="dueDate"
+        />
+      </div>
+
+      <div class="field-checkbox">
+        <BaseCheckboxAfterLabel
+          v-model="revenue.quote"
+          label="Devis"
+          name="quote"
+        />
+      </div>
+
+      <div class="field">
+        <BaseSelect
+          :options="paymentMethods"
+          v-model="revenue.paymentMethod"
+          label="Méthode de paiement"
+          name="paymentMethod"
+        />
+      </div>
+
+      <div class="field-checkbox">
+        <BaseCheckboxAfterLabel
+          v-model="revenue.payed"
+          label="Payé"
+          name="payed"
+        />
+      </div>
+
+      <div class="field">
+        <BaseInputDate
+          v-model="revenue.paymentDate"
+          label="Date de règlement"
+          name="paymentDate"
+        />
+      </div>
+
+      <ClientForm
+        :client="revenue.client"
+        @input="
+          (newClient) => {
+            client = newClient;
+          }
+        "
+        @change="
+          (newClient) => {
+            client = newClient;
+          }
+        "
+      />
+
+      <MicroCompanyForm :microCompany="revenue.microCompany" />
+
+      <section>
+        <br />
+        <table>
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Description</th>
+              <th>Prix unitaire HT (€)</th>
+              <th>Quantité</th>
+              <th>TVA (%)</th>
+              <th>Montant HT (€)</th>
+              <th>Montant TTC (€)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <RevenueInvoiceLineDetail
+              v-for="invoiceLine in revenue.invoiceLines"
+              :key="invoiceLine.id"
+              :invoiceLine="invoiceLine"
             />
-          </fieldset>
-        </fieldset>
-      </main>
-      <footer class="invoice-form-footer">
-        <button @click="cancelExpense()">
-          <span>Cancel</span>
-        </button>
-        <button @click="saveExpense()">
-          <span>Save</span>
-        </button>
-      </footer>
-    </section>
-  </div>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="7">
+                <button class="invoice-add-line" @click="addInvoiceLine()">
+                  Ajouter une ligne
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>Total HT</th>
+              <td class="cellAmount">{{ revenue.amountExcludingTax }} €</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>Total TTC</th>
+              <td class="cellAmount">{{ revenue.amountWithTax }} €</td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+      <ModalSelectClient
+        :isOpen="showModal"
+        @handleSelectClientChild="selectClient"
+        @handleCancel="closeModal"
+      />
+    </main>
+    <footer class="invoice-form-footer">
+      <button @click="cancelRevenue()">
+        <span>Cancel</span>
+      </button>
+      <button @click="saveRevenue()">
+        <span>Save</span>
+      </button>
+    </footer>
+  </section>
 </template>
 
 <script>
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { ref, computed } from "vue";
-
-const emptyError = {
-  familyName: "",
-  firstName: "",
-};
+import { ref, computed, watchEffect } from "vue";
+import ClientForm from "../../../components/formulaire/revenue/ClientForm.vue";
+import RevenueInvoiceLineDetail from "./revenue-invoice-line-detail.vue";
+import {
+  clientTypes,
+  emptyError,
+  createNewLine,
+  validateRevenue,
+} from "../../../utils/invoice/RevenueUtils";
+import MicroCompanyForm from "../../../components/invoice/MicroCompanyForm.vue";
+import BaseCheckbox from "../../../components/commons/BaseCheckbox.vue";
+import { paymentMethods } from "../../../utils/invoice/InvoiceUtils";
+import BaseCheckboxAfterLabel from "../../../components/commons/BaseCheckboxAfterLabel.vue";
 
 export default {
-  name: "ExpenseInvoiceDetail",
-  inheritAttrs: false,
+  name: "RevenueInvoiceDetail",
   props: {
     id: {
       type: String,
@@ -97,80 +165,158 @@ export default {
     const router = useRouter();
     const store = useStore();
     const error = ref(emptyError);
-
+    let showCompanyFields = ref(false);
     const id = props.id;
+    let showModal = ref(false);
+
+    const showModalToSelectClient = () => {
+      showModal.value = true;
+    };
+
+    const closeModal = () => {
+      showModal.value = false;
+    };
+
+    const selectClient = (selectedClient) => {
+      showModal.value = false;
+      revenue.value.client = selectedClient;
+    };
 
     const isAddMode = computed(() => {
-      return !props.id;
-    });
-    const title = computed(() => {
-      return isAddMode
-        ? "Créer une facture fournisseur"
-        : "Modifier la facture fournisseur " + expense.value.id;
+      return !id;
     });
 
+    const title = computed(() => {
+      return isAddMode.value
+        ? "Créer une facture client"
+        : "Modifier la facture client " + revenue.value.id;
+    });
     if (isAddMode.value) {
       store
-        .dispatch("createNewExpenseInvoiceAction")
+        .dispatch("createNewRevenueInvoiceAction")
         .catch((error) => console.log(error));
     } else {
       store
-        .dispatch("getExpenseInvoiceAction", props.id)
+        .dispatch("getRevenueInvoiceAction", id)
         .catch((error) => console.log(error));
     }
-
-    const expense = computed(() => {
-      return store.state.expense.expense;
+    const revenue = computed(() => {
+      return store.state.microCompany.revenueInvoice;
     });
 
-    const cancelExpense = function () {
-      router.push({ name: "expenses" });
+    const addInvoiceLine = () => {
+      revenue.value.invoiceLines = createNewLine(revenue.value.invoiceLines);
     };
 
-    const saveExpense = () => {
-      error.value = validateExpense(expense.value, error.value);
-      console.log(errorObjectIsEmpty(error.value));
-      if (errorObjectIsEmpty(error.value)) {
-        if (isAddMode.value) {
-          store
-            .dispatch("addExpenseInvoiceAction", expense.value)
-            .catch((errorCatch) => console.log(errorCatch));
-        } else {
-          store
-            .dispatch("updateExpenseInvoiceAction", expense.value)
-            .catch((errorCatch) => console.log(errorCatch));
+    const isClientSelected = () => {
+      if (revenue.value.client.id) {
+        return true;
+      }
+      return false;
+    };
+
+    watchEffect(() => {
+      revenue.value.amountExcludingTax = 0.0;
+      revenue.value.amountWithTax = 0.0;
+      revenue.value.invoiceLines.forEach((invoiceLine) => {
+        revenue.value.amountExcludingTax += invoiceLine.amountExcludingTax;
+        revenue.value.amountWithTax += invoiceLine.amountWithTax;
+        revenue.value.amountExcludingTax =
+          Math.round(revenue.value.amountExcludingTax * 100) / 100;
+        revenue.value.amountWithTax =
+          Math.round(revenue.value.amountWithTax * 100) / 100;
+      });
+    });
+
+    const cancelRevenue = () => {
+      router.go(-1);
+    };
+
+    const saveRevenue = () => {
+      console.log("save revenue");
+      let revenueIsValid = true;
+      [error.value, revenueIsValid] = validateRevenue(revenue.value);
+      try {
+        console.log(" try save revenue : " + revenueIsValid);
+        if (revenueIsValid) {
+          if (isAddMode.value) {
+            store
+              .dispatch("addRevenueInvoiceAction", revenue.value)
+              .then(() => {
+                router.push({ name: "revenueInvoices" });
+              })
+              .catch((error) => console.log(error));
+          } else {
+            store
+              .dispatch("updateRevenueInvoiceAction", revenue.value)
+              .then(() => router.push({ name: "revenueInvoices" }))
+              .catch((error) => console.log(error));
+          }
         }
-        router.push({ name: "expenses" });
+      } catch (error) {
+        console.log(error);
       }
     };
 
+    function updateClientType() {
+      if (revenue.client && revenue.client.clientType === "ENTREPRISE") {
+        showCompanyFields = true;
+      } else {
+        showCompanyFields = false;
+      }
+    }
+
     return {
-      expense,
+      closeModal,
+      selectClient,
+      showModal,
+      showModalToSelectClient,
+      revenue,
       isAddMode,
       error,
       title,
-      cancelExpense,
-      saveExpense,
+      clientTypes,
+      paymentMethods,
+      updateClientType,
+      cancelRevenue,
+      saveRevenue,
+      showCompanyFields,
+      addInvoiceLine,
+      isClientSelected,
     };
   },
-};
-
-const validateExpense = (expense, error) => {
-  error = emptyError;
-  if (!expense.name || expense.name.length === 0) {
-    error = {
-      ...error,
-      name: "Le nom est obligatoire",
-    };
-  }
-  return error;
-};
-
-const errorObjectIsEmpty = (error) => {
-  return Object.values(error).every((value) => value.length === 0);
+  components: {
+    ClientForm,
+    RevenueInvoiceLineDetail,
+    MicroCompanyForm,
+    BaseCheckbox,
+    BaseCheckboxAfterLabel,
+  },
 };
 </script>
 
 <style>
 @import "../../../assets/styles/invoiceEditForm.css";
+
+.client-button {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
+
+th {
+  background-color: #42b983;
+  color: white;
+}
+
+td {
+  height: 1em;
+}
+
+table {
+  border: 2px solid #42b983;
+  border-radius: 3px;
+  background-color: #fff;
+  width: 100%;
+}
 </style>

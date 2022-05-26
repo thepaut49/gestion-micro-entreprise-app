@@ -4,6 +4,7 @@ import com.thepolo49.backend.dto.commons.AddressDto;
 
 public record ClientDto(
 	String id,
+	String name,
 	String clientType,
 	String siret,
 	String siren,

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -46,6 +48,13 @@ public class RevenueInvoiceApi {
     @GetMapping()
     public ListResponse<RevenueInvoiceDto> findAll() {
         return new ListResponse<>(revenueInvoiceService.findAll());
+    }
+
+    @GetMapping("/me")
+    public ListResponse<RevenueInvoiceDto> findMyRevenue() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        return new ListResponse<>(revenueInvoiceService.findMyRevenue(userDetails.getUsername()));
     }
 
 }
